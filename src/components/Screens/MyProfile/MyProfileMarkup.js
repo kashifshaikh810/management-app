@@ -22,6 +22,8 @@ import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
 import styles from './styles';
 import Header from '../Header/Header';
 import MyModal from '../Employees/Modal/Modal';
+import ProfileDetailsModal from './MyProfileModals/ProfileDetailsModal/ProfileDetailsModal';
+import EmploymentDetailsModal from './MyProfileModals/EmploymentDetailsModal/EmploymentDetailsModal';
 
 const timeOffSection = props => {
   return (
@@ -637,11 +639,13 @@ const workingHoursSection = props => {
             <Pressable
               style={styles.mondayTextInput}
               onPress={() =>
-                // props.setshowDepartmentModal({show: true, type: 'Department'})
-                {}
+                props.setIsShowFridayModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showDepartmentModal?.chooseVal || '08:00am'}
+                {props?.isShowFridayModal?.chooseVal || '08:00am'}
               </Text>
               <View style={styles.dropIconMain}>
                 <ArrowDropIcon
@@ -659,13 +663,15 @@ const workingHoursSection = props => {
               <Text style={styles.firstNameText}>To</Text>
             </View>
             <Pressable
-              onPress={
-                () => {}
-                // props.setshowPositionModal({show: true, type: 'Position'})
+              onPress={() =>
+                props.setIsShowFridayToModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }
               style={styles.mondayTextInput}>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showPositionModal?.chooseVal || '17:00pm'}
+                {props?.isShowFridayToModal?.chooseVal || '17:00pm'}
               </Text>
               <View style={styles.dropIconContainer}>
                 <ArrowDropIcon
@@ -688,11 +694,13 @@ const workingHoursSection = props => {
             <Pressable
               style={styles.mondayTextInput}
               onPress={() =>
-                // props.setshowDepartmentModal({show: true, type: 'Department'})
-                {}
+                props.setIsShowSaturdayModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showDepartmentModal?.chooseVal}
+                {props?.isShowSaturdayModal?.chooseVal || '08:00am'}
               </Text>
               <View style={styles.dropIconMain}>
                 <ArrowDropIcon
@@ -710,13 +718,15 @@ const workingHoursSection = props => {
               <Text style={styles.firstNameText}>To</Text>
             </View>
             <Pressable
-              onPress={
-                () => {}
-                // props.setshowPositionModal({show: true, type: 'Position'})
+              onPress={() =>
+                props.setIsShowSaturdayToModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }
               style={styles.mondayTextInput}>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showPositionModal?.chooseVal}
+                {props?.isShowSaturdayToModal?.chooseVal || '17:00pm'}
               </Text>
               <View style={styles.dropIconContainer}>
                 <ArrowDropIcon
@@ -739,11 +749,13 @@ const workingHoursSection = props => {
             <Pressable
               style={styles.mondayTextInput}
               onPress={() =>
-                // props.setshowDepartmentModal({show: true, type: 'Department'})
-                {}
+                props.setIsShowSundayModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showDepartmentModal?.chooseVal}
+                {props?.isShowSundayModal?.chooseVal || '08:00am'}
               </Text>
               <View style={styles.dropIconMain}>
                 <ArrowDropIcon
@@ -761,13 +773,15 @@ const workingHoursSection = props => {
               <Text style={styles.firstNameText}>To</Text>
             </View>
             <Pressable
-              onPress={
-                () => {}
-                // props.setshowPositionModal({show: true, type: 'Position'})
+              onPress={() =>
+                props.setIsShowSundayToModal({
+                  show: true,
+                  type: 'mondayFromProfile',
+                })
               }
               style={styles.mondayTextInput}>
               <Text style={{marginHorizontal: 10}}>
-                {props?.showPositionModal?.chooseVal}
+                {props?.isShowSundayToModal?.chooseVal || '17:00pm'}
               </Text>
               <View style={styles.dropIconContainer}>
                 <ArrowDropIcon
@@ -983,6 +997,7 @@ const MyProfileMarkup = props => {
             />
             <View style={styles.editIconContainer}>
               <Pressable
+                onPress={() => props.setShowProfileDetailsModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
                   {backgroundColor: pressed ? 'rgba(0,0,0,0)' : '#ffa700'},
@@ -1186,6 +1201,10 @@ const MyProfileMarkup = props => {
             </View>
           </View>
         </View>
+
+        <EmploymentDetailsModal {...props} />
+
+        <ProfileDetailsModal {...props} />
 
         {tabsSection(props)}
       </ScrollView>

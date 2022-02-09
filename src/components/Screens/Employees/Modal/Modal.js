@@ -163,6 +163,64 @@ const timeData = [
   {name: '23:30pm'},
 ];
 
+const genderData = [{name: 'Male'}, {name: 'Female'}, {name: 'Gender-Neutral'}];
+
+const languageData = [
+  {name: ''},
+  {name: 'English'},
+  {name: 'Russian'},
+  {name: 'Ukrainian'},
+];
+
+const zoneData = [
+  {name: 'Africa/Abidjan'},
+  {name: 'Africa/Accra'},
+  {name: 'Africa/Addis_Ababa'},
+  {name: 'Africa/Algiers'},
+  {name: 'Africa/Asmara'},
+  {name: 'Africa/Bamako'},
+  {name: 'Africa/Bangui'},
+  {name: 'Africa/Banjul'},
+  {name: 'America/Adak'},
+  {name: 'America/Anchorage'},
+  {name: 'America/Anguilla'},
+  {name: 'America/Antigua'},
+  {name: 'America/Araguaina'},
+  {name: 'America/Argentina/Buenos_Aires'},
+  {name: 'Antarctica/Casey'},
+  {name: 'Antarctica/Davis'},
+  {name: 'Antarctica/DumontDUrvilla'},
+  {name: 'Antarctica/Macquarie'},
+  {name: 'Antarctica/Mawson'},
+  {name: 'Antarctica/McMurdi'},
+  {name: 'Antarctica/Palmer'},
+  {name: 'Asia/Aden'},
+  {name: 'Asia/Almaty'},
+  {name: 'Asia/Amman'},
+  {name: 'Asia/Anadyr'},
+  {name: 'Asia/Aqtau'},
+  {name: 'Asia/Aqtobe'},
+  {name: 'Asia/Ashghabat'},
+  {name: 'Asia/Atyrau'},
+  {name: 'Europe/Amsterdam'},
+  {name: 'Europe/Andora'},
+  {name: 'Europe/AstraKhan'},
+  {name: 'Europe/Athens'},
+  {name: 'Europe/Belgrade'},
+  {name: 'Europe/Berlin'},
+  {name: 'Europe/Bratislava'},
+  {name: 'Europe/Brussels'},
+  {name: 'Europe/Busharest'},
+  {name: 'Pacific/Apia'},
+  {name: 'Pacific/Auckland'},
+  {name: 'Pacific/Bougainville'},
+  {name: 'Pacific/Chatham'},
+  {name: 'Pacific/Chuuk'},
+  {name: 'Pacific/Easter'},
+  {name: 'Pacific/Efat'},
+  {name: 'Pacific/Fakaofo'},
+];
+
 const MyModal = props => {
   const click = item => {
     if (props?.showDepartmentModal?.type === 'Department') {
@@ -191,6 +249,24 @@ const MyModal = props => {
       props?.setIsShowThursdayModal({show: false, chooseVal: item});
     } else if (props?.isShowThursdayToModal?.type === 'mondayFromProfile') {
       props?.setIsShowThursdayToModal({show: false, chooseVal: item});
+    } else if (props?.isShowFridayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowFridayModal({show: false, chooseVal: item});
+    } else if (props?.isShowFridayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowFridayToModal({show: false, chooseVal: item});
+    } else if (props?.isShowSaturdayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSaturdayModal({show: false, chooseVal: item});
+    } else if (props?.isShowSaturdayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSaturdayToModal({show: false, chooseVal: item});
+    } else if (props?.isShowSundayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSundayModal({show: false, chooseVal: item});
+    } else if (props?.isShowSundayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSundayToModal({show: false, chooseVal: item});
+    } else if (props?.isShowGenderModal?.type === 'Gender') {
+      props?.setIsShowGenderModal({show: false, chooseVal: item});
+    } else if (props?.isShowLanguagesModal?.type === 'Language') {
+      props?.setIsShowLanguagesModal({show: false, chooseVal: item});
+    } else if (props?.isShowZoneModal?.type === 'TimeZone') {
+      props?.setIsShowZoneModal({show: false, chooseVal: item});
     }
   };
 
@@ -221,6 +297,24 @@ const MyModal = props => {
       props?.setIsShowThursdayModal({show: false});
     } else if (props?.isShowThursdayToModal?.type === 'mondayFromProfile') {
       props?.setIsShowThursdayToModal({show: false});
+    } else if (props?.isShowFridayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowFridayModal({show: false});
+    } else if (props?.isShowFridayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowFridayToModal({show: false});
+    } else if (props?.isShowSaturdayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSaturdayModal({show: false});
+    } else if (props?.isShowSaturdayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSaturdayToModal({show: false});
+    } else if (props?.isShowSundayModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSundayModal({show: false});
+    } else if (props?.isShowSundayToModal?.type === 'mondayFromProfile') {
+      props?.setIsShowSundayToModal({show: false});
+    } else if (props?.isShowGenderModal?.type === 'Gender') {
+      props?.setIsShowGenderModal({show: false});
+    } else if (props?.isShowLanguagesModal?.type === 'Language') {
+      props?.setIsShowLanguagesModal({show: false});
+    } else if (props?.isShowZoneModal?.type === 'TimeZone') {
+      props?.setIsShowZoneModal({show: false});
     }
   };
 
@@ -240,6 +334,15 @@ const MyModal = props => {
         props?.isShowWednesdayToModal?.show ||
         props?.isShowThursdayModal?.show ||
         props?.isShowThursdayToModal?.show ||
+        props?.isShowFridayModal?.show ||
+        props?.isShowFridayToModal?.show ||
+        props?.isShowSaturdayModal?.show ||
+        props?.isShowSaturdayToModal?.show ||
+        props?.isShowSundayModal?.show ||
+        props?.isShowSundayToModal?.show ||
+        props?.isShowGenderModal?.show ||
+        props?.isShowLanguagesModal?.show ||
+        props?.isShowZoneModal?.show ||
         false
       }
       transparent
@@ -249,7 +352,11 @@ const MyModal = props => {
         <View
           style={[
             styles.flatListContainer,
-            props?.showTimeOffModal?.type === 'TimeOff' && {height: '10%'},
+            props?.showTimeOffModal?.type === 'TimeOff' ||
+              props?.isShowGenderModal?.type === 'Gender' ||
+              (props?.isShowLanguagesModal?.type === 'Language' && {
+                height: '12%',
+              }),
           ]}>
           <FlatList
             keyExtractor={(item, index) => index.toString()}
@@ -276,7 +383,23 @@ const MyModal = props => {
               (props?.isShowThursdayModal?.type === 'mondayFromProfile' &&
                 timeData) ||
               (props?.isShowThursdayToModal?.type === 'mondayFromProfile' &&
-                timeData)
+                timeData) ||
+              (props?.isShowFridayModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowFridayToModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowSaturdayModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowSaturdayToModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowSundayModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowSundayToModal?.type === 'mondayFromProfile' &&
+                timeData) ||
+              (props?.isShowGenderModal?.type === 'Gender' && genderData) ||
+              (props?.isShowLanguagesModal?.type === 'Language' &&
+                languageData) ||
+              (props?.isShowZoneModal?.type === 'TimeZone' && zoneData)
             }
             renderItem={({item, index}) => {
               return (

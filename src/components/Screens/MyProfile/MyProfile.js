@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Platform} from 'react-native';
 import MyProfileMarkup from './MyProfileMarkup';
 
 const MyProfile = props => {
@@ -20,6 +21,9 @@ const MyProfile = props => {
   const [isShowFridaySection, setIsShowFridaySection] = useState(false);
   const [isShowSaturdaySection, setIsShowSaturdaySection] = useState(false);
   const [isShowSundaySection, setIsShowSundaySection] = useState(false);
+
+  // modals for profile edit section
+  const [showProfileDetailsModal, setShowProfileDetailsModal] = useState(false);
 
   // modal section
   const [isShowMondayModal, setIsShowMondayModal] = useState({
@@ -99,6 +103,61 @@ const MyProfile = props => {
     chooseVal: '',
   });
 
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [isFromSelected, setIsFromSelected] = useState(false);
+  const [selectSingleOrMarried, setSelectSingleOrMarried] = useState('');
+  const [isShowGenderModal, setIsShowGenderModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+  const [isShowLanguagesModal, setIsShowLanguagesModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+  const [isShowZoneModal, setIsShowZoneModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+
+  // From date
+  let fromSectionDate = new Date(date);
+  let ddDate = fromSectionDate.getDate();
+  let mmMonth = fromSectionDate.getMonth() + 1;
+  let yyYear = fromSectionDate.getFullYear();
+  if (ddDate < 10) {
+    ddDate = '0' + ddDate;
+  }
+
+  if (mmMonth < 10) {
+    mmMonth = '0' + mmMonth;
+  }
+  fromSectionDate = ddDate + '/' + mmMonth + '/' + yyYear;
+
+  //functions
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+    if (currentDate !== date) {
+      setIsFromSelected(true);
+    }
+  };
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
   return (
     <MyProfileMarkup
       {...props}
@@ -138,6 +197,35 @@ const MyProfile = props => {
       setIsShowThursdayModal={setIsShowThursdayModal}
       isShowThursdayToModal={isShowThursdayToModal}
       setIsShowThursdayToModal={setIsShowThursdayToModal}
+      isShowFridayModal={isShowFridayModal}
+      setIsShowFridayModal={setIsShowFridayModal}
+      isShowFridayToModal={isShowFridayToModal}
+      setIsShowFridayToModal={setIsShowFridayToModal}
+      isShowSaturdayModal={isShowSaturdayModal}
+      setIsShowSaturdayModal={setIsShowSaturdayModal}
+      isShowSaturdayToModal={isShowSaturdayToModal}
+      setIsShowSaturdayToModal={setIsShowSaturdayToModal}
+      isShowSundayModal={isShowSundayModal}
+      setIsShowSundayModal={setIsShowSundayModal}
+      isShowSundayToModal={isShowSundayToModal}
+      setIsShowSundayToModal={setIsShowSundayToModal}
+      showProfileDetailsModal={showProfileDetailsModal}
+      setShowProfileDetailsModal={setShowProfileDetailsModal}
+      showDatepicker={showDatepicker}
+      onChange={onChange}
+      mode={mode}
+      show={show}
+      date={date}
+      isFromSelected={isFromSelected}
+      fromSectionDate={fromSectionDate}
+      selectSingleOrMarried={selectSingleOrMarried}
+      setSelectSingleOrMarried={setSelectSingleOrMarried}
+      isShowGenderModal={isShowGenderModal}
+      setIsShowGenderModal={setIsShowGenderModal}
+      isShowLanguagesModal={isShowLanguagesModal}
+      setIsShowLanguagesModal={setIsShowLanguagesModal}
+      isShowZoneModal={isShowZoneModal}
+      setIsShowZoneModal={setIsShowZoneModal}
     />
   );
 };
