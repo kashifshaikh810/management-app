@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   },
   dateRangeText: {
     color: '#212529',
-    textTransform: 'capitalize',
   },
   datePickContainer: {
     width: '100%',

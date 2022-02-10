@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
 import {Platform} from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+
 import MyProfileMarkup from './MyProfileMarkup';
 
 const MyProfile = props => {
   const [selectedTab, setSelectedTab] = useState('time-off');
+  const [profileImage, setProfileImage] = useState('');
   const [showYearModal, setShowYearModal] = useState({
     show: false,
     type: '',
@@ -123,6 +126,74 @@ const MyProfile = props => {
     type: '',
     chooseVal: '',
   });
+  const [showPositionModalForProfile, setshowPositionModalForProfile] =
+    useState({
+      show: false,
+      type: '',
+      chooseVal: '',
+    });
+  const [showDepartmentModalForProfile, setShowDepartmentModalForProfile] =
+    useState({
+      show: false,
+      type: '',
+      chooseVal: '',
+    });
+  const [showEmploymentLevelModal, setShowEmploymentLevelModal] =
+    useState(false);
+
+  const [showDirectManagerModal, setShowDirectManagerModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+  const [showCountryModal, setShowCountryModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+  const [showStateRegionModal, setShowStateRegionModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+  const [showIssueDateMonthModal, setShowIssueDateMonthModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+
+  const [showIssueDateYearsModal, setShowIssueDateYearsModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+
+  const [showExpirationDateMonthModal, setShowExpirationDateMonthModal] =
+    useState({
+      show: false,
+      type: '',
+      chooseVal: '',
+    });
+
+  const [showExpirationDateYearsModal, setShowExpirationDateYearsModal] =
+    useState({
+      show: false,
+      type: '',
+      chooseVal: '',
+    });
+
+  const [isShowEmploymentDetailsModal, setIsShowEmploymentDetailsModal] =
+    useState(false);
+  const [isShowEditBioModal, setIsShowEditBioModal] = useState(false);
+  const [isShowContactInformationModal, setIsShowContactInformationModal] =
+    useState(false);
+  const [isShowAddLicenseCertification, setIsShowAddLicenseCertification] =
+    useState(false);
+
+  const [dateOfHire, setDateOfHire] = useState(new Date());
+  const [modeOfHire, setModeOfHire] = useState('date');
+  const [showOfHire, setShowOfHire] = useState(false);
+  const [isSelectedDateOfHire, setIsSelectedDateOfHire] = useState(false);
 
   // From date
   let fromSectionDate = new Date(date);
@@ -156,6 +227,55 @@ const MyProfile = props => {
 
   const showDatepicker = () => {
     showMode('date');
+  };
+
+  // date of hire functionallity
+  let hireDateSection = new Date(dateOfHire);
+  let hireDate = hireDateSection.getDate();
+  let hireMonth = hireDateSection.getMonth() + 1;
+  let hireYear = hireDateSection.getFullYear();
+  if (hireDate < 10) {
+    hireDate = '0' + hireDate;
+  }
+
+  if (hireMonth < 10) {
+    hireMonth = '0' + hireMonth;
+  }
+  hireDateSection = hireDate + '/' + hireMonth + '/' + hireYear;
+
+  // date of hire functions
+  const hireOnChange = (event, selectedDate) => {
+    const currentDate = selectedDate || dateOfHire;
+    setShowOfHire(Platform.OS === 'ios');
+    setDateOfHire(currentDate);
+    if (currentDate !== dateOfHire) {
+      setIsSelectedDateOfHire(true);
+    }
+  };
+
+  const hireShowMode = currentMode => {
+    setShowOfHire(true);
+    setModeOfHire(currentMode);
+  };
+
+  const hireShowDatepicker = () => {
+    hireShowMode('date');
+  };
+
+  const uploadProfileImage = async () => {
+    try {
+      const file = await DocumentPicker.pickSingle({
+        type: [DocumentPicker.types.images],
+      });
+      setProfileImage(file);
+      console.log(file);
+    } catch (err) {
+      if (DocumentPicker.isCancel(err)) {
+        console.log(err, 'errr');
+      } else {
+        throw err;
+      }
+    }
   };
 
   return (
@@ -226,6 +346,44 @@ const MyProfile = props => {
       setIsShowLanguagesModal={setIsShowLanguagesModal}
       isShowZoneModal={isShowZoneModal}
       setIsShowZoneModal={setIsShowZoneModal}
+      showPositionModalForProfile={showPositionModalForProfile}
+      setshowPositionModalForProfile={setshowPositionModalForProfile}
+      hireShowDatepicker={hireShowDatepicker}
+      hireOnChange={hireOnChange}
+      modeOfHire={modeOfHire}
+      showOfHire={showOfHire}
+      dateOfHire={dateOfHire}
+      isSelectedDateOfHire={isSelectedDateOfHire}
+      hireDateSection={hireDateSection}
+      showDepartmentModalForProfile={showDepartmentModalForProfile}
+      setShowDepartmentModalForProfile={setShowDepartmentModalForProfile}
+      showEmploymentLevelModal={showEmploymentLevelModal}
+      setShowEmploymentLevelModal={setShowEmploymentLevelModal}
+      isShowEmploymentDetailsModal={isShowEmploymentDetailsModal}
+      setIsShowEmploymentDetailsModal={setIsShowEmploymentDetailsModal}
+      isShowEditBioModal={isShowEditBioModal}
+      setIsShowEditBioModal={setIsShowEditBioModal}
+      isShowContactInformationModal={isShowContactInformationModal}
+      setIsShowContactInformationModal={setIsShowContactInformationModal}
+      showCountryModal={showCountryModal}
+      setShowCountryModal={setShowCountryModal}
+      showStateRegionModal={showStateRegionModal}
+      setShowStateRegionModal={setShowStateRegionModal}
+      isShowAddLicenseCertification={isShowAddLicenseCertification}
+      setIsShowAddLicenseCertification={setIsShowAddLicenseCertification}
+      showIssueDateMonthModal={showIssueDateMonthModal}
+      setShowIssueDateMonthModal={setShowIssueDateMonthModal}
+      showIssueDateYearsModal={showIssueDateYearsModal}
+      setShowIssueDateYearsModal={setShowIssueDateYearsModal}
+      showExpirationDateMonthModal={showExpirationDateMonthModal}
+      setShowExpirationDateMonthModal={setShowExpirationDateMonthModal}
+      showExpirationDateYearsModal={showExpirationDateYearsModal}
+      setShowExpirationDateYearsModal={setShowExpirationDateYearsModal}
+      uploadProfileImage={uploadProfileImage}
+      profileImage={profileImage}
+      // get all users from database and show this section
+      showDirectManagerModal={showDirectManagerModal}
+      setShowDirectManagerModal={setShowDirectManagerModal}
     />
   );
 };

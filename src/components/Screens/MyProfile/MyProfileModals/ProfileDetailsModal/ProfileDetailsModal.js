@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
   ScrollView,
+  Image,
 } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/FontAwesome';
 import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
@@ -56,6 +57,7 @@ const DateRangeSection = props => {
 };
 
 const ProfileDetailsModal = props => {
+  console.log(props.profileImage);
   return (
     <Modal
       visible={props.showProfileDetailsModal}
@@ -126,12 +128,10 @@ const ProfileDetailsModal = props => {
                 <Text style={styles.reqType}>employee picture</Text>
               </View>
               <Pressable
-                // onPress={() =>
-                //   props.setShowTimeOffModal({show: true, type: 'TimeOff'})
-                // }
+                onPress={() => props.uploadProfileImage()}
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.showTimeOffModal?.chooseVal || 'Choose file'}
+                  {props.profileImage ? props.profileImage.name : 'Choose file'}
                 </Text>
                 <View style={[styles.dropIconContainer, {marginHorizontal: 0}]}>
                   <View style={styles.browse}>

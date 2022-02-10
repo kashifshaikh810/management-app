@@ -1,225 +1,22 @@
 import React from 'react';
 import {StyleSheet, Text, View, Modal, Pressable, FlatList} from 'react-native';
-
-const departmentData = [
-  {
-    name: 'Design',
-  },
-  {
-    name: 'Development',
-  },
-  {
-    name: 'Founders',
-  },
-  {
-    name: 'HR',
-  },
-  {
-    name: 'Marketing',
-  },
-  {
-    name: 'Product',
-  },
-  {
-    name: 'Sales',
-  },
-  {
-    name: 'Support',
-  },
-];
-
-const positionData = [
-  {
-    name: 'Content Writer',
-  },
-  {
-    name: 'Customer Support',
-  },
-  {
-    name: 'Designer',
-  },
-  {
-    name: 'Developer',
-  },
-  {
-    name: 'Founder',
-  },
-  {
-    name: 'HR',
-  },
-  {
-    name: 'Marketer',
-  },
-  {
-    name: 'PM/PO',
-  },
-  {
-    name: 'Sales',
-  },
-];
-
-const newTimeOffReqData = [
-  {
-    name: 'Holiday',
-  },
-  {
-    name: 'Sick',
-  },
-];
-
-const yearData = [
-  {
-    name: '2012',
-  },
-  {
-    name: '2013',
-  },
-  {
-    name: '2014',
-  },
-  {
-    name: '2015',
-  },
-  {
-    name: '2016',
-  },
-  {
-    name: '2017',
-  },
-  {
-    name: '2018',
-  },
-  {
-    name: '2019',
-  },
-  {
-    name: '2020',
-  },
-  {
-    name: '2021',
-  },
-  {
-    name: '2022',
-  },
-];
-
-const profileData = [
-  {
-    name: 'Holiday',
-  },
-  {
-    name: 'Sick',
-  },
-];
-
-const timeData = [
-  {name: '00:00am'},
-  {name: '00:30am'},
-  {name: '01:00am'},
-  {name: '01:30am'},
-  {name: '02:00am'},
-  {name: '02:30am'},
-  {name: '03:00am'},
-  {name: '03:30am'},
-  {name: '04:00am'},
-  {name: '04:30am'},
-  {name: '05:00am'},
-  {name: '05:30am'},
-  {name: '06:00am'},
-  {name: '06:30am'},
-  {name: '07:00am'},
-  {name: '07:30am'},
-  {name: '08:00am'},
-  {name: '08:30am'},
-  {name: '09:00am'},
-  {name: '09:30am'},
-  {name: '10:00am'},
-  {name: '10:30am'},
-  {name: '11:00am'},
-  {name: '11:30am'},
-  {name: '12:00pm'},
-  {name: '12:30pm'},
-  {name: '13:00pm'},
-  {name: '13:30pm'},
-  {name: '14:00pm'},
-  {name: '14:30pm'},
-  {name: '15:00pm'},
-  {name: '15:30pm'},
-  {name: '16:00pm'},
-  {name: '16:30pm'},
-  {name: '17:00pm'},
-  {name: '17:30pm'},
-  {name: '18:00pm'},
-  {name: '18:30pm'},
-  {name: '19:00pm'},
-  {name: '19:30pm'},
-  {name: '20:00pm'},
-  {name: '20:30pm'},
-  {name: '21:00pm'},
-  {name: '21:30pm'},
-  {name: '22:00pm'},
-  {name: '22:30pm'},
-  {name: '23:00pm'},
-  {name: '23:30pm'},
-];
-
-const genderData = [{name: 'Male'}, {name: 'Female'}, {name: 'Gender-Neutral'}];
-
-const languageData = [
-  {name: ''},
-  {name: 'English'},
-  {name: 'Russian'},
-  {name: 'Ukrainian'},
-];
-
-const zoneData = [
-  {name: 'Africa/Abidjan'},
-  {name: 'Africa/Accra'},
-  {name: 'Africa/Addis_Ababa'},
-  {name: 'Africa/Algiers'},
-  {name: 'Africa/Asmara'},
-  {name: 'Africa/Bamako'},
-  {name: 'Africa/Bangui'},
-  {name: 'Africa/Banjul'},
-  {name: 'America/Adak'},
-  {name: 'America/Anchorage'},
-  {name: 'America/Anguilla'},
-  {name: 'America/Antigua'},
-  {name: 'America/Araguaina'},
-  {name: 'America/Argentina/Buenos_Aires'},
-  {name: 'Antarctica/Casey'},
-  {name: 'Antarctica/Davis'},
-  {name: 'Antarctica/DumontDUrvilla'},
-  {name: 'Antarctica/Macquarie'},
-  {name: 'Antarctica/Mawson'},
-  {name: 'Antarctica/McMurdi'},
-  {name: 'Antarctica/Palmer'},
-  {name: 'Asia/Aden'},
-  {name: 'Asia/Almaty'},
-  {name: 'Asia/Amman'},
-  {name: 'Asia/Anadyr'},
-  {name: 'Asia/Aqtau'},
-  {name: 'Asia/Aqtobe'},
-  {name: 'Asia/Ashghabat'},
-  {name: 'Asia/Atyrau'},
-  {name: 'Europe/Amsterdam'},
-  {name: 'Europe/Andora'},
-  {name: 'Europe/AstraKhan'},
-  {name: 'Europe/Athens'},
-  {name: 'Europe/Belgrade'},
-  {name: 'Europe/Berlin'},
-  {name: 'Europe/Bratislava'},
-  {name: 'Europe/Brussels'},
-  {name: 'Europe/Busharest'},
-  {name: 'Pacific/Apia'},
-  {name: 'Pacific/Auckland'},
-  {name: 'Pacific/Bougainville'},
-  {name: 'Pacific/Chatham'},
-  {name: 'Pacific/Chuuk'},
-  {name: 'Pacific/Easter'},
-  {name: 'Pacific/Efat'},
-  {name: 'Pacific/Fakaofo'},
-];
+import {
+  departmentData,
+  employmentLevelData,
+  genderData,
+  languageData,
+  zoneData,
+  yearData,
+  newTimeOffReqData,
+  positionData,
+  profileData,
+  timeData,
+  countryData,
+  regionData,
+  monthsNameData,
+  issueDateData,
+  expirationDateData,
+} from './ModalData';
 
 const MyModal = props => {
   const click = item => {
@@ -267,6 +64,24 @@ const MyModal = props => {
       props?.setIsShowLanguagesModal({show: false, chooseVal: item});
     } else if (props?.isShowZoneModal?.type === 'TimeZone') {
       props?.setIsShowZoneModal({show: false, chooseVal: item});
+    } else if (props?.showPositionModalForProfile?.type === 'Position') {
+      props?.setshowPositionModalForProfile({show: false, chooseVal: item});
+    } else if (props?.showDepartmentModalForProfile?.type === 'Department') {
+      props?.setShowDepartmentModalForProfile({show: false, chooseVal: item});
+    } else if (props?.showEmploymentLevelModal?.type === 'EmploymentLevel') {
+      props?.setShowEmploymentLevelModal({show: false, chooseVal: item});
+    } else if (props?.showCountryModal?.type === 'Country') {
+      props?.setShowCountryModal({show: false, chooseVal: item});
+    } else if (props?.showStateRegionModal?.type === 'StateRegion') {
+      props?.setShowStateRegionModal({show: false, chooseVal: item});
+    } else if (props?.showIssueDateMonthModal?.type === 'Month') {
+      props?.setShowIssueDateMonthModal({show: false, chooseVal: item});
+    } else if (props?.showIssueDateYearsModal?.type === 'Year') {
+      props?.setShowIssueDateYearsModal({show: false, chooseVal: item});
+    } else if (props?.showExpirationDateMonthModal?.type === 'Month') {
+      props?.setShowExpirationDateMonthModal({show: false, chooseVal: item});
+    } else if (props?.showExpirationDateYearsModal?.type === 'Year') {
+      props?.setShowExpirationDateYearsModal({show: false, chooseVal: item});
     }
   };
 
@@ -315,6 +130,24 @@ const MyModal = props => {
       props?.setIsShowLanguagesModal({show: false});
     } else if (props?.isShowZoneModal?.type === 'TimeZone') {
       props?.setIsShowZoneModal({show: false});
+    } else if (props?.showPositionModalForProfile?.type === 'Position') {
+      props?.setshowPositionModalForProfile({show: false});
+    } else if (props?.showDepartmentModalForProfile?.type === 'Department') {
+      props?.setShowDepartmentModalForProfile({show: false});
+    } else if (props?.showEmploymentLevelModal?.type === 'EmploymentLevel') {
+      props?.setShowEmploymentLevelModal({show: false});
+    } else if (props?.showCountryModal?.type === 'Country') {
+      props?.setShowCountryModal({show: false});
+    } else if (props?.showStateRegionModal?.type === 'StateRegion') {
+      props?.setShowStateRegionModal({show: false});
+    } else if (props?.showIssueDateMonthModal?.type === 'Month') {
+      props?.setShowIssueDateMonthModal({show: false});
+    } else if (props?.showIssueDateYearsModal?.type === 'Year') {
+      props?.setShowIssueDateYearsModal({show: false});
+    } else if (props?.showExpirationDateMonthModal?.type === 'Month') {
+      props?.setShowExpirationDateMonthModal({show: false});
+    } else if (props?.showExpirationDateYearsModal?.type === 'Year') {
+      props?.setShowExpirationDateYearsModal({show: false});
     }
   };
 
@@ -343,6 +176,15 @@ const MyModal = props => {
         props?.isShowGenderModal?.show ||
         props?.isShowLanguagesModal?.show ||
         props?.isShowZoneModal?.show ||
+        props?.showPositionModalForProfile?.show ||
+        props?.showDepartmentModalForProfile?.show ||
+        props?.showEmploymentLevelModal?.show ||
+        props?.showCountryModal?.show ||
+        props?.showStateRegionModal?.show ||
+        props?.showIssueDateMonthModal?.show ||
+        props?.showIssueDateYearsModal?.show ||
+        props?.showExpirationDateMonthModal?.show ||
+        props?.showExpirationDateYearsModal?.show ||
         false
       }
       transparent
@@ -399,7 +241,24 @@ const MyModal = props => {
               (props?.isShowGenderModal?.type === 'Gender' && genderData) ||
               (props?.isShowLanguagesModal?.type === 'Language' &&
                 languageData) ||
-              (props?.isShowZoneModal?.type === 'TimeZone' && zoneData)
+              (props?.isShowZoneModal?.type === 'TimeZone' && zoneData) ||
+              (props?.showPositionModalForProfile?.type === 'Position' &&
+                positionData) ||
+              (props?.showDepartmentModalForProfile?.type === 'Department' &&
+                departmentData) ||
+              (props?.showEmploymentLevelModal?.type === 'EmploymentLevel' &&
+                employmentLevelData) ||
+              (props?.showCountryModal?.type === 'Country' && countryData) ||
+              (props?.showStateRegionModal?.type === 'StateRegion' &&
+                regionData) ||
+              (props?.showIssueDateMonthModal?.type === 'Month' &&
+                monthsNameData) ||
+              (props?.showIssueDateYearsModal?.type === 'Year' &&
+                issueDateData) ||
+              (props?.showExpirationDateMonthModal?.type === 'Month' &&
+                monthsNameData) ||
+              (props?.showExpirationDateYearsModal?.type === 'Year' &&
+                expirationDateData)
             }
             renderItem={({item, index}) => {
               return (

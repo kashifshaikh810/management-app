@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
   },
   dateRangeText: {
     color: '#212529',
-    textTransform: 'capitalize',
   },
   datePickContainer: {
     width: '100%',
@@ -117,12 +116,14 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
   },
   commentTextInput: {
-    flexDirection: 'row',
+    paddingHorizontal: 10,
     width: '90%',
-    height: 45,
+    flex: 1,
+    minHeight: Dimensions.get('window').height / 6,
     borderWidth: 0.6,
     borderRadius: 5,
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
     alignSelf: 'center',
   },
   cancelAndSendReqContainer: {
@@ -185,6 +186,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#263238',
     textTransform: 'capitalize',
+  },
+  textInputBottomHeading: {
+    marginHorizontal: 15,
+    marginVertical: 5,
+    color: '#6c757d',
   },
 });
 

@@ -22,13 +22,13 @@ const DateRangeSection = props => {
     <>
       <View style={styles.dateRange}>
         <Text style={styles.dateRangeText}>
-          Birth Day <Text style={styles.star}>*</Text>
+          date of hire <Text style={styles.star}>*</Text>
         </Text>
       </View>
       <View style={styles.datePickContainer}>
         <Pressable
           style={styles.fromTextInput}
-          onPress={() => props.showDatepicker()}>
+          onPress={() => props.hireShowDatepicker()}>
           <Text
             style={[
               styles.dateRangeText,
@@ -36,19 +36,19 @@ const DateRangeSection = props => {
                 color: '#263238',
               },
             ]}>
-            {props.isFromSelected && props.fromSectionDate}
+            {props.isSelectedDateOfHire && props.hireDateSection}
           </Text>
         </Pressable>
       </View>
 
-      {props.show && (
+      {props.showOfHire && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={props.date}
-          mode={props.mode}
+          value={props.dateOfHire}
+          mode={props.modeOfHire}
           is24Hour={true}
           display="default"
-          onChange={props.onChange}
+          onChange={props.hireOnChange}
         />
       )}
     </>
@@ -58,10 +58,10 @@ const DateRangeSection = props => {
 const EmploymentDetailsModal = props => {
   return (
     <Modal
-      visible={false}
+      visible={props.isShowEmploymentDetailsModal}
       animationType="slide"
       transparent
-      onRequestClose={() => props.setShowProfileDetailsModal(false)}>
+      onRequestClose={() => props.setIsShowEmploymentDetailsModal(false)}>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={styles.container}>
         <View style={styles.modalBody}>
@@ -69,7 +69,7 @@ const EmploymentDetailsModal = props => {
             <Text style={styles.cardHeadingText}>employment details</Text>
             <View style={styles.closeIconContainer}>
               <Pressable
-                onPress={() => props.setShowProfileDetailsModal(false)}
+                onPress={() => props.setIsShowEmploymentDetailsModal(false)}
                 style={({pressed}) => [
                   styles.closePressabel,
                   {backgroundColor: pressed ? '#b3b3b3' : '#fff'},
@@ -90,70 +90,24 @@ const EmploymentDetailsModal = props => {
             style={styles.scrollView}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
-            <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.reqType}>
-                  first name <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.commentText}>middle name</Text>
-              </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.reqType}>
-                  last name <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
-              </View>
-            </View>
+            <MyModal {...props} />
 
             <View>
               <View style={styles.reviewerContainer}>
-                <Text style={styles.reqType}>employee picture</Text>
-              </View>
-              <Pressable
-                // onPress={() =>
-                //   props.setShowTimeOffModal({show: true, type: 'TimeOff'})
-                // }
-                style={styles.pressable}>
-                <Text style={styles.text}>
-                  {props?.showTimeOffModal?.chooseVal || 'Choose file'}
-                </Text>
-                <View style={[styles.dropIconContainer, {marginHorizontal: 0}]}>
-                  <View style={styles.browse}>
-                    <Text>Browse</Text>
-                  </View>
-                </View>
-              </Pressable>
-            </View>
-
-            <View>
-              <View style={styles.reqTypeContainer}>
                 <Text style={styles.reqType}>
-                  gender <Text style={styles.star}>*</Text>
+                  position <Text style={styles.star}>*</Text>
                 </Text>
               </View>
               <Pressable
                 onPress={() =>
-                  props.setIsShowGenderModal({show: true, type: 'Gender'})
+                  props.setshowPositionModalForProfile({
+                    show: true,
+                    type: 'Position',
+                  })
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowGenderModal?.chooseVal}
+                  {props?.showPositionModalForProfile?.chooseVal}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -165,92 +119,97 @@ const EmploymentDetailsModal = props => {
                 </View>
               </Pressable>
             </View>
-
-            <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.reqType}>
-                  marital status <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View style={styles.radioIconsContainer}>
-                <View style={styles.directionRow}>
-                  <RadioIcon
-                    onPress={() => props.setSelectSingleOrMarried('Married')}
-                    name={
-                      props.selectSingleOrMarried === 'Married'
-                        ? 'radio-btn-active'
-                        : 'radio-btn-passive'
-                    }
-                    size={20}
-                    color={
-                      props.selectSingleOrMarried === 'Married'
-                        ? '#006f44'
-                        : '#b3b3b3'
-                    }
-                    style={styles.marHorizontal}
-                  />
-                  <Text style={styles.radioText}>married</Text>
-                </View>
-                <View style={[styles.directionRow, styles.marHorizontal]}>
-                  <RadioIcon
-                    onPress={() => props.setSelectSingleOrMarried('Single')}
-                    name={
-                      props.selectSingleOrMarried === 'Single'
-                        ? 'radio-btn-active'
-                        : 'radio-btn-passive'
-                    }
-                    size={20}
-                    color={
-                      props.selectSingleOrMarried === 'Single'
-                        ? '#006f44'
-                        : '#b3b3b3'
-                    }
-                    style={styles.marHorizontal}
-                  />
-                  <Text style={styles.radioText}>single</Text>
-                </View>
-              </View>
-            </View>
-
-            <MyModal {...props} />
 
             {DateRangeSection(props)}
 
             <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.reqType}>
-                  email <Text style={styles.star}>*</Text>
+              <View style={styles.reviewerContainer}>
+                <Text style={styles.reqType}>office</Text>
+              </View>
+              <Pressable
+                onPress={() =>
+                  // props.setIsShowZoneModal({show: true, type: 'TimeZone'})
+                  {}
+                }
+                style={styles.pressable}>
+                <Text style={styles.text}>
+                  {/* {props?.isShowZoneModal?.chooseVal} */}
                 </Text>
-              </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="email-address" />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.commentTextContainer}>
-                <Text style={styles.reqType}>
-                  alternative email <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="email-address" />
-              </View>
+                <View style={styles.dropIconContainer}>
+                  <ArrowDropIcon
+                    name="arrow-drop-up"
+                    size={20}
+                    style={styles.dropIcon}
+                  />
+                  <ArrowDropIcon name="arrow-drop-down" size={20} />
+                </View>
+              </Pressable>
             </View>
 
             <View>
               <View style={styles.reviewerContainer}>
-                <Text style={styles.reqType}>
-                  language interface <Text style={styles.star}>*</Text>
-                </Text>
+                <Text style={styles.reqType}>department</Text>
               </View>
               <Pressable
                 onPress={() =>
-                  props.setIsShowLanguagesModal({show: true, type: 'Language'})
+                  props.setShowDepartmentModalForProfile({
+                    show: true,
+                    type: 'Department',
+                  })
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowLanguagesModal?.chooseVal}
+                  {props?.showDepartmentModalForProfile?.chooseVal}
+                </Text>
+                <View style={styles.dropIconContainer}>
+                  <ArrowDropIcon
+                    name="arrow-drop-up"
+                    size={20}
+                    style={styles.dropIcon}
+                  />
+                  <ArrowDropIcon name="arrow-drop-down" size={20} />
+                </View>
+              </Pressable>
+            </View>
+
+            <View>
+              <View style={styles.reviewerContainer}>
+                <Text style={styles.reqType}>employment status</Text>
+              </View>
+              <Pressable
+                onPress={() =>
+                  // props.setIsShowZoneModal({show: true, type: 'TimeZone'})
+                  {}
+                }
+                style={styles.pressable}>
+                <Text style={styles.text}>
+                  {/* {props?.isShowZoneModal?.chooseVal} */}
+                </Text>
+                <View style={styles.dropIconContainer}>
+                  <ArrowDropIcon
+                    name="arrow-drop-up"
+                    size={20}
+                    style={styles.dropIcon}
+                  />
+                  <ArrowDropIcon name="arrow-drop-down" size={20} />
+                </View>
+              </Pressable>
+            </View>
+
+            <View>
+              <View style={styles.reviewerContainer}>
+                <Text style={styles.reqType}>employment level</Text>
+              </View>
+              <Pressable
+                onPress={() =>
+                  props.setShowEmploymentLevelModal({
+                    show: true,
+                    type: 'EmploymentLevel',
+                  })
+                }
+                style={styles.pressable}>
+                <Text style={styles.text}>
+                  {props?.showEmploymentLevelModal?.chooseVal}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -266,16 +225,19 @@ const EmploymentDetailsModal = props => {
             <View>
               <View style={styles.reviewerContainer}>
                 <Text style={styles.reqType}>
-                  time zone <Text style={styles.star}>*</Text>
+                  Direct Manager <Text style={styles.star}>*</Text>
                 </Text>
               </View>
               <Pressable
                 onPress={() =>
-                  props.setIsShowZoneModal({show: true, type: 'TimeZone'})
+                  props.setShowDirectManagerModal({
+                    show: true,
+                    type: 'DirectManager',
+                  })
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowZoneModal?.chooseVal}
+                  {props?.showDirectManagerModal?.chooseVal}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -290,7 +252,7 @@ const EmploymentDetailsModal = props => {
 
             <View style={styles.cancelAndSendReqContainer}>
               <Pressable
-                onPress={() => props.setShowProfileDetailsModal(false)}
+                onPress={() => props.setIsShowEmploymentDetailsModal(false)}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.cancelPressable,

@@ -24,6 +24,9 @@ import Header from '../Header/Header';
 import MyModal from '../Employees/Modal/Modal';
 import ProfileDetailsModal from './MyProfileModals/ProfileDetailsModal/ProfileDetailsModal';
 import EmploymentDetailsModal from './MyProfileModals/EmploymentDetailsModal/EmploymentDetailsModal';
+import EditBioModal from './MyProfileModals/EditBioModal/EditBioModal';
+import ContactInformationModal from './MyProfileModals/ContactInformationModal/ContactInformationModal';
+import AddLicenseCertificationModal from './MyProfileModals/AddLicenseCertificationModal/AddLicenseCertificationModal';
 
 const timeOffSection = props => {
   return (
@@ -243,6 +246,7 @@ const contactInfoSection = props => {
           {marginHorizontal: 15, marginVertical: 10},
         ]}>
         <Pressable
+          onPress={() => props.setIsShowContactInformationModal(true)}
           style={({pressed}) => [
             styles.editIconPressable,
             {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -320,7 +324,7 @@ const licensesAndCertificationsSection = props => {
         </Text>
       </View>
       <Pressable
-        onPress={() => {}}
+        onPress={() => props.setIsShowAddLicenseCertification(true)}
         android_ripple={{color: '#fff'}}
         style={({pressed}) => [
           styles.addLicensesPressable,
@@ -1092,6 +1096,7 @@ const MyProfileMarkup = props => {
             <Text style={styles.cardHeadingText}>employment details</Text>
             <View style={styles.editContainer}>
               <Pressable
+                onPress={() => props.setIsShowEmploymentDetailsModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -1145,6 +1150,7 @@ const MyProfileMarkup = props => {
             <Text style={[styles.itMyOwn]}>in my own words</Text>
             <View style={styles.editContainer}>
               <Pressable
+                onPress={() => props.setIsShowEditBioModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -1202,9 +1208,15 @@ const MyProfileMarkup = props => {
           </View>
         </View>
 
+        <ProfileDetailsModal {...props} />
+
         <EmploymentDetailsModal {...props} />
 
-        <ProfileDetailsModal {...props} />
+        <EditBioModal {...props} />
+
+        <ContactInformationModal {...props} />
+
+        <AddLicenseCertificationModal {...props} />
 
         {tabsSection(props)}
       </ScrollView>
