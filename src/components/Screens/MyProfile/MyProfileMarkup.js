@@ -980,8 +980,9 @@ const MyProfileMarkup = props => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.userNameContiner}>
           <Text style={styles.userName}>
-            {/* name  */}
-            current user name
+            {props?.profileDetails?.firstName}
+            {props?.profileDetails?.middleName}{' '}
+            {props?.profileDetails?.lastName}
           </Text>
         </View>
 
@@ -996,7 +997,11 @@ const MyProfileMarkup = props => {
           style={styles.imageBack}>
           <View style={styles.contentContainer}>
             <Image
-              source={require('../../Assists/images/defaultProfile.png')}
+              source={
+                props?.profileDetails?.profileImage
+                  ? {uri: props?.profileDetails?.profileImage}
+                  : require('../../Assists/images/defaultProfile.png')
+              }
               style={styles.userProfile}
             />
             <View style={styles.editIconContainer}>
@@ -1012,12 +1017,16 @@ const MyProfileMarkup = props => {
           </View>
 
           <View style={styles.imageBackUserNameContainer}>
-            <Text style={styles.imageBackUserName}>user name</Text>
+            <Text style={styles.imageBackUserName}>
+              {props?.profileDetails?.firstName}
+              {props?.profileDetails?.middleName}{' '}
+              {props?.profileDetails?.lastName}
+            </Text>
           </View>
 
           <View style={styles.contentContainer}>
             <Text style={[styles.email, {textDecorationLine: 'underline'}]}>
-              current user email
+              {props?.profileDetails?.email}
             </Text>
           </View>
 
@@ -1038,7 +1047,9 @@ const MyProfileMarkup = props => {
               color="#fff"
               style={styles.icon}
             />
-            <Text style={styles.userDOB}>user date of birth</Text>
+            <Text style={styles.userDOB}>
+              {props?.profileDetails?.dateOfBirth}
+            </Text>
           </View>
         </ImageBackground>
 

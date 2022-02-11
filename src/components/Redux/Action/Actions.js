@@ -1,5 +1,5 @@
 import {Auth, Database} from '../../firebaseTools/index';
-import {FETCH_USER_DATA} from './ActionTypes';
+import {FETCH_USER_DATA, FETCH_PROFILE_DETAILS_DATA} from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
   let uid = Auth()?.currentUser?.uid;
@@ -10,6 +10,19 @@ export const fetchUser = () => dispatch => {
       dispatch({
         type: FETCH_USER_DATA,
         payload: userData,
+      });
+    });
+};
+
+export const fetchProfileDetails = () => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/profileDetails/${uid}`)
+    .on('value', snapshot => {
+      let data = snapshot.val();
+      dispatch({
+        type: FETCH_PROFILE_DETAILS_DATA,
+        payload: data,
       });
     });
 };

@@ -10,8 +10,8 @@ import CustomContentModal from '../../CustomContentModal/CustomContentModal';
 
 const CustomContent = props => {
   const [showModal, setShowModal] = useState(false);
-  const {currUserData} = useSelector(state => state.reduc);
-  let data = currUserData;
+  const {profileData} = useSelector(state => state.reduc);
+  let data = profileData;
 
   const goToMyProfile = () => {
     props.navigation.navigate('MyProfile');
@@ -37,7 +37,7 @@ const CustomContent = props => {
               },
             ]}>
             <Text style={{color: 'black', textTransform: 'capitalize'}}>
-              {data.firstName} {data.lastName}
+              {data?.firstName} {data?.lastName}
             </Text>
             <DropDownIcon name="arrow-drop-down" size={20} />
           </Pressable>

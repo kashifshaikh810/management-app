@@ -37,7 +37,9 @@ const DateRangeSection = props => {
                 color: '#263238',
               },
             ]}>
-            {props.isFromSelected && props.fromSectionDate}
+            {props.profileDetails
+              ? props.profileDetails.dateOfBirth
+              : props.isFromSelected && props.fromSectionDate}
           </Text>
         </Pressable>
       </View>
@@ -57,7 +59,6 @@ const DateRangeSection = props => {
 };
 
 const ProfileDetailsModal = props => {
-  console.log(props.profileImage);
   return (
     <Modal
       visible={props.showProfileDetailsModal}
@@ -98,8 +99,12 @@ const ProfileDetailsModal = props => {
                   first name <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  value={props.firstName}
+                  onChangeText={text => props.setFirstName(text)}
+                  style={styles.commentTextInput}
+                />
               </View>
             </View>
 
@@ -107,8 +112,12 @@ const ProfileDetailsModal = props => {
               <View style={styles.commentTextContainer}>
                 <Text style={styles.commentText}>middle name</Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  value={props.middileName}
+                  onChangeText={text => props.setMiddileName(text)}
+                  style={styles.commentTextInput}
+                />
               </View>
             </View>
 
@@ -118,8 +127,12 @@ const ProfileDetailsModal = props => {
                   last name <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  value={props.lastName}
+                  onChangeText={text => props.setLastName(text)}
+                  style={styles.commentTextInput}
+                />
               </View>
             </View>
 
@@ -153,7 +166,9 @@ const ProfileDetailsModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowGenderModal?.chooseVal}
+                  {props.profileDetails
+                    ? props.profileDetails.gender
+                    : props?.isShowGenderModal?.chooseVal}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -222,8 +237,13 @@ const ProfileDetailsModal = props => {
                   email <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="email-address" />
+              <View>
+                <TextInput
+                  keyboardType="email-address"
+                  value={props.email}
+                  onChangeText={text => props.setEmail(text)}
+                  style={styles.commentTextInput}
+                />
               </View>
             </View>
 
@@ -233,8 +253,13 @@ const ProfileDetailsModal = props => {
                   alternative email <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="email-address" />
+              <View>
+                <TextInput
+                  keyboardType="email-address"
+                  value={props.alternativeEmail}
+                  onChangeText={text => props.setAlternativeEmail(text)}
+                  style={styles.commentTextInput}
+                />
               </View>
             </View>
 
@@ -250,7 +275,9 @@ const ProfileDetailsModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowLanguagesModal?.chooseVal}
+                  {(props?.isShowLanguagesModal &&
+                    props?.isShowLanguagesModal?.chooseVal) ||
+                    props?.profileDetails?.language}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -275,7 +302,9 @@ const ProfileDetailsModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.isShowZoneModal?.chooseVal}
+                  {(props?.isShowZoneModal &&
+                    props?.isShowZoneModal?.chooseVal) ||
+                    (props.profileDetails && props.profileDetails.timeZone)}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -291,6 +320,7 @@ const ProfileDetailsModal = props => {
             <View style={styles.cancelAndSendReqContainer}>
               <Pressable
                 onPress={() => props.setShowProfileDetailsModal(false)}
+                disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.cancelPressable,
@@ -300,13 +330,14 @@ const ProfileDetailsModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.submit()}
+                disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
                 ]}>
-                {false ? (
+                {props.isLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
                   <Text style={styles.cancelPressableText}>submit</Text>

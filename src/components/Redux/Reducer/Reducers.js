@@ -1,7 +1,11 @@
-import {FETCH_USER_DATA} from '../Action/ActionTypes';
+import {
+  FETCH_PROFILE_DETAILS_DATA,
+  FETCH_USER_DATA,
+} from '../Action/ActionTypes';
 
 const initalState = {
   currUserData: {},
+  profileData: {},
 };
 
 export const reducer = (state = initalState, action) => {
@@ -10,6 +14,11 @@ export const reducer = (state = initalState, action) => {
       return {
         ...state,
         currUserData: action.payload,
+      };
+    case FETCH_PROFILE_DETAILS_DATA:
+      return {
+        ...state,
+        profileData: action.payload,
       };
     default:
       return state;

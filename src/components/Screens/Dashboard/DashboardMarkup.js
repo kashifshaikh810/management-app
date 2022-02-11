@@ -2,12 +2,13 @@ import React from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import AccountIcon from 'react-native-vector-icons/MaterialIcons';
+import UserNameLoader from '../../Loaders/UserNameLoader/UserNameLoader';
 
 import Header from '../Header/Header';
 import styles from './styles';
 
 const DashboardMarkup = props => {
-  const {firstName, lastName} = props?.userData;
+  // const {firstName, lastName} = props?.profileDetailsData;
 
   return (
     <View style={styles.container}>
@@ -17,9 +18,13 @@ const DashboardMarkup = props => {
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
         <View style={styles.userNameContiner}>
-          <Text style={styles.userName}>
-            {firstName} {lastName}
-          </Text>
+          {props.isDataLoading ? (
+            <UserNameLoader />
+          ) : (
+            <Text style={styles.userName}>
+              {/* {firstName || 'd'} {lastName || 'dd'} */}
+            </Text>
+          )}
         </View>
 
         <View style={styles.headingContainer}>
