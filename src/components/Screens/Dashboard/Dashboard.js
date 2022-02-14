@@ -1,31 +1,31 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProfileDetails} from '../../Redux/Action/Actions';
+import {fetchProfileDetails, fetchUser} from '../../Redux/Action/Actions';
 import DashboardMarkup from './DashboardMarkup';
 
 const Dashboard = props => {
   const [isDataLoading, setIsDataLoading] = useState(false);
   const dispatch = useDispatch();
-  const {profileData} = useSelector(state => state.reduc);
-  const [profileDetailsData, setProfileDetailsData] = useState({});
+  const {currUserData} = useSelector(state => state.reduc);
+  const [currentUserData, setCurrentUserData] = useState({});
 
   useEffect(() => {
-    setProfileDetailsData(profileData);
-  }, [profileData]);
+    setCurrentUserData(currUserData);
+  }, [currUserData]);
 
   useEffect(() => {
     setIsDataLoading(true);
+    dispatch(fetchUser());
     dispatch(fetchProfileDetails());
     setTimeout(() => {
       setIsDataLoading(false);
     }, 2000);
   }, []);
 
-  console.log(isDataLoading);
   return (
     <DashboardMarkup
       {...props}
-      profileDetailsData={profileDetailsData}
+      currentUserData={currentUserData}
       isDataLoading={isDataLoading}
     />
   );

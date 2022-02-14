@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    width: Dimensions.get('window').width / 1.1,
-    height: 0.5,
+    width: '100%',
+    height: '0.2%',
     backgroundColor: '#b3b3b3',
   },
   cardHeadingText: {
@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
   infoCard: {
     elevation: 10,
     flex: 1,
-    marginHorizontal: 40,
+    marginHorizontal: 19,
     paddingVertical: 10,
     backgroundColor: '#fff',
     alignSelf: 'center',

@@ -8,7 +8,7 @@ import Header from '../Header/Header';
 import styles from './styles';
 
 const DashboardMarkup = props => {
-  // const {firstName, lastName} = props?.profileDetailsData;
+  const {firstName, lastName} = props?.currentUserData;
 
   return (
     <View style={styles.container}>
@@ -22,7 +22,7 @@ const DashboardMarkup = props => {
             <UserNameLoader />
           ) : (
             <Text style={styles.userName}>
-              {/* {firstName || 'd'} {lastName || 'dd'} */}
+              {firstName} {lastName}
             </Text>
           )}
         </View>

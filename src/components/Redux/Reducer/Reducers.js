@@ -3,12 +3,12 @@ import {
   FETCH_USER_DATA,
 } from '../Action/ActionTypes';
 
-const initalState = {
+const initialState = {
   currUserData: {},
   profileData: {},
 };
 
-export const reducer = (state = initalState, action) => {
+export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_USER_DATA:
       return {

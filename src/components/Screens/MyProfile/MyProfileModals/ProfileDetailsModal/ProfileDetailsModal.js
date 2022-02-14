@@ -37,9 +37,10 @@ const DateRangeSection = props => {
                 color: '#263238',
               },
             ]}>
-            {props.profileDetails
-              ? props.profileDetails.dateOfBirth
-              : props.isFromSelected && props.fromSectionDate}
+            {(props.profileDetails &&
+              props.isFromSelected &&
+              props.fromSectionDate) ||
+              props.profileDetails.dateOfBirth}
           </Text>
         </Pressable>
       </View>
@@ -166,9 +167,9 @@ const ProfileDetailsModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props.profileDetails
-                    ? props.profileDetails.gender
-                    : props?.isShowGenderModal?.chooseVal}
+                  {(props?.isShowGenderModal &&
+                    props?.isShowGenderModal?.chooseVal) ||
+                    props.profileDetails.gender}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon

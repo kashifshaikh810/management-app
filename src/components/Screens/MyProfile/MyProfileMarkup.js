@@ -980,9 +980,8 @@ const MyProfileMarkup = props => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.userNameContiner}>
           <Text style={styles.userName}>
-            {props?.profileDetails?.firstName}
-            {props?.profileDetails?.middleName}{' '}
-            {props?.profileDetails?.lastName}
+            {props?.userData?.firstName}
+            {props?.profileDetails?.middleName} {props?.userData?.lastName}
           </Text>
         </View>
 
@@ -1018,15 +1017,14 @@ const MyProfileMarkup = props => {
 
           <View style={styles.imageBackUserNameContainer}>
             <Text style={styles.imageBackUserName}>
-              {props?.profileDetails?.firstName}
-              {props?.profileDetails?.middleName}{' '}
-              {props?.profileDetails?.lastName}
+              {props?.userData?.firstName}
+              {props?.profileDetails?.middleName} {props?.userData?.lastName}
             </Text>
           </View>
 
           <View style={styles.contentContainer}>
             <Text style={[styles.email, {textDecorationLine: 'underline'}]}>
-              {props?.profileDetails?.email}
+              {props?.userData?.email}
             </Text>
           </View>
 
@@ -1037,7 +1035,7 @@ const MyProfileMarkup = props => {
               color="#fff"
               style={styles.icon}
             />
-            <Text style={styles.email}>current user phone num</Text>
+            <Text style={styles.email}>{props.userData.phone}</Text>
           </View>
 
           <View style={styles.doBContainer}>
@@ -1048,7 +1046,7 @@ const MyProfileMarkup = props => {
               style={styles.icon}
             />
             <Text style={styles.userDOB}>
-              {props?.profileDetails?.dateOfBirth}
+              {props?.profileDetails?.dateOfBirth || 'N/A'}
             </Text>
           </View>
         </ImageBackground>

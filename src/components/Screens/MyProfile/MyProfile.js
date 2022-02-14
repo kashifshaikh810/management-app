@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Alert, Platform} from 'react-native';
+import {Alert, Platform, ToastAndroid} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
@@ -211,9 +211,10 @@ const MyProfile = props => {
   const [modeOfHire, setModeOfHire] = useState('date');
   const [showOfHire, setShowOfHire] = useState(false);
   const [isSelectedDateOfHire, setIsSelectedDateOfHire] = useState(false);
+  const [userData, setUserData] = useState('');
 
   // redux section
-  const {profileData} = useSelector(state => state.reduc);
+  const {currUserData, profileData} = useSelector(state => state.reduc);
 
   // From date
   let fromSectionDate = new Date(date);
@@ -355,6 +356,10 @@ const MyProfile = props => {
                 language: language,
                 timeZone: timeZone,
               });
+              Database()
+                .ref('/userSignUp/')
+                .child(currUserUid)
+                .update({firstName: firstName, lastName: lastName});
               setFirstName('');
               setMiddileName('');
               setLastName('');
@@ -366,7 +371,7 @@ const MyProfile = props => {
               setAlternativeEmail('');
               setIsShowLanguagesModal({chooseVal: ''});
               setIsShowZoneModal({chooseVal: ''});
-              Alert.alert('Success', 'Profile successfully updated...');
+              Alert.alert('Employee has been updated successfully.');
               setShowProfileDetailsModal(false);
               setIsLoading(false);
             });
@@ -374,18 +379,163 @@ const MyProfile = props => {
       } catch (err) {
         console.log(err);
       }
+    } else if (
+      profileImage ||
+      firstName !== profileDetails.firstName ||
+      lastName !== profileDetails.lastName ||
+      middileName !== profileDetails?.middileName ||
+      gender !== profileDetails.gender ||
+      maritalStatus !== selectSingleOrMarried ||
+      dateOfBirth !== profileDetails.dateOfBirth ||
+      language !== profileDetails.language ||
+      timeZone !== profileDetails.timeZone
+    ) {
+      setIsLoading(true);
+      if (profileImage) {
+        try {
+          const profilePic = profileImage.uri;
+          const profilePicResult = await RNFetchBlob.fs.readFile(
+            profilePic,
+            'base64',
+          );
+          const profilePicTask = storageRef.putString(
+            profilePicResult,
+            'base64',
+            {
+              contentType: profileImage.type,
+            },
+          );
+          profilePicTask.on('state_changed', taskSnapshot => {
+            console.log(
+              `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
+            );
+          });
+          await profilePicTask.then(imageSnapshot => {
+            console.log('Image Upload Successfully');
+            Storage()
+              .ref(imageSnapshot.metadata.fullPath)
+              .getDownloadURL()
+              .then(myDownloadURL => {
+                console.log('image ', myDownloadURL);
+                Database()
+                  .ref('profileDetails')
+                  .child(currUserUid)
+                  .update({profileImage: myDownloadURL});
+              });
+          });
+        } catch (err) {
+          setIsLoading(false);
+          console.log(err);
+        }
+      }
+      if (firstName !== profileDetails.firstName) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({firstName: firstName});
+        Database()
+          .ref('/userSignUp/')
+          .child(currUserUid)
+          .update({firstName: firstName});
+      }
+      if (middileName !== profileDetails.middileName) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({middileName: middileName});
+        Database()
+          .ref('/userSignUp/')
+          .child(currUserUid)
+          .update({middileName: middileName});
+      }
+      if (lastName !== profileDetails.lastName) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({lastName: lastName});
+        Database()
+          .ref('/userSignUp/')
+          .child(currUserUid)
+          .update({lastName: lastName});
+      }
+
+      if (gender !== profileDetails.gender) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({gender: gender});
+      }
+
+      if (selectSingleOrMarried !== profileDetails.maritalStatus) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({maritalStatus: selectSingleOrMarried});
+      }
+
+      if (dateOfBirth !== profileDetails.dateOfBirth) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({dateOfBirth: dateOfBirth});
+      }
+
+      if (email !== profileDetails.email) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({email: email});
+        Database()
+          .ref('/userSignUp/')
+          .child(currUserUid)
+          .update({email: email});
+      }
+
+      if (alternativeEmail !== profileDetails?.alternativeEmail) {
+        setIsLoading(true);
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({alternativeEmail: alternativeEmail});
+      }
+
+      if (language !== profileDetails.language) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({language: language});
+      }
+
+      if (timeZone !== profileDetails.timeZone) {
+        Database()
+          .ref('/profileDetails/')
+          .child(currUserUid)
+          .update({timeZone: timeZone});
+      }
+      setTimeout(() => {
+        setIsLoading(false);
+        setShowProfileDetailsModal(false);
+        Alert.alert('Employee has been updated successfully.');
+      }, 2000);
+    } else {
+      ToastAndroid.show(
+        'Warning, Please all feilds are required.',
+        ToastAndroid.LONG,
+        ToastAndroid.CENTER,
+      );
     }
   };
 
   useEffect(() => {
     setProfileDetails(profileData);
-    setFirstName(profileData?.firstName);
+    setFirstName(currUserData?.firstName);
     setMiddileName(profileData?.middileName);
-    setLastName(profileData?.lastName);
+    setLastName(currUserData?.lastName);
     setSelectSingleOrMarried(profileData?.maritalStatus);
-    setEmail(profileData?.email);
+    setEmail(currUserData?.email);
     setAlternativeEmail(profileData?.alternativeEmail);
-  }, [profileData, showProfileDetailsModal]);
+    setUserData(currUserData);
+  }, [profileData, currUserData]);
 
   return (
     <MyProfileMarkup
@@ -503,6 +653,7 @@ const MyProfile = props => {
       submit={submit}
       isLoading={isLoading}
       profileDetails={profileDetails}
+      userData={userData}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}
