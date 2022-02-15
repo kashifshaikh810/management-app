@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchProfileDetails, fetchUser} from '../../Redux/Action/Actions';
+import {
+  fetchEditBioData,
+  fetchProfileDetails,
+  fetchUser,
+} from '../../Redux/Action/Actions';
 import DashboardMarkup from './DashboardMarkup';
 
 const Dashboard = props => {
@@ -17,6 +21,7 @@ const Dashboard = props => {
     setIsDataLoading(true);
     dispatch(fetchUser());
     dispatch(fetchProfileDetails());
+    dispatch(fetchEditBioData());
     setTimeout(() => {
       setIsDataLoading(false);
     }, 2000);

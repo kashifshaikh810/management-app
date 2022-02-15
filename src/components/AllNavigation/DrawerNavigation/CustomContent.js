@@ -37,7 +37,7 @@ const CustomContent = props => {
               },
             ]}>
             <Text style={{color: 'black', textTransform: 'capitalize'}}>
-              {data?.firstName} {data?.lastName}
+              {data?.firstName} {data?.middleName} {data?.lastName}
             </Text>
             <DropDownIcon name="arrow-drop-down" size={20} />
           </Pressable>

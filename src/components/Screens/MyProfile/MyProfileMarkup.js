@@ -980,8 +980,8 @@ const MyProfileMarkup = props => {
       <ScrollView style={styles.scrollView}>
         <View style={styles.userNameContiner}>
           <Text style={styles.userName}>
-            {props?.userData?.firstName}
-            {props?.profileDetails?.middleName} {props?.userData?.lastName}
+            {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
+            {props?.userData?.lastName}
           </Text>
         </View>
 
@@ -1017,8 +1017,8 @@ const MyProfileMarkup = props => {
 
           <View style={styles.imageBackUserNameContainer}>
             <Text style={styles.imageBackUserName}>
-              {props?.userData?.firstName}
-              {props?.profileDetails?.middleName} {props?.userData?.lastName}
+              {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
+              {props?.userData?.lastName}
             </Text>
           </View>
 
@@ -1173,30 +1173,30 @@ const MyProfileMarkup = props => {
           <View style={styles.hobbiesContainer}>
             <View>
               <Text>
-                Get to know me better: <Text>{/* val */}</Text>
+                Get to know me better: <Text> {props?.editBioData?.about}</Text>
               </Text>
             </View>
             <View>
               <Text>
-                Hobbies: <Text>{/* val */}</Text>
+                Hobbies: <Text> {props?.editBioData?.hobbies}</Text>
               </Text>
             </View>
             <View>
               <Text>
                 Favorite Books:
-                <Text>{/* val */}</Text>
+                <Text> {props?.editBioData?.favoriteBooks}</Text>
               </Text>
             </View>
             <View>
               <Text>
                 Music Preference:
-                <Text>{/* val */}</Text>
+                <Text> {props?.editBioData?.musicPreference}</Text>
               </Text>
             </View>
             <View>
               <Text>
                 Sports:
-                <Text>{/* val */}</Text>
+                <Text> {props?.editBioData?.sports}</Text>
               </Text>
             </View>
           </View>

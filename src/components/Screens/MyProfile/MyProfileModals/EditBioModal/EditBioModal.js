@@ -53,7 +53,11 @@ const EditBio = props => {
                 <Text style={styles.reqType}>about</Text>
               </View>
               <View style={styles.commentTextInput}>
-                <TextInput multiline />
+                <TextInput
+                  value={props.about}
+                  onChangeText={text => props.setAbout(text)}
+                  multiline
+                />
               </View>
             </View>
 
@@ -62,7 +66,11 @@ const EditBio = props => {
                 <Text style={styles.commentText}>hobbies</Text>
               </View>
               <View style={styles.commentTextInput}>
-                <TextInput multiline />
+                <TextInput
+                  value={props.hobbies}
+                  onChangeText={text => props.setHobbies(text)}
+                  multiline
+                />
               </View>
               <Text style={styles.textInputBottomHeading}>
                 One item per line
@@ -74,7 +82,11 @@ const EditBio = props => {
                 <Text style={styles.reqType}>favorite books</Text>
               </View>
               <View style={styles.commentTextInput}>
-                <TextInput multiline />
+                <TextInput
+                  value={props.favoriteBooks}
+                  onChangeText={text => props.setFavoriteBooks(text)}
+                  multiline
+                />
               </View>
               <Text style={styles.textInputBottomHeading}>
                 One item per line
@@ -86,7 +98,11 @@ const EditBio = props => {
                 <Text style={styles.reqType}>music preference</Text>
               </View>
               <View style={styles.commentTextInput}>
-                <TextInput multiline />
+                <TextInput
+                  value={props.musicPreference}
+                  onChangeText={text => props.setMusicPreference(text)}
+                  multiline
+                />
               </View>
               <Text style={styles.textInputBottomHeading}>
                 One item per line
@@ -98,7 +114,11 @@ const EditBio = props => {
                 <Text style={styles.reqType}>sports</Text>
               </View>
               <View style={styles.commentTextInput}>
-                <TextInput multiline />
+                <TextInput
+                  value={props.sports}
+                  onChangeText={text => props.setSports(text)}
+                  multiline
+                />
               </View>
               <Text style={styles.textInputBottomHeading}>
                 One item per line
@@ -117,7 +137,7 @@ const EditBio = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.updateEditBio()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,

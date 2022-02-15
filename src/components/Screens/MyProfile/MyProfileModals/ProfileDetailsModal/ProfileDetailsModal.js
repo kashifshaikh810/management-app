@@ -40,7 +40,7 @@ const DateRangeSection = props => {
             {(props.profileDetails &&
               props.isFromSelected &&
               props.fromSectionDate) ||
-              props.profileDetails.dateOfBirth}
+              props?.profileDetails?.dateOfBirth}
           </Text>
         </Pressable>
       </View>
@@ -115,8 +115,8 @@ const ProfileDetailsModal = props => {
               </View>
               <View>
                 <TextInput
-                  value={props.middileName}
-                  onChangeText={text => props.setMiddileName(text)}
+                  value={props.middleName}
+                  onChangeText={text => props.setMiddleName(text)}
                   style={styles.commentTextInput}
                 />
               </View>
@@ -169,7 +169,7 @@ const ProfileDetailsModal = props => {
                 <Text style={styles.text}>
                   {(props?.isShowGenderModal &&
                     props?.isShowGenderModal?.chooseVal) ||
-                    props.profileDetails.gender}
+                    props?.profileDetails?.gender}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -305,7 +305,7 @@ const ProfileDetailsModal = props => {
                 <Text style={styles.text}>
                   {(props?.isShowZoneModal &&
                     props?.isShowZoneModal?.chooseVal) ||
-                    (props.profileDetails && props.profileDetails.timeZone)}
+                    (props?.profileDetails && props.profileDetails?.timeZone)}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon

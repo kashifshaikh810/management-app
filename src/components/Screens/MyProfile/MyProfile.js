@@ -30,10 +30,18 @@ const MyProfile = props => {
 
   // edit profile details modal all inputs
   const [firstName, setFirstName] = useState('');
-  const [middileName, setMiddileName] = useState('');
+  const [middleName, setMiddleName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [profileDetails, setProfileDetails] = useState({});
+
+  // edit bio modal all inputs
+  const [about, setAbout] = useState('');
+  const [hobbies, setHobbies] = useState('');
+  const [favoriteBooks, setFavoriteBooks] = useState('');
+  const [musicPreference, setMusicPreference] = useState('');
+  const [sports, setSports] = useState('');
+  const [editBioData, setEditBioData] = useState({});
 
   // storage ref
   const storageRef = Storage().ref(
@@ -214,7 +222,9 @@ const MyProfile = props => {
   const [userData, setUserData] = useState('');
 
   // redux section
-  const {currUserData, profileData} = useSelector(state => state.reduc);
+  const {currUserData, profileData, bioData} = useSelector(
+    state => state?.reduc,
+  );
 
   // From date
   let fromSectionDate = new Date(date);
@@ -381,14 +391,24 @@ const MyProfile = props => {
       }
     } else if (
       profileImage ||
-      firstName !== profileDetails.firstName ||
-      lastName !== profileDetails.lastName ||
-      middileName !== profileDetails?.middileName ||
-      gender !== profileDetails.gender ||
-      maritalStatus !== selectSingleOrMarried ||
-      dateOfBirth !== profileDetails.dateOfBirth ||
-      language !== profileDetails.language ||
-      timeZone !== profileDetails.timeZone
+      firstName !== profileDetails?.firstName ||
+      lastName !== profileDetails?.lastName ||
+      middleName !== profileDetails?.middleName ||
+      gender !== profileDetails?.gender ||
+      selectSingleOrMarried !== profileDetails?.maritalStatus ||
+      dateOfBirth !== profileDetails?.dateOfBirth ||
+      language !== profileDetails?.language ||
+      timeZone !== profileDetails?.timeZone ||
+      firstName ||
+      middleName ||
+      lastName ||
+      gender ||
+      selectSingleOrMarried ||
+      dateOfBirth ||
+      language ||
+      timeZone ||
+      alternativeEmail ||
+      email
     ) {
       setIsLoading(true);
       if (profileImage) {
@@ -428,7 +448,7 @@ const MyProfile = props => {
           console.log(err);
         }
       }
-      if (firstName !== profileDetails.firstName) {
+      if (firstName !== profileDetails?.firstName || firstName) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
@@ -438,17 +458,17 @@ const MyProfile = props => {
           .child(currUserUid)
           .update({firstName: firstName});
       }
-      if (middileName !== profileDetails.middileName) {
+      if (middleName !== profileDetails?.middleName || middleName) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
-          .update({middileName: middileName});
+          .update({middleName: middleName});
         Database()
           .ref('/userSignUp/')
           .child(currUserUid)
-          .update({middileName: middileName});
+          .update({middleName: middleName});
       }
-      if (lastName !== profileDetails.lastName) {
+      if (lastName !== profileDetails?.lastName || lastName) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
@@ -459,28 +479,31 @@ const MyProfile = props => {
           .update({lastName: lastName});
       }
 
-      if (gender !== profileDetails.gender) {
+      if (gender !== profileDetails?.gender || gender) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
           .update({gender: gender});
       }
 
-      if (selectSingleOrMarried !== profileDetails.maritalStatus) {
+      if (
+        selectSingleOrMarried !== profileDetails?.maritalStatus ||
+        selectSingleOrMarried
+      ) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
           .update({maritalStatus: selectSingleOrMarried});
       }
 
-      if (dateOfBirth !== profileDetails.dateOfBirth) {
+      if (dateOfBirth !== profileDetails?.dateOfBirth || dateOfBirth) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
           .update({dateOfBirth: dateOfBirth});
       }
 
-      if (email !== profileDetails.email) {
+      if (email !== profileDetails?.email || email) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
@@ -491,7 +514,10 @@ const MyProfile = props => {
           .update({email: email});
       }
 
-      if (alternativeEmail !== profileDetails?.alternativeEmail) {
+      if (
+        alternativeEmail !== profileDetails?.alternativeEmail ||
+        alternativeEmail
+      ) {
         setIsLoading(true);
         Database()
           .ref('/profileDetails/')
@@ -499,14 +525,14 @@ const MyProfile = props => {
           .update({alternativeEmail: alternativeEmail});
       }
 
-      if (language !== profileDetails.language) {
+      if (language !== profileDetails?.language || language) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
           .update({language: language});
       }
 
-      if (timeZone !== profileDetails.timeZone) {
+      if (timeZone !== profileDetails?.timeZone || timeZone) {
         Database()
           .ref('/profileDetails/')
           .child(currUserUid)
@@ -526,16 +552,73 @@ const MyProfile = props => {
     }
   };
 
+  const updateEditBio = () => {
+    let currUserUid = Auth()?.currentUser?.uid;
+    if (about && hobbies && favoriteBooks && musicPreference && sports) {
+      Database().ref(`/editBio/${currUserUid}`).set({
+        about: about,
+        hobbies: hobbies,
+        favoriteBooks: favoriteBooks,
+        musicPreference: musicPreference,
+        sports: sports,
+      });
+      setIsShowEditBioModal(false);
+      Alert.alert('Profile has been updated successfully.');
+    } else {
+      if (about !== editBioData?.about || about) {
+        Database().ref('/editBio/').child(currUserUid).update({about: about});
+      }
+
+      if (hobbies !== editBioData?.hobbies || hobbies) {
+        Database()
+          .ref('/editBio/')
+          .child(currUserUid)
+          .update({hobbies: hobbies});
+      }
+
+      if (favoriteBooks !== editBioData?.favoriteBooks || favoriteBooks) {
+        Database()
+          .ref('/editBio/')
+          .child(currUserUid)
+          .update({favoriteBooks: favoriteBooks});
+      }
+
+      if (musicPreference !== editBioData?.musicPreference || musicPreference) {
+        Database()
+          .ref('/editBio/')
+          .child(currUserUid)
+          .update({musicPreference: musicPreference});
+        setMusicPreference('');
+        setIsShowEditBioModal(false);
+      }
+
+      if (sports !== editBioData?.sports || sports) {
+        Database().ref('/editBio/').child(currUserUid).update({sports: sports});
+      }
+      Alert.alert('Profile has been updated successfully.');
+      setIsShowEditBioModal(false);
+    }
+  };
+
   useEffect(() => {
     setProfileDetails(profileData);
     setFirstName(currUserData?.firstName);
-    setMiddileName(profileData?.middileName);
+    setMiddleName(profileData?.middleName);
     setLastName(currUserData?.lastName);
     setSelectSingleOrMarried(profileData?.maritalStatus);
     setEmail(currUserData?.email);
     setAlternativeEmail(profileData?.alternativeEmail);
     setUserData(currUserData);
   }, [profileData, currUserData]);
+
+  useEffect(() => {
+    setAbout(bioData?.about);
+    setHobbies(bioData?.hobbies);
+    setFavoriteBooks(bioData?.favoriteBooks);
+    setMusicPreference(bioData?.musicPreference);
+    setSports(bioData?.sports);
+    setEditBioData(bioData);
+  }, [bioData]);
 
   return (
     <MyProfileMarkup
@@ -642,8 +725,8 @@ const MyProfile = props => {
       profileImage={profileImage}
       firstName={firstName}
       setFirstName={setFirstName}
-      middileName={middileName}
-      setMiddileName={setMiddileName}
+      middleName={middleName}
+      setMiddleName={setMiddleName}
       lastName={lastName}
       setLastName={setLastName}
       email={email}
@@ -654,6 +737,18 @@ const MyProfile = props => {
       isLoading={isLoading}
       profileDetails={profileDetails}
       userData={userData}
+      about={about}
+      setAbout={setAbout}
+      hobbies={hobbies}
+      setHobbies={setHobbies}
+      favoriteBooks={favoriteBooks}
+      setFavoriteBooks={setFavoriteBooks}
+      musicPreference={musicPreference}
+      setMusicPreference={setMusicPreference}
+      sports={sports}
+      setSports={setSports}
+      updateEditBio={updateEditBio}
+      editBioData={editBioData}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}
