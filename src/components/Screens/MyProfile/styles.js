@@ -570,6 +570,21 @@ const styles = StyleSheet.create({
   directionRow: {
     flexDirection: 'row',
   },
+  contactContainer: {
+    flex: 1,
+    marginHorizontal: 20,
+    marginVertical: 10,
+  },
+  contactItems: {
+    flexDirection: 'row',
+    marginVertical: 10,
+  },
+  contactHeading: {
+    fontSize: 15,
+    textTransform: 'capitalize',
+    fontWeight: 'bold',
+    marginHorizontal: 5,
+  },
 });
 
 export default styles;

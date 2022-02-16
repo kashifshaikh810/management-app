@@ -1,5 +1,6 @@
 import {
   FETCH_EDIT_BIO_DATA,
+  FETCH_EMERGENCY_CONTACT_DATA,
   FETCH_PROFILE_DETAILS_DATA,
   FETCH_USER_DATA,
 } from '../Action/ActionTypes';
@@ -8,6 +9,7 @@ const initialState = {
   currUserData: {},
   profileData: {},
   bioData: {},
+  contactData: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -26,6 +28,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         bioData: action.payload,
+      };
+    case FETCH_EMERGENCY_CONTACT_DATA:
+      return {
+        ...state,
+        contactData: action.payload,
       };
     default:
       return state;

@@ -27,6 +27,7 @@ import EmploymentDetailsModal from './MyProfileModals/EmploymentDetailsModal/Emp
 import EditBioModal from './MyProfileModals/EditBioModal/EditBioModal';
 import ContactInformationModal from './MyProfileModals/ContactInformationModal/ContactInformationModal';
 import AddLicenseCertificationModal from './MyProfileModals/AddLicenseCertificationModal/AddLicenseCertificationModal';
+import EmergencyContactModal from './MyProfileModals/EmergencyContactModal/EmergencyContactModal';
 
 const timeOffSection = props => {
   return (
@@ -223,16 +224,49 @@ const emergencyContactSection = props => {
           {marginHorizontal: 15, marginVertical: 10},
         ]}>
         <Pressable
+          onPress={() => props.setShowEmergencyContactModal(true)}
           style={({pressed}) => [
             styles.editIconPressable,
-            {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
+            {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
           ]}>
           <EditIcon name="edit" size={15} color="#fff" />
         </Pressable>
       </View>
-      <View style={styles.weCouldNotContainer}>
-        <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
-      </View>
+
+      {props?.emergencyContactData ? (
+        <View style={styles.contactContainer}>
+          <View style={styles.contactItems}>
+            <Text style={styles.contactHeading}>name:</Text>
+            <Text>
+              {props?.emergencyContactData?.emergencyContactFirstName}{' '}
+              {props?.emergencyContactData?.emergencyContactMiddleName}{' '}
+              {props?.emergencyContactData?.emergencyContactLastName}
+            </Text>
+          </View>
+          <View style={styles.contactItems}>
+            <Text style={styles.contactHeading}>relationship:</Text>
+            <Text>
+              {props?.emergencyContactData?.emergencyContactRelationShip}
+            </Text>
+          </View>
+          <View style={styles.contactItems}>
+            <Text style={styles.contactHeading}>work phone number:</Text>
+            <Text>
+              {props?.emergencyContactData?.emergencyContactOfficePhone}
+            </Text>
+          </View>
+          <View style={styles.contactItems}>
+            <Text style={styles.contactHeading}>mobile phone number:</Text>
+            <Text>
+              {props?.emergencyContactData?.emergencyContactMobilePhone}
+            </Text>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.weCouldNotContainer}>
+          <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -1108,7 +1142,7 @@ const MyProfileMarkup = props => {
                 onPress={() => props.setIsShowEmploymentDetailsModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
-                  {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
+                  {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
                 ]}>
                 <EditIcon name="edit" size={15} color="#fff" />
               </Pressable>
@@ -1162,7 +1196,7 @@ const MyProfileMarkup = props => {
                 onPress={() => props.setIsShowEditBioModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
-                  {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
+                  {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
                 ]}>
                 <EditIcon name="edit" size={15} color="#fff" />
               </Pressable>
@@ -1222,6 +1256,8 @@ const MyProfileMarkup = props => {
         <EmploymentDetailsModal {...props} />
 
         <EditBioModal {...props} />
+
+        <EmergencyContactModal {...props} />
 
         <ContactInformationModal {...props} />
 

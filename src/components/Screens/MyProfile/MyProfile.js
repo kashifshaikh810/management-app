@@ -5,10 +5,17 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 import MyProfileMarkup from './MyProfileMarkup';
 import {Auth, Database, Storage} from '../../firebaseTools/index';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {fetchEmergencyContactData} from '../../Redux/Action/Actions';
 
 const MyProfile = props => {
   const [selectedTab, setSelectedTab] = useState('time-off');
+  const [showEmergencyContactModal, setShowEmergencyContactModal] =
+    useState(false);
+  const [showEmergencyContactModalInputs, setShowEmergencyContactModalInputs] =
+    useState(false);
+  const [isEmergencyContactLoading, setIsEmergencyContactLoading] =
+    useState(false);
   const [profileImage, setProfileImage] = useState('');
   const [showYearModal, setShowYearModal] = useState({
     show: false,
@@ -42,6 +49,19 @@ const MyProfile = props => {
   const [musicPreference, setMusicPreference] = useState('');
   const [sports, setSports] = useState('');
   const [editBioData, setEditBioData] = useState({});
+
+  // emergency contacts modal all inputs
+  const [emergencyContactFirstName, setEmergencyContactFirstName] =
+    useState('');
+  const [emergencyContactLastName, setEmergencyContactLastName] = useState('');
+  const [emergencyContactMiddleName, setEmergencyContactMiddleName] =
+    useState('');
+  const [emergencyContactRelationShip, setEmergencyContactRelationShip] =
+    useState('');
+  const [emergencyContactOfficePhone, setEmergencyContactOfficePhone] =
+    useState('');
+  const [emergencyContactMobilePhone, setEmergencyContactMobilePhone] =
+    useState('');
 
   // storage ref
   const storageRef = Storage().ref(
@@ -214,6 +234,7 @@ const MyProfile = props => {
   const [isShowAddLicenseCertification, setIsShowAddLicenseCertification] =
     useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [emergencyContactData, setEmergencyContactData] = useState({});
 
   const [dateOfHire, setDateOfHire] = useState(new Date());
   const [modeOfHire, setModeOfHire] = useState('date');
@@ -222,9 +243,10 @@ const MyProfile = props => {
   const [userData, setUserData] = useState('');
 
   // redux section
-  const {currUserData, profileData, bioData} = useSelector(
+  const {currUserData, profileData, bioData, contactData} = useSelector(
     state => state?.reduc,
   );
+  const dispatch = useDispatch();
 
   // From date
   let fromSectionDate = new Date(date);
@@ -371,7 +393,7 @@ const MyProfile = props => {
                 .child(currUserUid)
                 .update({firstName: firstName, lastName: lastName});
               setFirstName('');
-              setMiddileName('');
+              setMiddleName('');
               setLastName('');
               setProfileImage('');
               setIsShowGenderModal({chooseVal: ''});
@@ -600,6 +622,101 @@ const MyProfile = props => {
     }
   };
 
+  const emergencyContactSubmit = () => {
+    let currUserUid = Auth()?.currentUser?.uid;
+    if (
+      emergencyContactFirstName &&
+      emergencyContactMiddleName &&
+      emergencyContactLastName &&
+      emergencyContactRelationShip &&
+      emergencyContactOfficePhone &&
+      emergencyContactMobilePhone
+    ) {
+      setIsEmergencyContactLoading(true);
+      Database().ref(`/emergencyContact/${currUserUid}`).set({
+        userId: currUserUid,
+        emergencyContactFirstName: emergencyContactFirstName,
+        emergencyContactMiddleName: emergencyContactMiddleName,
+        emergencyContactLastName: emergencyContactLastName,
+        emergencyContactRelationShip: emergencyContactRelationShip,
+        emergencyContactOfficePhone: emergencyContactOfficePhone,
+        emergencyContactMobilePhone: emergencyContactMobilePhone,
+      });
+      setIsEmergencyContactLoading(false);
+      Alert.alert('Profile has been updated successfully.');
+    } else {
+      setIsEmergencyContactLoading(true);
+      if (
+        emergencyContactFirstName !== contactData?.emergencyContactFirstName ||
+        emergencyContactFirstName
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactFirstName: emergencyContactFirstName});
+      }
+
+      if (
+        emergencyContactMiddleName !==
+          contactData?.emergencyContactMiddleName ||
+        emergencyContactMiddleName
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactMiddleName: emergencyContactMiddleName});
+      }
+
+      if (
+        emergencyContactLastName !== contactData?.emergencyContactLastName ||
+        emergencyContactLastName
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactLastName: emergencyContactLastName});
+      }
+
+      if (
+        emergencyContactRelationShip !==
+          contactData?.emergencyContactRelationShip ||
+        emergencyContactRelationShip
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactRelationShip: emergencyContactRelationShip});
+      }
+
+      if (
+        emergencyContactOfficePhone !==
+          contactData?.emergencyContactOfficePhone ||
+        emergencyContactOfficePhone
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactOfficePhone: emergencyContactOfficePhone});
+      }
+
+      if (
+        emergencyContactMobilePhone !==
+          contactData?.emergencyContactMobilePhone ||
+        emergencyContactMobilePhone
+      ) {
+        Database()
+          .ref('/emergencyContact/')
+          .child(currUserUid)
+          .update({emergencyContactMobilePhone: emergencyContactMobilePhone});
+      }
+      setTimeout(() => {
+        setIsEmergencyContactLoading(false);
+        setShowEmergencyContactModal(false);
+        Alert.alert('Profile has been updated successfully.');
+      }, 1000);
+    }
+  };
+
   useEffect(() => {
     setProfileDetails(profileData);
     setFirstName(currUserData?.firstName);
@@ -619,6 +736,20 @@ const MyProfile = props => {
     setSports(bioData?.sports);
     setEditBioData(bioData);
   }, [bioData]);
+
+  useEffect(() => {
+    dispatch(fetchEmergencyContactData());
+  }, []);
+
+  useEffect(() => {
+    setEmergencyContactData(contactData);
+    setEmergencyContactFirstName(contactData?.emergencyContactFirstName);
+    setEmergencyContactLastName(contactData?.emergencyContactLastName);
+    setEmergencyContactMiddleName(contactData.emergencyContactMiddleName);
+    setEmergencyContactRelationShip(contactData?.emergencyContactRelationShip);
+    setEmergencyContactOfficePhone(contactData?.emergencyContactOfficePhone);
+    setEmergencyContactMobilePhone(contactData?.emergencyContactMobilePhone);
+  }, [contactData]);
 
   return (
     <MyProfileMarkup
@@ -749,6 +880,25 @@ const MyProfile = props => {
       setSports={setSports}
       updateEditBio={updateEditBio}
       editBioData={editBioData}
+      showEmergencyContactModal={showEmergencyContactModal}
+      setShowEmergencyContactModal={setShowEmergencyContactModal}
+      showEmergencyContactModalInputs={showEmergencyContactModalInputs}
+      setShowEmergencyContactModalInputs={setShowEmergencyContactModalInputs}
+      emergencyContactFirstName={emergencyContactFirstName}
+      setEmergencyContactFirstName={setEmergencyContactFirstName}
+      emergencyContactLastName={emergencyContactLastName}
+      setEmergencyContactLastName={setEmergencyContactLastName}
+      emergencyContactMiddleName={emergencyContactMiddleName}
+      setEmergencyContactMiddleName={setEmergencyContactMiddleName}
+      emergencyContactRelationShip={emergencyContactRelationShip}
+      setEmergencyContactRelationShip={setEmergencyContactRelationShip}
+      emergencyContactOfficePhone={emergencyContactOfficePhone}
+      setEmergencyContactOfficePhone={setEmergencyContactOfficePhone}
+      emergencyContactMobilePhone={emergencyContactMobilePhone}
+      setEmergencyContactMobilePhone={setEmergencyContactMobilePhone}
+      emergencyContactSubmit={emergencyContactSubmit}
+      isEmergencyContactLoading={isEmergencyContactLoading}
+      emergencyContactData={emergencyContactData}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}
