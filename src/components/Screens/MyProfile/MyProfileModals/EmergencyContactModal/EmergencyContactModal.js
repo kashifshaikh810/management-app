@@ -105,7 +105,11 @@ const inputsSection = props => {
 
         <View style={styles.addButton}>
           <Pressable
-            onPress={() => props.setShowEmergencyContactModalInputs(false)}
+            onPress={() =>
+              props.emergencyContactData
+                ? props.removeEmergencyContact()
+                : props.setShowEmergencyContactModalInputs(false)
+            }
             android_ripple={{color: '#fff'}}
             style={({pressed}) => [
               styles.removePressable,
@@ -127,7 +131,10 @@ const EmergencyContactModal = props => {
       visible={props.showEmergencyContactModal}
       animationType="slide"
       transparent
-      onRequestClose={() => props.setShowEmergencyContactModal(false)}>
+      onRequestClose={() => {
+        props.setShowEmergencyContactModal(false);
+        props.setShowEmergencyContactModalInputs(false);
+      }}>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={styles.container}>
         <View
@@ -145,7 +152,10 @@ const EmergencyContactModal = props => {
             <Text style={styles.cardHeadingText}>emergency contacts</Text>
             <View style={styles.closeIconContainer}>
               <Pressable
-                onPress={() => props.setShowEmergencyContactModal(false)}
+                onPress={() => {
+                  props.setShowEmergencyContactModal(false);
+                  props.setShowEmergencyContactModalInputs(false);
+                }}
                 style={({pressed}) => [
                   styles.closePressabel,
                   {backgroundColor: pressed ? '#b3b3b3' : '#fff'},
@@ -203,17 +213,20 @@ const EmergencyContactModal = props => {
                 disabled={
                   props.isEmergencyContactLoading ||
                   (props.emergencyContactFirstName ===
-                    props.emergencyContactData.emergencyContactFirstName &&
+                    props?.emergencyContactData?.emergencyContactFirstName &&
                     props.emergencyContactLastName ===
-                      props.emergencyContactData.emergencyContactLastName &&
+                      props?.emergencyContactData?.emergencyContactLastName &&
                     props.emergencyContactMobilePhone ===
-                      props.emergencyContactData.emergencyContactMobilePhone &&
+                      props?.emergencyContactData
+                        ?.emergencyContactMobilePhone &&
                     props.emergencyContactOfficePhone ===
-                      props.emergencyContactData.emergencyContactOfficePhone &&
+                      props?.emergencyContactData
+                        ?.emergencyContactOfficePhone &&
                     props.emergencyContactRelationShip ===
-                      props.emergencyContactData.emergencyContactRelationShip &&
+                      props?.emergencyContactData
+                        ?.emergencyContactRelationShip &&
                     props.emergencyContactMiddleName ===
-                      props.emergencyContactData.emergencyContactMiddleName)
+                      props?.emergencyContactData?.emergencyContactMiddleName)
                 }
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [

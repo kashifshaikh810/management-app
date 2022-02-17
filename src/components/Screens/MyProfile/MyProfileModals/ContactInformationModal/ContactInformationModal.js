@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -54,8 +54,13 @@ const ContactInformationModal = props => {
               <View style={styles.commentTextContainer}>
                 <Text style={styles.reqType}>mobile phone number</Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="number-pad" />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.contactInfoMobilePhone}
+                  onChangeText={text => props.setContactInfoMobilePhone(text)}
+                  keyboardType="number-pad"
+                />
               </View>
             </View>
 
@@ -71,7 +76,9 @@ const ContactInformationModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.showCountryModal?.chooseVal}
+                  {(props?.showCountryModal &&
+                    props?.showCountryModal?.chooseVal) ||
+                    props?.contactInformationData?.country}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -90,8 +97,12 @@ const ContactInformationModal = props => {
                   address <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.contactInfoAddress}
+                  onChangeText={text => props.setContactInfoAddress(text)}
+                />
               </View>
             </View>
 
@@ -101,8 +112,12 @@ const ContactInformationModal = props => {
                   city <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.contactInfoCity}
+                  onChangeText={text => props.setContactInfoCity(text)}
+                />
               </View>
             </View>
 
@@ -121,7 +136,9 @@ const ContactInformationModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.showStateRegionModal?.chooseVal}
+                  {(props?.showStateRegionModal &&
+                    props?.showStateRegionModal?.chooseVal) ||
+                    props?.contactInformationData?.stateAndRegion}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <ArrowDropIcon
@@ -140,8 +157,13 @@ const ContactInformationModal = props => {
                   zip/postal code <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput keyboardType="number-pad" />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.contactInfoPostalCode}
+                  onChangeText={text => props.setContactInfoPostalCode(text)}
+                  keyboardType="number-pad"
+                />
               </View>
             </View>
 
@@ -159,13 +181,13 @@ const ContactInformationModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.submitContactInfo()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
                 ]}>
-                {false ? (
+                {props.contactInIsLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
                   <Text style={styles.cancelPressableText}>submit</Text>

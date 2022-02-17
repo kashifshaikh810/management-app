@@ -6,7 +6,10 @@ import RNFetchBlob from 'rn-fetch-blob';
 import MyProfileMarkup from './MyProfileMarkup';
 import {Auth, Database, Storage} from '../../firebaseTools/index';
 import {useSelector, useDispatch} from 'react-redux';
-import {fetchEmergencyContactData} from '../../Redux/Action/Actions';
+import {
+  fetchContactInformationData,
+  fetchEmergencyContactData,
+} from '../../Redux/Action/Actions';
 
 const MyProfile = props => {
   const [selectedTab, setSelectedTab] = useState('time-off');
@@ -62,6 +65,14 @@ const MyProfile = props => {
     useState('');
   const [emergencyContactMobilePhone, setEmergencyContactMobilePhone] =
     useState('');
+
+  // contact information modal all inputs
+  const [contactInfoMobilePhone, setContactInfoMobilePhone] = useState('');
+  const [contactInfoAddress, setContactInfoAddress] = useState('');
+  const [contactInfoCity, setContactInfoCity] = useState('');
+  const [contactInfoPostalCode, setContactInfoPostalCode] = useState('');
+  const [contactInIsLoading, setContactInIsLoading] = useState(false);
+  const [contactInformationData, setContactInformationData] = useState({});
 
   // storage ref
   const storageRef = Storage().ref(
@@ -243,9 +254,8 @@ const MyProfile = props => {
   const [userData, setUserData] = useState('');
 
   // redux section
-  const {currUserData, profileData, bioData, contactData} = useSelector(
-    state => state?.reduc,
-  );
+  const {currUserData, profileData, bioData, contactData, contactInfoData} =
+    useSelector(state => state?.reduc);
   const dispatch = useDispatch();
 
   // From date
@@ -626,7 +636,6 @@ const MyProfile = props => {
     let currUserUid = Auth()?.currentUser?.uid;
     if (
       emergencyContactFirstName &&
-      emergencyContactMiddleName &&
       emergencyContactLastName &&
       emergencyContactRelationShip &&
       emergencyContactOfficePhone &&
@@ -642,6 +651,7 @@ const MyProfile = props => {
         emergencyContactOfficePhone: emergencyContactOfficePhone,
         emergencyContactMobilePhone: emergencyContactMobilePhone,
       });
+      setShowEmergencyContactModal(false);
       setIsEmergencyContactLoading(false);
       Alert.alert('Profile has been updated successfully.');
     } else {
@@ -709,11 +719,93 @@ const MyProfile = props => {
           .child(currUserUid)
           .update({emergencyContactMobilePhone: emergencyContactMobilePhone});
       }
-      setTimeout(() => {
-        setIsEmergencyContactLoading(false);
-        setShowEmergencyContactModal(false);
-        Alert.alert('Profile has been updated successfully.');
-      }, 1000);
+      setIsEmergencyContactLoading(false);
+      setShowEmergencyContactModal(false);
+      Alert.alert('Profile has been updated successfully.');
+    }
+  };
+
+  const removeEmergencyContact = () => {
+    let uid = Auth()?.currentUser?.uid;
+    Database().ref(`/emergencyContact/${uid}`).remove();
+    setShowEmergencyContactModalInputs(false);
+    setShowEmergencyContactModal(false);
+    Alert.alert('contact has been removed successfully.');
+  };
+
+  const submitContactInfo = () => {
+    let uid = Auth()?.currentUser?.uid;
+    let country = showCountryModal?.chooseVal;
+    let stateAndRegion = showStateRegionModal?.chooseVal;
+
+    if (
+      contactInfoMobilePhone &&
+      country &&
+      contactInfoAddress &&
+      contactInfoCity &&
+      stateAndRegion &&
+      contactInfoPostalCode
+    ) {
+      setContactInIsLoading(true);
+      Database().ref(`/contactInformation/${uid}`).set({
+        userId: uid,
+        contactInfoMobilePhone: contactInfoMobilePhone,
+        country: country,
+        contactInfoAddress: contactInfoAddress,
+        contactInfoCity: contactInfoCity,
+        stateAndRegion: stateAndRegion,
+        contactInfoPostalCode: contactInfoPostalCode,
+      });
+      setContactInIsLoading(false);
+      setIsShowContactInformationModal(false);
+      Alert.alert('Profile has been updated successfully.');
+    } else {
+      setContactInIsLoading(true);
+      if (contactInfoMobilePhone) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({contactInfoMobilePhone: contactInfoMobilePhone});
+      }
+
+      if (country) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({country: country});
+      }
+
+      if (contactInfoAddress) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({contactInfoAddress: contactInfoAddress});
+      }
+
+      if (contactInfoCity) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({contactInfoCity: contactInfoCity});
+      }
+
+      if (stateAndRegion) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({stateAndRegion: stateAndRegion});
+      }
+
+      if (contactInfoPostalCode) {
+        Database()
+          .ref('/contactInformation/')
+          .child(uid)
+          .update({contactInfoPostalCode: contactInfoPostalCode});
+      }
+
+      setContactInIsLoading(false);
+      setIsShowContactInformationModal(false);
+      Alert.alert('Profile has been updated successfully.');
     }
   };
 
@@ -739,17 +831,26 @@ const MyProfile = props => {
 
   useEffect(() => {
     dispatch(fetchEmergencyContactData());
+    dispatch(fetchContactInformationData());
   }, []);
 
   useEffect(() => {
     setEmergencyContactData(contactData);
     setEmergencyContactFirstName(contactData?.emergencyContactFirstName);
     setEmergencyContactLastName(contactData?.emergencyContactLastName);
-    setEmergencyContactMiddleName(contactData.emergencyContactMiddleName);
+    setEmergencyContactMiddleName(contactData?.emergencyContactMiddleName);
     setEmergencyContactRelationShip(contactData?.emergencyContactRelationShip);
     setEmergencyContactOfficePhone(contactData?.emergencyContactOfficePhone);
     setEmergencyContactMobilePhone(contactData?.emergencyContactMobilePhone);
   }, [contactData]);
+
+  useEffect(() => {
+    setContactInformationData(contactInfoData);
+    setContactInfoMobilePhone(contactInfoData?.contactInfoMobilePhone);
+    setContactInfoAddress(contactInfoData?.contactInfoAddress);
+    setContactInfoCity(contactInfoData?.contactInfoCity);
+    setContactInfoPostalCode(contactInfoData?.contactInfoPostalCode);
+  }, [contactInfoData]);
 
   return (
     <MyProfileMarkup
@@ -899,6 +1000,18 @@ const MyProfile = props => {
       emergencyContactSubmit={emergencyContactSubmit}
       isEmergencyContactLoading={isEmergencyContactLoading}
       emergencyContactData={emergencyContactData}
+      removeEmergencyContact={removeEmergencyContact}
+      submitContactInfo={submitContactInfo}
+      contactInfoMobilePhone={contactInfoMobilePhone}
+      setContactInfoMobilePhone={setContactInfoMobilePhone}
+      contactInfoAddress={contactInfoAddress}
+      setContactInfoAddress={setContactInfoAddress}
+      contactInfoCity={contactInfoCity}
+      setContactInfoCity={setContactInfoCity}
+      contactInfoPostalCode={contactInfoPostalCode}
+      setContactInfoPostalCode={setContactInfoPostalCode}
+      contactInIsLoading={contactInIsLoading}
+      contactInformationData={contactInformationData}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}

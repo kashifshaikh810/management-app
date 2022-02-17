@@ -7,6 +7,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
+  Dimensions,
 } from 'react-native';
 
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -292,33 +293,56 @@ const contactInfoSection = props => {
       <View style={{flexDirection: 'row', flex: 1}}>
         <View style={{flex: 1, marginHorizontal: 15}}>
           <Text style={styles.infoHeading}>
-            email: <Text style={styles.infoHeadingExplain}>fga@mail.com</Text>
+            email:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.profileDetails?.email || props?.userData?.email}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
             alternative email:{' '}
-            <Text style={styles.infoHeadingExplain}>fga@mail.com</Text>
+            <Text style={styles.infoHeadingExplain}>
+              {props?.profileDetails?.alternativeEmail ||
+                props?.userData?.alternativeEmail}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
             mobile phone number:{' '}
-            <Text style={styles.infoHeadingExplain}>fga@mail.com</Text>
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.contactInfoMobilePhone}
+            </Text>
           </Text>
         </View>
 
         <View style={{flex: 1, marginHorizontal: 15}}>
           <Text style={styles.infoHeading}>
-            country: <Text style={styles.infoHeadingExplain}>pakistan</Text>
+            country:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.country}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            address 1: <Text style={styles.infoHeadingExplain}>pakistan</Text>
+            address 1:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.contactInfoAddress}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            city: <Text style={styles.infoHeadingExplain}>pakistan</Text>
+            city:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.contactInfoCity}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            state: <Text style={styles.infoHeadingExplain}>pakistan</Text>
+            state:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.stateAndRegion}
+            </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            zip code:: <Text style={styles.infoHeadingExplain}>pakistan</Text>
+            zip code:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.contactInformationData?.contactInfoPostalCode}
+            </Text>
           </Text>
         </View>
       </View>

@@ -250,6 +250,7 @@ const styles = StyleSheet.create({
   infoCard: {
     elevation: 10,
     flex: 1,
+    width: '90%',
     marginHorizontal: 19,
     paddingVertical: 10,
     backgroundColor: '#fff',

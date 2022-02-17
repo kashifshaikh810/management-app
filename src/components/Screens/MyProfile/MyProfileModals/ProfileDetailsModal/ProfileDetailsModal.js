@@ -60,6 +60,24 @@ const DateRangeSection = props => {
 };
 
 const ProfileDetailsModal = props => {
+  const res = () => {
+    let mar =
+      props.isLoading ||
+      (props.firstName === props?.profileDetails?.firstName &&
+        props.lastName === props?.profileDetails?.lastName &&
+        props.middleName === props?.profileDetails?.middleName &&
+        props.selectSingleOrMarried === props?.profileDetails?.maritalStatus &&
+        props.email === props?.profileDetails?.email &&
+        props.alternativeEmail === props?.profileDetails?.alternativeEmail &&
+        props.isShowGenderModal?.chooseVal === props?.profileDetails?.gender &&
+        props.fromSectionDate === props?.profileDetails?.dateOfBirth &&
+        props.isShowZoneModal?.chooseVal === props?.profileDetails?.timeZone &&
+        props.isShowLanguagesModal?.chooseVal ===
+          props?.profileDetails?.language);
+
+    return mar;
+  };
+
   return (
     <Modal
       visible={props.showProfileDetailsModal}
@@ -332,7 +350,7 @@ const ProfileDetailsModal = props => {
 
               <Pressable
                 onPress={() => props.submit()}
-                disabled={props.isLoading}
+                disabled={res()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,

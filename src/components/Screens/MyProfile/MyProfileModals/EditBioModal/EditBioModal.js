@@ -138,6 +138,14 @@ const EditBio = props => {
 
               <Pressable
                 onPress={() => props.updateEditBio()}
+                disabled={
+                  props.about === props?.editBioData?.about &&
+                  props.hobbies === props?.editBioData?.hobbies &&
+                  props.favoriteBooks === props?.editBioData?.favoriteBooks &&
+                  props.musicPreference ===
+                    props?.editBioData?.musicPreference &&
+                  props.sports === props?.editBioData?.sports
+                }
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,
