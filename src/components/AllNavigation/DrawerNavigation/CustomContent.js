@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Pressable, Modal} from 'react-native';
+import {View, Text, Pressable, Modal, Image} from 'react-native';
 import {DrawerItemList} from '@react-navigation/drawer';
 
 import AccountIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,7 +10,7 @@ import CustomContentModal from '../../CustomContentModal/CustomContentModal';
 
 const CustomContent = props => {
   const [showModal, setShowModal] = useState(false);
-  const {currUserData} = useSelector(state => state.reduc);
+  const {currUserData, profileData} = useSelector(state => state.reduc);
   let data = currUserData;
 
   const goToMyProfile = () => {
@@ -18,13 +18,22 @@ const CustomContent = props => {
     props.navigation.closeDrawer();
   };
 
+  console.log(profileData);
+
   return (
     <>
       <View style={styles.container}>
         <View style={styles.accountDefaultImage}>
-          <Pressable onPress={() => goToMyProfile()}>
-            <AccountIcon name="account-circle-outline" size={150} />
-          </Pressable>
+          {profileData?.profileImage ? (
+            <Image
+              source={{uri: profileData?.profileImage}}
+              style={styles.dpImage}
+            />
+          ) : (
+            <Pressable onPress={() => goToMyProfile()}>
+              <AccountIcon name="account-circle-outline" size={150} />
+            </Pressable>
+          )}
         </View>
 
         <View style={styles.pressAbleContainer}>

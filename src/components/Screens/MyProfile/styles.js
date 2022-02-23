@@ -586,6 +586,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginHorizontal: 5,
   },
+  infoCardContent: {
+    flexDirection: 'row',
+    flex: 1,
+  },
+  infoContent: {
+    flex: 1,
+    marginHorizontal: 15,
+  },
 });
 
 export default styles;

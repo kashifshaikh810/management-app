@@ -64,8 +64,8 @@ const ProfileDetailsModal = props => {
     let mar =
       props.isLoading ||
       (props.firstName === props?.profileDetails?.firstName &&
-        props.lastName === props?.profileDetails?.lastName &&
         props.middleName === props?.profileDetails?.middleName &&
+        props.lastName === props?.profileDetails?.lastName &&
         props.selectSingleOrMarried === props?.profileDetails?.maritalStatus &&
         props.email === props?.profileDetails?.email &&
         props.alternativeEmail === props?.profileDetails?.alternativeEmail &&

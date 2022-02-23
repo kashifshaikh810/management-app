@@ -51,6 +51,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  dpImage: {
+    width: '45%',
+    height: '80%',
+    borderRadius: 60,
+  },
 });
 
 export default styles;

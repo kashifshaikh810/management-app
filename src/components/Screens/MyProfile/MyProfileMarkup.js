@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
   ActivityIndicator,
-  Dimensions,
+  RefreshControl,
 } from 'react-native';
 
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
@@ -29,6 +29,7 @@ import EditBioModal from './MyProfileModals/EditBioModal/EditBioModal';
 import ContactInformationModal from './MyProfileModals/ContactInformationModal/ContactInformationModal';
 import AddLicenseCertificationModal from './MyProfileModals/AddLicenseCertificationModal/AddLicenseCertificationModal';
 import EmergencyContactModal from './MyProfileModals/EmergencyContactModal/EmergencyContactModal';
+import EducationModal from './MyProfileModals/EducationModal/EducationModal ';
 
 const timeOffSection = props => {
   return (
@@ -290,8 +291,8 @@ const contactInfoSection = props => {
         </Pressable>
       </View>
 
-      <View style={{flexDirection: 'row', flex: 1}}>
-        <View style={{flex: 1, marginHorizontal: 15}}>
+      <View style={styles.infoCardContent}>
+        <View style={styles.infoContent}>
           <Text style={styles.infoHeading}>
             email:{' '}
             <Text style={styles.infoHeadingExplain}>
@@ -313,7 +314,7 @@ const contactInfoSection = props => {
           </Text>
         </View>
 
-        <View style={{flex: 1, marginHorizontal: 15}}>
+        <View style={styles.infoContent}>
           <Text style={styles.infoHeading}>
             country:{' '}
             <Text style={styles.infoHeadingExplain}>
@@ -359,6 +360,7 @@ const educationSection = props => {
           {marginHorizontal: 15, marginVertical: 10},
         ]}>
         <Pressable
+          onPress={() => props.setShowEducationModal(true)}
           style={({pressed}) => [
             styles.editIconPressable,
             {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -366,9 +368,39 @@ const educationSection = props => {
           <EditIcon name="edit" size={15} color="#fff" />
         </Pressable>
       </View>
-      <View style={styles.weCouldNotContainer}>
-        <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
-      </View>
+      {props?.userEducationData ? (
+        <View style={styles.infoContent}>
+          <Text style={styles.infoHeading}>
+            aa:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.userEducationData?.collageOrUniversity}
+            </Text>
+          </Text>
+          <Text style={styles.infoHeading}>
+            lfaf:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.userEducationData?.degree}
+            </Text>
+          </Text>
+          <Text style={styles.infoHeading}>
+            ffaf:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.userEducationData?.major}
+            </Text>
+          </Text>
+
+          <Text style={styles.infoHeading}>
+            aaa:{' '}
+            <Text style={styles.infoHeadingExplain}>
+              {props?.userEducationData?.yearGraduated}
+            </Text>
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.weCouldNotContainer}>
+          <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -1035,7 +1067,14 @@ const MyProfileMarkup = props => {
   return (
     <View style={styles.container}>
       <Header {...props} name="profile" />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            onRefresh={props.onRefresh}
+            refreshing={props.refreshing}
+          />
+        }>
         <View style={styles.userNameContiner}>
           <Text style={styles.userName}>
             {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
@@ -1286,6 +1325,8 @@ const MyProfileMarkup = props => {
         <ContactInformationModal {...props} />
 
         <AddLicenseCertificationModal {...props} />
+
+        <EducationModal {...props} />
 
         {tabsSection(props)}
       </ScrollView>

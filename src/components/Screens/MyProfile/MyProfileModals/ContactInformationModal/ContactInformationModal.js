@@ -163,6 +163,7 @@ const ContactInformationModal = props => {
                   value={props.contactInfoPostalCode}
                   onChangeText={text => props.setContactInfoPostalCode(text)}
                   keyboardType="number-pad"
+                  maxLength={5}
                 />
               </View>
             </View>
@@ -181,6 +182,20 @@ const ContactInformationModal = props => {
               </Pressable>
 
               <Pressable
+                disabled={
+                  props.contactInfoMobilePhone ===
+                    props?.contactInformationData?.contactInfoMobilePhone &&
+                  props.showCountryModal.chooseVal ===
+                    props?.contactInformationData?.country &&
+                  props.contactInfoAddress ===
+                    props?.contactInformationData?.contactInfoAddress &&
+                  props.contactInfoCity ===
+                    props?.contactInformationData?.contactInfoCity &&
+                  props.showStateRegionModal.chooseVal ===
+                    props?.contactInformationData?.stateAndRegion &&
+                  props.contactInfoPostalCode ===
+                    props?.contactInformationData?.contactInfoPostalCode
+                }
                 onPress={() => props.submitContactInfo()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [

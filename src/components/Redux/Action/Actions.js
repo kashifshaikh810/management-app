@@ -5,6 +5,7 @@ import {
   FETCH_EDIT_BIO_DATA,
   FETCH_EMERGENCY_CONTACT_DATA,
   FETCH_CONTACT_INFORMATION_DATA,
+  FETCH_EDUCATION_DATA,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -68,6 +69,19 @@ export const fetchContactInformationData = () => dispatch => {
       dispatch({
         type: FETCH_CONTACT_INFORMATION_DATA,
         payload: contactInfoData,
+      });
+    });
+};
+
+export const fetchEducationData = () => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/education/${uid}`)
+    .on('value', snapshot => {
+      let education = snapshot.val();
+      dispatch({
+        type: FETCH_EDUCATION_DATA,
+        payload: education,
       });
     });
 };
