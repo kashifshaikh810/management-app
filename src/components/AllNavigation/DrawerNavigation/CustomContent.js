@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Pressable, Modal, Image} from 'react-native';
+import {View, Text, Pressable, Modal, Image, ScrollView} from 'react-native';
 import {DrawerItemList} from '@react-navigation/drawer';
 
 import AccountIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,17 +18,22 @@ const CustomContent = props => {
     props.navigation.closeDrawer();
   };
 
-  console.log(profileData);
-
   return (
-    <>
+    <ScrollView
+      style={{flex: 1}}
+      showsHorizontalScrollIndicator={false}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
         <View style={styles.accountDefaultImage}>
           {profileData?.profileImage ? (
-            <Image
-              source={{uri: profileData?.profileImage}}
-              style={styles.dpImage}
-            />
+            <Pressable
+              onPress={() => goToMyProfile()}
+              style={styles.dpImageContainer}>
+              <Image
+                source={{uri: profileData?.profileImage}}
+                style={styles.dpImage}
+              />
+            </Pressable>
           ) : (
             <Pressable onPress={() => goToMyProfile()}>
               <AccountIcon name="account-circle-outline" size={150} />
@@ -45,7 +50,7 @@ const CustomContent = props => {
                 backgroundColor: pressed ? '#b3b3b3' : '#fff',
               },
             ]}>
-            <Text style={{color: 'black', textTransform: 'capitalize'}}>
+            <Text style={styles.userName}>
               {data?.firstName} {data?.middleName} {data?.lastName}
             </Text>
             <DropDownIcon name="arrow-drop-down" size={20} />
@@ -61,7 +66,7 @@ const CustomContent = props => {
       <View style={styles.drawerList}>
         <DrawerItemList {...props} />
       </View>
-    </>
+    </ScrollView>
   );
 };
 

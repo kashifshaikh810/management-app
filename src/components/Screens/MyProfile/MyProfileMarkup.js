@@ -30,6 +30,8 @@ import ContactInformationModal from './MyProfileModals/ContactInformationModal/C
 import AddLicenseCertificationModal from './MyProfileModals/AddLicenseCertificationModal/AddLicenseCertificationModal';
 import EmergencyContactModal from './MyProfileModals/EmergencyContactModal/EmergencyContactModal';
 import EducationModal from './MyProfileModals/EducationModal/EducationModal ';
+import tw from 'tailwind-react-native-classnames';
+import ProfileLoader from '../../Loaders/ProfileLoader';
 
 const timeOffSection = props => {
   return (
@@ -1067,269 +1069,276 @@ const MyProfileMarkup = props => {
   return (
     <View style={styles.container}>
       <Header {...props} name="profile" />
-      <ScrollView
-        style={styles.scrollView}
-        refreshControl={
-          <RefreshControl
-            onRefresh={props.onRefresh}
-            refreshing={props.refreshing}
-          />
-        }>
-        <View style={styles.userNameContiner}>
-          <Text style={styles.userName}>
-            {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
-            {props?.userData?.lastName}
-          </Text>
+      {props.refreshing ? (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size={70} color="rgba(0,0,0,0.5)" />
         </View>
-
-        <View style={styles.headingContainer}>
-          <HomeIcon name="home" size={15} color="green" />
-          <Text style={styles.headingTextSlash}>/</Text>
-          <Text style={styles.headingText}>my profile</Text>
-        </View>
-
-        <ImageBackground
-          source={require('../../Assists/images/background.jpeg')}
-          style={styles.imageBack}>
-          <View style={styles.contentContainer}>
-            <Image
-              source={
-                props?.profileDetails?.profileImage
-                  ? {uri: props?.profileDetails?.profileImage}
-                  : require('../../Assists/images/defaultProfile.png')
-              }
-              style={styles.userProfile}
+      ) : (
+        <ScrollView
+          style={styles.scrollView}
+          refreshControl={
+            <RefreshControl
+              onRefresh={props.onRefresh}
+              refreshing={props.refreshing}
             />
-            <View style={styles.editIconContainer}>
-              <Pressable
-                onPress={() => props.setShowProfileDetailsModal(true)}
-                style={({pressed}) => [
-                  styles.editIconPressable,
-                  {backgroundColor: pressed ? 'rgba(0,0,0,0)' : '#ffa700'},
-                ]}>
-                <EditIcon name="edit" size={15} color="#fff" />
-              </Pressable>
-            </View>
-          </View>
-
-          <View style={styles.imageBackUserNameContainer}>
-            <Text style={styles.imageBackUserName}>
+          }>
+          <View style={styles.userNameContiner}>
+            <Text style={styles.userName}>
               {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
               {props?.userData?.lastName}
             </Text>
           </View>
 
-          <View style={styles.contentContainer}>
-            <Text style={[styles.email, {textDecorationLine: 'underline'}]}>
-              {props?.userData?.email}
-            </Text>
+          <View style={styles.headingContainer}>
+            <HomeIcon name="home" size={15} color="green" />
+            <Text style={styles.headingTextSlash}>/</Text>
+            <Text style={styles.headingText}>my profile</Text>
           </View>
 
-          <View style={[styles.contentContainer, {flexDirection: 'row'}]}>
-            <TelephoneIcon
-              name="phone"
-              size={15}
-              color="#fff"
-              style={styles.icon}
-            />
-            <Text style={styles.email}>{props.userData.phone}</Text>
-          </View>
+          <ImageBackground
+            source={require('../../Assists/images/background.jpeg')}
+            style={styles.imageBack}>
+            <View style={styles.contentContainer}>
+              <Image
+                source={
+                  props?.profileDetails?.profileImage
+                    ? {uri: props?.profileDetails?.profileImage}
+                    : require('../../Assists/images/defaultProfile.png')
+                }
+                style={styles.userProfile}
+              />
+              <View style={styles.editIconContainer}>
+                <Pressable
+                  onPress={() => props.setShowProfileDetailsModal(true)}
+                  style={({pressed}) => [
+                    styles.editIconPressable,
+                    {backgroundColor: pressed ? 'rgba(0,0,0,0)' : '#ffa700'},
+                  ]}>
+                  <EditIcon name="edit" size={15} color="#fff" />
+                </Pressable>
+              </View>
+            </View>
 
-          <View style={styles.doBContainer}>
-            <DOBIcon
-              name="birthday-cake"
-              size={15}
-              color="#fff"
-              style={styles.icon}
-            />
-            <Text style={styles.userDOB}>
-              {props?.profileDetails?.dateOfBirth || 'N/A'}
-            </Text>
-          </View>
-        </ImageBackground>
+            <View style={styles.imageBackUserNameContainer}>
+              <Text style={styles.imageBackUserName}>
+                {props?.userData?.firstName} {props?.profileDetails?.middleName}{' '}
+                {props?.userData?.lastName}
+              </Text>
+            </View>
 
-        <View style={styles.card}>
-          <View style={styles.cardHeadingContainer}>
-            <Text style={styles.cardHeadingText}>login with</Text>
-          </View>
-          <View style={styles.line} />
+            <View style={styles.contentContainer}>
+              <Text style={[styles.email, {textDecorationLine: 'underline'}]}>
+                {props?.userData?.email}
+              </Text>
+            </View>
 
-          <View style={styles.buttonsContainer}>
-            <Pressable style={styles.pressAbleStyle}>
-              <GoogleIcon
-                name="google"
+            <View style={[styles.contentContainer, {flexDirection: 'row'}]}>
+              <TelephoneIcon
+                name="phone"
                 size={15}
                 color="#fff"
-                style={styles.pressableIcon}
+                style={styles.icon}
               />
-              <Text style={styles.pressableText}>Google</Text>
-            </Pressable>
+              <Text style={styles.email}>{props.userData.phone}</Text>
+            </View>
 
-            <Pressable style={styles.pressAbleStyle}>
-              <TwitterIcon
-                name="twitter"
+            <View style={styles.doBContainer}>
+              <DOBIcon
+                name="birthday-cake"
                 size={15}
                 color="#fff"
-                style={styles.pressableIcon}
+                style={styles.icon}
               />
-              <Text style={styles.pressableText}>Twitter</Text>
-            </Pressable>
+              <Text style={styles.userDOB}>
+                {props?.profileDetails?.dateOfBirth || 'N/A'}
+              </Text>
+            </View>
+          </ImageBackground>
 
-            <Pressable style={styles.pressAbleStyle}>
-              <LinkeInIcon
-                name="linkedin"
-                size={15}
-                color="#fff"
-                style={styles.pressableIcon}
-              />
-              <Text style={styles.pressableText}>LinkeIn</Text>
-            </Pressable>
+          <View style={styles.card}>
+            <View style={styles.cardHeadingContainer}>
+              <Text style={styles.cardHeadingText}>login with</Text>
+            </View>
+            <View style={styles.line} />
 
-            <Pressable style={styles.facebookPressable}>
-              <FacebookIcon
-                name="facebook"
-                size={15}
-                color="#fff"
-                style={styles.pressableIcon}
-              />
-              <Text style={styles.pressableText}>Facebook</Text>
-            </Pressable>
-          </View>
-        </View>
+            <View style={styles.buttonsContainer}>
+              <Pressable style={styles.pressAbleStyle}>
+                <GoogleIcon
+                  name="google"
+                  size={15}
+                  color="#fff"
+                  style={styles.pressableIcon}
+                />
+                <Text style={styles.pressableText}>Google</Text>
+              </Pressable>
 
-        <View style={styles.employmentCard}>
-          <View style={styles.employmentCardHeadingContainer}>
-            <Text style={styles.cardHeadingText}>employment details</Text>
-            <View style={styles.editContainer}>
-              <Pressable
-                onPress={() => props.setIsShowEmploymentDetailsModal(true)}
-                style={({pressed}) => [
-                  styles.editIconPressable,
-                  {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
-                ]}>
-                <EditIcon name="edit" size={15} color="#fff" />
+              <Pressable style={styles.pressAbleStyle}>
+                <TwitterIcon
+                  name="twitter"
+                  size={15}
+                  color="#fff"
+                  style={styles.pressableIcon}
+                />
+                <Text style={styles.pressableText}>Twitter</Text>
+              </Pressable>
+
+              <Pressable style={styles.pressAbleStyle}>
+                <LinkeInIcon
+                  name="linkedin"
+                  size={15}
+                  color="#fff"
+                  style={styles.pressableIcon}
+                />
+                <Text style={styles.pressableText}>LinkeIn</Text>
+              </Pressable>
+
+              <Pressable style={styles.facebookPressable}>
+                <FacebookIcon
+                  name="facebook"
+                  size={15}
+                  color="#fff"
+                  style={styles.pressableIcon}
+                />
+                <Text style={styles.pressableText}>Facebook</Text>
               </Pressable>
             </View>
           </View>
-          <View style={styles.line} />
 
-          <View style={styles.profileDetailsContainer}>
-            <View style={styles.profileDetailsContainerChild}>
-              <Text style={styles.employeeHeading}>
-                Position: <Text style={styles.employeePosition}>hello</Text>
-              </Text>
-              <Text style={styles.employeeHeading}>
-                Department:
-                <Text style={styles.employeePosition}> Founders</Text>
-              </Text>
-              <Text style={styles.employeeHeading}>
-                Date of Hire:
-                <Text style={styles.employeePosition}>
-                  24/11/2021 (0y 2m 8d)
+          <View style={styles.employmentCard}>
+            <View style={styles.employmentCardHeadingContainer}>
+              <Text style={styles.cardHeadingText}>employment details</Text>
+              <View style={styles.editContainer}>
+                <Pressable
+                  onPress={() => props.setIsShowEmploymentDetailsModal(true)}
+                  style={({pressed}) => [
+                    styles.editIconPressable,
+                    {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
+                  ]}>
+                  <EditIcon name="edit" size={15} color="#fff" />
+                </Pressable>
+              </View>
+            </View>
+            <View style={styles.line} />
+
+            <View style={styles.profileDetailsContainer}>
+              <View style={styles.profileDetailsContainerChild}>
+                <Text style={styles.employeeHeading}>
+                  Position: <Text style={styles.employeePosition}>hello</Text>
                 </Text>
-              </Text>
-              <Text style={styles.employeeHeading}>
-                Level:
-                <Text style={styles.employeePosition}>{/* level num */}</Text>
-              </Text>
-            </View>
+                <Text style={styles.employeeHeading}>
+                  Department:
+                  <Text style={styles.employeePosition}> Founders</Text>
+                </Text>
+                <Text style={styles.employeeHeading}>
+                  Date of Hire:
+                  <Text style={styles.employeePosition}>
+                    24/11/2021 (0y 2m 8d)
+                  </Text>
+                </Text>
+                <Text style={styles.employeeHeading}>
+                  Level:
+                  <Text style={styles.employeePosition}>{/* level num */}</Text>
+                </Text>
+              </View>
 
-            <View style={styles.detailsContainer}>
-              <Text style={styles.employeeHeading}>
-                Employment Status:
-                <Text style={styles.employeePosition}>{/* status  */}</Text>
-              </Text>
-              <Text style={styles.employeeHeading}>
-                Office:
-                <Text style={styles.employeePosition}>{/* office  */}</Text>
-              </Text>
-              <Text style={styles.employeeHeading}>
-                Direct Manager:
-                <Text style={styles.employeePosition}> Master Devandgo</Text>
-              </Text>
-            </View>
-          </View>
-        </View>
-
-        <View style={styles.itMyOwnCard}>
-          <View style={styles.cardHeadingContainer}>
-            <Text style={[styles.itMyOwn]}>in my own words</Text>
-            <View style={styles.editContainer}>
-              <Pressable
-                onPress={() => props.setIsShowEditBioModal(true)}
-                style={({pressed}) => [
-                  styles.editIconPressable,
-                  {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
-                ]}>
-                <EditIcon name="edit" size={15} color="#fff" />
-              </Pressable>
+              <View style={styles.detailsContainer}>
+                <Text style={styles.employeeHeading}>
+                  Employment Status:
+                  <Text style={styles.employeePosition}>{/* status  */}</Text>
+                </Text>
+                <Text style={styles.employeeHeading}>
+                  Office:
+                  <Text style={styles.employeePosition}>{/* office  */}</Text>
+                </Text>
+                <Text style={styles.employeeHeading}>
+                  Direct Manager:
+                  <Text style={styles.employeePosition}> Master Devandgo</Text>
+                </Text>
+              </View>
             </View>
           </View>
-          <View style={styles.line} />
 
-          <View style={styles.hobbiesContainer}>
-            <View>
-              <Text>
-                Get to know me better: <Text> {props?.editBioData?.about}</Text>
-              </Text>
+          <View style={styles.itMyOwnCard}>
+            <View style={styles.cardHeadingContainer}>
+              <Text style={[styles.itMyOwn]}>in my own words</Text>
+              <View style={styles.editContainer}>
+                <Pressable
+                  onPress={() => props.setIsShowEditBioModal(true)}
+                  style={({pressed}) => [
+                    styles.editIconPressable,
+                    {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#ffa700'},
+                  ]}>
+                  <EditIcon name="edit" size={15} color="#fff" />
+                </Pressable>
+              </View>
             </View>
-            <View>
-              <Text>
-                Hobbies: <Text> {props?.editBioData?.hobbies}</Text>
-              </Text>
-            </View>
-            <View>
-              <Text>
-                Favorite Books:
-                <Text> {props?.editBioData?.favoriteBooks}</Text>
-              </Text>
-            </View>
-            <View>
-              <Text>
-                Music Preference:
-                <Text> {props?.editBioData?.musicPreference}</Text>
-              </Text>
-            </View>
-            <View>
-              <Text>
-                Sports:
-                <Text> {props?.editBioData?.sports}</Text>
-              </Text>
+            <View style={styles.line} />
+
+            <View style={styles.hobbiesContainer}>
+              <View>
+                <Text>
+                  Get to know me better:{' '}
+                  <Text> {props?.editBioData?.about}</Text>
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  Hobbies: <Text> {props?.editBioData?.hobbies}</Text>
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  Favorite Books:
+                  <Text> {props?.editBioData?.favoriteBooks}</Text>
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  Music Preference:
+                  <Text> {props?.editBioData?.musicPreference}</Text>
+                </Text>
+              </View>
+              <View>
+                <Text>
+                  Sports:
+                  <Text> {props?.editBioData?.sports}</Text>
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <View style={styles.managerNotesCard}>
-          <View style={styles.cardHeadingContainer}>
-            <Text style={[styles.itMyOwn]}>manager's notes</Text>
-          </View>
-          <View style={styles.line} />
+          <View style={styles.managerNotesCard}>
+            <View style={styles.cardHeadingContainer}>
+              <Text style={[styles.itMyOwn]}>manager's notes</Text>
+            </View>
+            <View style={styles.line} />
 
-          <View style={styles.managerNotesTextContainer}>
-            <View style={styles.managerNotesBackground}>
-              <Text style={styles.managerNotesText}>
-                We couldn't find any records.
-              </Text>
+            <View style={styles.managerNotesTextContainer}>
+              <View style={styles.managerNotesBackground}>
+                <Text style={styles.managerNotesText}>
+                  We couldn't find any records.
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        <ProfileDetailsModal {...props} />
+          <ProfileDetailsModal {...props} />
 
-        <EmploymentDetailsModal {...props} />
+          <EmploymentDetailsModal {...props} />
 
-        <EditBioModal {...props} />
+          <EditBioModal {...props} />
 
-        <EmergencyContactModal {...props} />
+          <EmergencyContactModal {...props} />
 
-        <ContactInformationModal {...props} />
+          <ContactInformationModal {...props} />
 
-        <AddLicenseCertificationModal {...props} />
+          <EducationModal {...props} />
 
-        <EducationModal {...props} />
+          <AddLicenseCertificationModal {...props} />
 
-        {tabsSection(props)}
-      </ScrollView>
+          {tabsSection(props)}
+        </ScrollView>
+      )}
     </View>
   );
 };

@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: '30%',
+    height: '45%',
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -55,6 +55,16 @@ const styles = StyleSheet.create({
     width: '45%',
     height: '80%',
     borderRadius: 60,
+  },
+  dpImageContainer: {
+    width: '100%',
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  userName: {
+    color: 'black',
+    textTransform: 'capitalize',
   },
 });
 

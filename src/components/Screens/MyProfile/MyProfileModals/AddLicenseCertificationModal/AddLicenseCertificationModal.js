@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -58,8 +58,12 @@ const AddLicenseCertificationModal = props => {
                   name <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.addLicenseName}
+                  onChangeText={text => props.setAddLicenseName(text)}
+                />
               </View>
             </View>
 
@@ -69,8 +73,12 @@ const AddLicenseCertificationModal = props => {
                   issuing organization <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.addLicenseIssuing}
+                  onChangeText={text => props.setAddLicenseIssuing(text)}
+                />
               </View>
             </View>
 
@@ -80,8 +88,12 @@ const AddLicenseCertificationModal = props => {
                   credential iD <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.addLicenseId}
+                  onChangeText={text => props.setAddLicenseId(text)}
+                />
               </View>
             </View>
 
@@ -89,8 +101,12 @@ const AddLicenseCertificationModal = props => {
               <View style={styles.commentTextContainer}>
                 <Text style={styles.reqType}>URL</Text>
               </View>
-              <View style={styles.commentTextInput}>
-                <TextInput />
+              <View>
+                <TextInput
+                  style={styles.commentTextInput}
+                  value={props.addLicenseUrl}
+                  onChangeText={text => props.setAddLicenseUrl(text)}
+                />
               </View>
             </View>
 
@@ -196,7 +212,7 @@ const AddLicenseCertificationModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.submitAddLicense()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,

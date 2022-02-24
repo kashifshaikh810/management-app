@@ -87,6 +87,12 @@ const MyProfile = props => {
   const [userEducationData, setUserEducationData] = useState({});
   const [isEducationLoading, setIsEducationLoading] = useState(false);
 
+  // add license modal all inputs
+  const [addLicenseName, setAddLicenseName] = useState('');
+  const [addLicenseIssuing, setAddLicenseIssuing] = useState('');
+  const [addLicenseId, setAddLicenseId] = useState('');
+  const [addLicenseUrl, setAddLicenseUrl] = useState('');
+
   // storage ref
   const storageRef = Storage().ref(
     `/profileImage/${profileImage ? profileImage?.name : ''}`,
@@ -282,6 +288,7 @@ const MyProfile = props => {
   let ddDate = fromSectionDate.getDate();
   let mmMonth = fromSectionDate.getMonth() + 1;
   let yyYear = fromSectionDate.getFullYear();
+
   if (ddDate < 10) {
     ddDate = '0' + ddDate;
   }
@@ -289,6 +296,7 @@ const MyProfile = props => {
   if (mmMonth < 10) {
     mmMonth = '0' + mmMonth;
   }
+
   fromSectionDate = ddDate + '/' + mmMonth + '/' + yyYear;
 
   //functions
@@ -348,8 +356,13 @@ const MyProfile = props => {
     try {
       const file = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
-      });
-      setProfileImage(file);
+      })
+        .then(() => {
+          setProfileImage(file);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log(err, 'errr');
@@ -405,55 +418,85 @@ const MyProfile = props => {
               .getDownloadURL()
               .then(myDownloadURL => {
                 console.log('image ', myDownloadURL);
-                Database().ref(`/profileDetails/${currUserUid}`).set({
-                  userId: currUserUid,
-                  profileImage: myDownloadURL,
-                  firstName: firstName,
-                  middleName: middleName,
-                  lastName: lastName,
-                  gender: gender,
-                  maritalStatus: selectSingleOrMarried,
-                  dateOfBirth: dateOfBirth,
-                  email: email,
-                  alternativeEmail: alternativeEmail,
-                  language: language,
-                  timeZone: timeZone,
-                });
-                Database().ref('/userSignUp/').child(currUserUid).update({
-                  firstName: firstName,
-                  middleName: middleName,
-                  lastName: lastName,
-                });
-                Alert.alert('Employee has been updated successfully.');
-                setShowProfileDetailsModal(false);
-                setIsLoading(false);
+                Database()
+                  .ref(`/profileDetails/${currUserUid}`)
+                  .set({
+                    userId: currUserUid,
+                    profileImage: myDownloadURL,
+                    firstName: firstName,
+                    middleName: middleName,
+                    lastName: lastName,
+                    gender: gender,
+                    maritalStatus: selectSingleOrMarried,
+                    dateOfBirth: dateOfBirth,
+                    email: email,
+                    alternativeEmail: alternativeEmail,
+                    language: language,
+                    timeZone: timeZone,
+                  })
+                  .then(() => {
+                    Database()
+                      .ref('/userSignUp/')
+                      .child(currUserUid)
+                      .update({
+                        firstName: firstName,
+                        middleName: middleName,
+                        lastName: lastName,
+                      })
+                      .then(() => {
+                        Alert.alert('Employee has been updated successfully.');
+                        setShowProfileDetailsModal(false);
+                        setIsLoading(false);
+                      })
+                      .catch(err => {
+                        console.log(err);
+                      });
+                  })
+                  .catch(err => {
+                    console.log(err);
+                  });
               });
           });
         } catch (err) {
           console.log(err);
         }
       } else {
-        Database().ref(`/profileDetails/${currUserUid}`).update({
-          userId: currUserUid,
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
-          gender: gender,
-          maritalStatus: selectSingleOrMarried,
-          dateOfBirth: dateOfBirth,
-          email: email,
-          alternativeEmail: alternativeEmail,
-          language: language,
-          timeZone: timeZone,
-        });
-        Database().ref('/userSignUp/').child(currUserUid).update({
-          firstName: firstName,
-          middleName: middleName,
-          lastName: lastName,
-        });
-        Alert.alert('Employee has been updated successfully.');
-        setShowProfileDetailsModal(false);
-        setIsLoading(false);
+        Database()
+          .ref(`/profileDetails/${currUserUid}`)
+          .update({
+            userId: currUserUid,
+            firstName: firstName,
+            middleName: middleName,
+            lastName: lastName,
+            gender: gender,
+            maritalStatus: selectSingleOrMarried,
+            dateOfBirth: dateOfBirth,
+            email: email,
+            alternativeEmail: alternativeEmail,
+            language: language,
+            timeZone: timeZone,
+          })
+          .then(() => {
+            Database()
+              .ref('/userSignUp/')
+              .child(currUserUid)
+              .update({
+                firstName: firstName,
+                middleName: middleName,
+                lastName: lastName,
+              })
+              .then(() => {
+                Alert.alert('Employee has been updated successfully.');
+                setShowProfileDetailsModal(false);
+                setIsLoading(false);
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     } else {
       ToastAndroid.show(
@@ -467,15 +510,22 @@ const MyProfile = props => {
   const updateEditBio = () => {
     let currUserUid = Auth()?.currentUser?.uid;
     if (about && hobbies && favoriteBooks && musicPreference && sports) {
-      Database().ref(`/editBio/${currUserUid}`).set({
-        about: about,
-        hobbies: hobbies,
-        favoriteBooks: favoriteBooks,
-        musicPreference: musicPreference,
-        sports: sports,
-      });
-      setIsShowEditBioModal(false);
-      Alert.alert('Profile has been updated successfully.');
+      Database()
+        .ref(`/editBio/${currUserUid}`)
+        .set({
+          about: about,
+          hobbies: hobbies,
+          favoriteBooks: favoriteBooks,
+          musicPreference: musicPreference,
+          sports: sports,
+        })
+        .then(() => {
+          setIsShowEditBioModal(false);
+          Alert.alert('Profile has been updated successfully.');
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   };
 
@@ -489,27 +539,42 @@ const MyProfile = props => {
       emergencyContactMobilePhone
     ) {
       setIsEmergencyContactLoading(true);
-      Database().ref(`/emergencyContact/${currUserUid}`).set({
-        userId: currUserUid,
-        emergencyContactFirstName: emergencyContactFirstName,
-        emergencyContactMiddleName: emergencyContactMiddleName,
-        emergencyContactLastName: emergencyContactLastName,
-        emergencyContactRelationShip: emergencyContactRelationShip,
-        emergencyContactOfficePhone: emergencyContactOfficePhone,
-        emergencyContactMobilePhone: emergencyContactMobilePhone,
-      });
-      setShowEmergencyContactModal(false);
-      setIsEmergencyContactLoading(false);
-      Alert.alert('Profile has been updated successfully.');
+      Database()
+        .ref(`/emergencyContact/${currUserUid}`)
+        .set({
+          userId: currUserUid,
+          emergencyContactFirstName: emergencyContactFirstName,
+          emergencyContactMiddleName: emergencyContactMiddleName,
+          emergencyContactLastName: emergencyContactLastName,
+          emergencyContactRelationShip: emergencyContactRelationShip,
+          emergencyContactOfficePhone: emergencyContactOfficePhone,
+          emergencyContactMobilePhone: emergencyContactMobilePhone,
+        })
+        .then(() => {
+          setShowEmergencyContactModal(false);
+          setIsEmergencyContactLoading(false);
+          Alert.alert('Profile has been updated successfully.');
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   };
 
   const removeEmergencyContact = () => {
     let uid = Auth()?.currentUser?.uid;
-    Database().ref(`/emergencyContact/${uid}`).remove();
-    setShowEmergencyContactModalInputs(false);
-    setShowEmergencyContactModal(false);
-    Alert.alert('contact has been removed successfully.');
+    Database()
+      .ref(`/emergencyContact/${uid}`)
+      .remove()
+      .then(() => {
+        setShowEmergencyContactModalInputs(false);
+        setShowEmergencyContactModal(false);
+        Alert.alert('contact has been removed successfully.');
+      })
+      .catch(() => {
+        setShowEmergencyContactModalInputs(false);
+        setShowEmergencyContactModal(false);
+      });
   };
 
   const submitContactInfo = () => {
@@ -526,42 +591,110 @@ const MyProfile = props => {
       contactInfoPostalCode
     ) {
       setContactInIsLoading(true);
-      Database().ref(`/contactInformation/${uid}`).set({
-        userId: uid,
-        contactInfoMobilePhone: contactInfoMobilePhone,
-        country: country,
-        contactInfoAddress: contactInfoAddress,
-        contactInfoCity: contactInfoCity,
-        stateAndRegion: stateAndRegion,
-        contactInfoPostalCode: contactInfoPostalCode,
-      });
-      setContactInIsLoading(false);
-      setIsShowContactInformationModal(false);
-      Alert.alert('Profile has been updated successfully.');
+      Database()
+        .ref(`/contactInformation/${uid}`)
+        .set({
+          userId: uid,
+          contactInfoMobilePhone: contactInfoMobilePhone,
+          country: country,
+          contactInfoAddress: contactInfoAddress,
+          contactInfoCity: contactInfoCity,
+          stateAndRegion: stateAndRegion,
+          contactInfoPostalCode: contactInfoPostalCode,
+        })
+        .then(() => {
+          setContactInIsLoading(false);
+          setIsShowContactInformationModal(false);
+          Alert.alert('Profile has been updated successfully.');
+        })
+        .catch(err => {
+          setContactInIsLoading(false);
+          setIsShowContactInformationModal(false);
+        });
     }
   };
 
   const removeEducation = () => {
     let uid = Auth()?.currentUser?.uid;
-    Database().ref(`/education/${uid}`).remove();
-    setShowEducationModal(false);
-    setShowEducationModalInputs(false);
-    Alert.alert('Education has been updated successfully.');
+    Database()
+      .ref(`/education/${uid}`)
+      .remove()
+      .then(() => {
+        setShowEducationModal(false);
+        setShowEducationModalInputs(false);
+        Alert.alert('Education has been updated successfully.');
+      })
+      .catch(err => {
+        setShowEducationModal(false);
+        setShowEducationModalInputs(false);
+        console.log(err);
+      });
   };
 
   const educationSubmit = () => {
     let uid = Auth()?.currentUser?.uid;
     if (collageOrUniversity || degree || major || yearGraduated) {
       setIsEducationLoading(true);
-      Database().ref(`/education/${uid}`).set({
-        collageOrUniversity: collageOrUniversity,
-        degree: degree,
-        major: major,
-        yearGraduated: yearGraduated,
-      });
-      setIsEducationLoading(false);
-      setShowEducationModal(false);
-      Alert.alert('Education has been updated successfully.');
+      Database()
+        .ref(`/education/${uid}`)
+        .set({
+          collageOrUniversity: collageOrUniversity,
+          degree: degree,
+          major: major,
+          yearGraduated: yearGraduated,
+        })
+        .then(() => {
+          setShowEducationModal(false);
+          setIsEducationLoading(false);
+          Alert.alert('Education has been updated successfully.');
+        })
+        .catch(err => {
+          setShowEducationModal(false);
+          setIsEducationLoading(false);
+          console.log(err);
+        });
+    }
+  };
+
+  const submitAddLicense = () => {
+    let uid = Auth()?.currentUser?.uid;
+    let issueSectionMonth = showIssueDateMonthModal?.chooseVal;
+    let issueSectionYear = showIssueDateYearsModal?.chooseVal;
+    let expireSectionMonth = showExpirationDateMonthModal?.chooseVal;
+    let expireSectionYear = showExpirationDateYearsModal?.chooseVal;
+
+    if (
+      addLicenseName ||
+      addLicenseIssuing ||
+      addLicenseUrl ||
+      addLicenseId ||
+      issueSectionMonth ||
+      issueSectionYear ||
+      expireSectionMonth ||
+      expireSectionYear
+    ) {
+      Database()
+        .ref(`/addLicenseOrCertification/${uid}`)
+        .set({
+          addLicenseName: addLicenseName,
+          addLicenseIssuing: addLicenseIssuing,
+          addLicenseUrl: addLicenseUrl,
+          addLicenseId: addLicenseId,
+          issueSectionMonth: issueSectionMonth,
+          issueSectionYear: issueSectionYear,
+          expireSectionMonth: expireSectionMonth,
+          expireSectionYear: expireSectionYear,
+        })
+        .then(() => {
+          setIsShowAddLicenseCertification(false);
+          Alert.alert(
+            'AddLicense Or Certification has been updated successfully.',
+          );
+        })
+        .catch(err => {
+          console.log(err);
+          setIsShowAddLicenseCertification(false);
+        });
     }
   };
 
@@ -569,7 +702,7 @@ const MyProfile = props => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-    }, 500);
+    }, 100);
   };
 
   useEffect(() => {
@@ -809,6 +942,15 @@ const MyProfile = props => {
       userEducationData={userEducationData}
       isEducationLoading={isEducationLoading}
       setIsEducationLoading={setIsEducationLoading}
+      addLicenseName={addLicenseName}
+      setAddLicenseName={setAddLicenseName}
+      addLicenseIssuing={addLicenseIssuing}
+      setAddLicenseIssuing={setAddLicenseIssuing}
+      addLicenseId={addLicenseId}
+      setAddLicenseId={setAddLicenseId}
+      addLicenseUrl={addLicenseUrl}
+      setAddLicenseUrl={setAddLicenseUrl}
+      submitAddLicense={submitAddLicense}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}

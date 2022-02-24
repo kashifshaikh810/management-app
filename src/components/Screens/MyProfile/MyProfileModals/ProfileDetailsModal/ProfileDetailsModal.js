@@ -70,7 +70,6 @@ const ProfileDetailsModal = props => {
         props.email === props?.profileDetails?.email &&
         props.alternativeEmail === props?.profileDetails?.alternativeEmail &&
         props.isShowGenderModal?.chooseVal === props?.profileDetails?.gender &&
-        props.fromSectionDate === props?.profileDetails?.dateOfBirth &&
         props.isShowZoneModal?.chooseVal === props?.profileDetails?.timeZone &&
         props.isShowLanguagesModal?.chooseVal ===
           props?.profileDetails?.language);
