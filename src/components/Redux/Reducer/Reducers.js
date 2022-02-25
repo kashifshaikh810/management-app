@@ -3,6 +3,7 @@ import {
   FETCH_EDIT_BIO_DATA,
   FETCH_EDUCATION_DATA,
   FETCH_EMERGENCY_CONTACT_DATA,
+  FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
   FETCH_PROFILE_DETAILS_DATA,
   FETCH_USER_DATA,
 } from '../Action/ActionTypes';
@@ -14,6 +15,7 @@ const initialState = {
   contactData: {},
   contactInfoData: {},
   educationData: {},
+  licenseAndCertificationsData: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -47,6 +49,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         educationData: action.payload,
+      };
+    case FETCH_LICENSES_AND_CERTIFICATIONS_DATA:
+      return {
+        ...state,
+        licenseAndCertificationsData: action.payload,
       };
     default:
       return state;

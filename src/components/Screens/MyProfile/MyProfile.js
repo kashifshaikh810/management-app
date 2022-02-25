@@ -10,6 +10,7 @@ import {
   fetchContactInformationData,
   fetchEducationData,
   fetchEmergencyContactData,
+  fetchLicensesAndCertificationsData,
 } from '../../Redux/Action/Actions';
 
 const MyProfile = props => {
@@ -92,6 +93,14 @@ const MyProfile = props => {
   const [addLicenseIssuing, setAddLicenseIssuing] = useState('');
   const [addLicenseId, setAddLicenseId] = useState('');
   const [addLicenseUrl, setAddLicenseUrl] = useState('');
+  const [licenseCertificationsData, setLicenseCertificationsData] = useState(
+    {},
+  );
+  const [
+    isLicenseAndCertificationsLoading,
+    setIsLicenseAndCertificationsLoading,
+  ] = useState(false);
+  const [goToBottom, setGoToBottom] = useState(false);
 
   // storage ref
   const storageRef = Storage().ref(
@@ -280,6 +289,7 @@ const MyProfile = props => {
     contactData,
     contactInfoData,
     educationData,
+    licenseAndCertificationsData,
   } = useSelector(state => state?.reduc);
   const dispatch = useDispatch();
 
@@ -673,6 +683,7 @@ const MyProfile = props => {
       expireSectionMonth ||
       expireSectionYear
     ) {
+      setIsLicenseAndCertificationsLoading(true);
       Database()
         .ref(`/addLicenseOrCertification/${uid}`)
         .set({
@@ -686,6 +697,7 @@ const MyProfile = props => {
           expireSectionYear: expireSectionYear,
         })
         .then(() => {
+          setIsLicenseAndCertificationsLoading(false);
           setIsShowAddLicenseCertification(false);
           Alert.alert(
             'AddLicense Or Certification has been updated successfully.',
@@ -693,9 +705,32 @@ const MyProfile = props => {
         })
         .catch(err => {
           console.log(err);
+          setIsLicenseAndCertificationsLoading(false);
           setIsShowAddLicenseCertification(false);
         });
     }
+  };
+
+  const editLicenseAndCertifications = () => {
+    setIsShowAddLicenseCertification(true);
+  };
+
+  const deleteLicenseAndCertifications = () => {
+    let uid = Auth()?.currentUser?.uid;
+    setRefreshing(true);
+    Database()
+      .ref(`/addLicenseOrCertification/${uid}`)
+      .remove()
+      .then(() => {
+        setRefreshing(false);
+        setGoToBottom(true);
+        Alert.alert(
+          'AddLicense Or Certification has been removed successfully.',
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const onRefresh = () => {
@@ -714,9 +749,9 @@ const MyProfile = props => {
     setEmail(currUserData?.email);
     setAlternativeEmail(profileData?.alternativeEmail);
     setUserData(currUserData);
-    setIsShowLanguagesModal({chooseVal: profileData.language});
-    setIsShowZoneModal({chooseVal: profileData.timeZone});
-    setIsShowGenderModal({chooseVal: profileData.gender});
+    setIsShowLanguagesModal({chooseVal: profileData?.language});
+    setIsShowZoneModal({chooseVal: profileData?.timeZone});
+    setIsShowGenderModal({chooseVal: profileData?.gender});
   }, [profileData, currUserData, refreshing]);
 
   useEffect(() => {
@@ -732,6 +767,7 @@ const MyProfile = props => {
     dispatch(fetchEmergencyContactData());
     dispatch(fetchContactInformationData());
     dispatch(fetchEducationData());
+    dispatch(fetchLicensesAndCertificationsData());
   }, [refreshing]);
 
   useEffect(() => {
@@ -761,6 +797,26 @@ const MyProfile = props => {
     setMajor(educationData?.major);
     setYearGraduated(educationData?.yearGraduated);
   }, [educationData, refreshing]);
+
+  useEffect(() => {
+    setLicenseCertificationsData(licenseAndCertificationsData);
+    setAddLicenseName(licenseAndCertificationsData?.addLicenseName);
+    setAddLicenseIssuing(licenseAndCertificationsData?.addLicenseIssuing);
+    setAddLicenseUrl(licenseAndCertificationsData?.addLicenseUrl);
+    setAddLicenseId(licenseAndCertificationsData?.addLicenseId);
+    setShowIssueDateMonthModal({
+      chooseVal: licenseAndCertificationsData?.issueSectionMonth,
+    });
+    setShowIssueDateYearsModal({
+      chooseVal: licenseAndCertificationsData?.issueSectionYear,
+    });
+    setShowExpirationDateMonthModal({
+      chooseVal: licenseAndCertificationsData?.expireSectionMonth,
+    });
+    setShowExpirationDateYearsModal({
+      chooseVal: licenseAndCertificationsData?.expireSectionYear,
+    });
+  }, [licenseAndCertificationsData, refreshing]);
 
   return (
     <MyProfileMarkup
@@ -951,6 +1007,11 @@ const MyProfile = props => {
       addLicenseUrl={addLicenseUrl}
       setAddLicenseUrl={setAddLicenseUrl}
       submitAddLicense={submitAddLicense}
+      licenseCertificationsData={licenseCertificationsData}
+      editLicenseAndCertifications={editLicenseAndCertifications}
+      deleteLicenseAndCertifications={deleteLicenseAndCertifications}
+      isLicenseAndCertificationsLoading={isLicenseAndCertificationsLoading}
+      goToBottom={goToBottom}
       // get all users from database and show this section
       showDirectManagerModal={showDirectManagerModal}
       setShowDirectManagerModal={setShowDirectManagerModal}

@@ -6,6 +6,7 @@ import {
   FETCH_EMERGENCY_CONTACT_DATA,
   FETCH_CONTACT_INFORMATION_DATA,
   FETCH_EDUCATION_DATA,
+  FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -82,6 +83,19 @@ export const fetchEducationData = () => dispatch => {
       dispatch({
         type: FETCH_EDUCATION_DATA,
         payload: education,
+      });
+    });
+};
+
+export const fetchLicensesAndCertificationsData = () => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/addLicenseOrCertification/${uid}`)
+    .on('value', snapshot => {
+      let license = snapshot.val();
+      dispatch({
+        type: FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
+        payload: license,
       });
     });
 };

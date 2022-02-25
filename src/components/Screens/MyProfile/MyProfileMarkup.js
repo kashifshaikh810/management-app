@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {
   View,
   Text,
@@ -19,6 +19,8 @@ import FacebookIcon from 'react-native-vector-icons/FontAwesome';
 import TwitterIcon from 'react-native-vector-icons/AntDesign';
 import LinkeInIcon from 'react-native-vector-icons/Entypo';
 import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import tw from 'tailwind-react-native-classnames';
 
 import styles from './styles';
 import Header from '../Header/Header';
@@ -30,8 +32,6 @@ import ContactInformationModal from './MyProfileModals/ContactInformationModal/C
 import AddLicenseCertificationModal from './MyProfileModals/AddLicenseCertificationModal/AddLicenseCertificationModal';
 import EmergencyContactModal from './MyProfileModals/EmergencyContactModal/EmergencyContactModal';
 import EducationModal from './MyProfileModals/EducationModal/EducationModal ';
-import tw from 'tailwind-react-native-classnames';
-import ProfileLoader from '../../Loaders/ProfileLoader';
 
 const timeOffSection = props => {
   return (
@@ -407,7 +407,85 @@ const educationSection = props => {
   );
 };
 
-const licensesAndCertificationsSection = props => {
+const licensesAndCertificationsSection = (props, secondProps) => {
+  const issueMonth = () => {
+    if (props.licenseCertificationsData.issueSectionMonth === 'January') {
+      return '01';
+    } else if (
+      props.licenseCertificationsData.issueSectionMonth === 'February'
+    ) {
+      return '02';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'March') {
+      return '03';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'April') {
+      return '04';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'May') {
+      return '05';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'June') {
+      return '06';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'July') {
+      return '07';
+    } else if (props.licenseCertificationsData.issueSectionMonth === 'August') {
+      return '08';
+    } else if (
+      props.licenseCertificationsData.issueSectionMonth === 'September'
+    ) {
+      return '09';
+    } else if (
+      props.licenseCertificationsData.issueSectionMonth === 'October'
+    ) {
+      return '10';
+    } else if (
+      props.licenseCertificationsData.issueSectionMonth === 'November'
+    ) {
+      return '11';
+    } else if (
+      props.licenseCertificationsData.issueSectionMonth === 'December'
+    ) {
+      return '12';
+    }
+  };
+
+  const expireMonth = () => {
+    if (props.licenseCertificationsData.expireSectionMonth === 'January') {
+      return '01';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'February'
+    ) {
+      return '02';
+    } else if (props.licenseCertificationsData.expireSectionMonth === 'March') {
+      return '03';
+    } else if (props.licenseCertificationsData.expireSectionMonth === 'April') {
+      return '04';
+    } else if (props.licenseCertificationsData.expireSectionMonth === 'May') {
+      return '05';
+    } else if (props.licenseCertificationsData.expireSectionMonth === 'June') {
+      return '06';
+    } else if (props.licenseCertificationsData.expireSectionMonth === 'July') {
+      return '07';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'August'
+    ) {
+      return '08';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'September'
+    ) {
+      return '09';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'October'
+    ) {
+      return '10';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'November'
+    ) {
+      return '11';
+    } else if (
+      props.licenseCertificationsData.expireSectionMonth === 'December'
+    ) {
+      return '12';
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.licensesAndCertifications}>
@@ -415,19 +493,84 @@ const licensesAndCertificationsSection = props => {
           licenses & Certifications
         </Text>
       </View>
-      <Pressable
-        onPress={() => props.setIsShowAddLicenseCertification(true)}
-        android_ripple={{color: '#fff'}}
-        style={({pressed}) => [
-          styles.addLicensesPressable,
-          {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#006f44'},
-        ]}>
-        <Text style={styles.addLicensesText}>add license or certification</Text>
-      </Pressable>
+      {!props.licenseCertificationsData && (
+        <Pressable
+          onPress={() => props.setIsShowAddLicenseCertification(true)}
+          android_ripple={{color: '#fff'}}
+          style={({pressed}) => [
+            styles.addLicensesPressable,
+            {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#006f44'},
+          ]}>
+          <Text style={styles.addLicensesText}>
+            add license or certification
+          </Text>
+        </Pressable>
+      )}
 
-      <View style={[styles.weCouldNotContainer, {marginVertical: 30}]}>
-        <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
-      </View>
+      {!props.licenseCertificationsData && (
+        <View style={styles.timeOffAndHolidays} />
+      )}
+      <View style={styles.line} />
+
+      {props.licenseCertificationsData && (
+        <View style={tw`flex-1 m-5 flex-row`}>
+          <View>
+            <Text style={tw`text-black mb-1`}>
+              {props.licenseCertificationsData.addLicenseName}
+            </Text>
+            <Text style={tw`mb-1 text-gray-400`}>
+              {props.licenseCertificationsData.addLicenseIssuing}
+            </Text>
+            <View style={styles.directionRow}>
+              <Text style={tw`text-gray-400`}>
+                Issued {issueMonth()}/
+                {props.licenseCertificationsData.issueSectionYear} -{' '}
+              </Text>
+              <Text style={tw`text-gray-400`}>
+                Expired {expireMonth()}/
+                {props.licenseCertificationsData.expireSectionYear}
+              </Text>
+            </View>
+            <Text style={tw`mt-1 text-gray-400`}>
+              Credential ID: {props.licenseCertificationsData.addLicenseId}
+            </Text>
+            <Pressable
+              onPress={() => secondProps.navigation.navigate('Dashboard')}
+              style={({pressed}) =>
+                tw`${pressed ? `bg-gray-200 rounded-full` : `bg-white`}`
+              }>
+              <Text style={tw`text-green-600 mt-1`}>See Credential</Text>
+            </Pressable>
+          </View>
+
+          <View style={tw`flex-1 justify-center items-end`}>
+            <Pressable
+              onPress={() => props.editLicenseAndCertifications()}
+              style={({pressed}) =>
+                tw`${
+                  pressed ? `bg-gray-200 rounded-full p-1.5` : `bg-white p-1.5`
+                }`
+              }>
+              <EditIcon name="edit" size={17} style={tw`text-gray-400`} />
+            </Pressable>
+            <Pressable
+              onPress={() => props.deleteLicenseAndCertifications()}
+              style={({pressed}) =>
+                tw`${
+                  pressed ? `bg-gray-200 rounded-full p-1.5` : `bg-white p-1.5`
+                }`
+              }>
+              <DeleteIcon name="delete" size={17} style={tw`text-gray-400`} />
+            </Pressable>
+          </View>
+        </View>
+      )}
+
+      {!props.licenseCertificationsData && (
+        <View style={[styles.weCouldNotContainer, {marginVertical: 30}]}>
+          <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -905,7 +1048,7 @@ const workingHoursSection = props => {
   );
 };
 
-const tabsSection = props => {
+const tabsSection = (props, secondProps) => {
   return (
     <View style={styles.infoCard}>
       <View style={styles.tabsContainer}>
@@ -1059,13 +1202,14 @@ const tabsSection = props => {
       {props.selectedTab === 'contact information' && contactInfoSection(props)}
       {props.selectedTab === 'education' && educationSection(props)}
       {props.selectedTab === 'licenses & certifications' &&
-        licensesAndCertificationsSection(props)}
+        licensesAndCertificationsSection(props, {...secondProps})}
       {props.selectedTab === 'working hours' && workingHoursSection(props)}
     </View>
   );
 };
 
 const MyProfileMarkup = props => {
+  const scrollViewRef = useRef();
   return (
     <View style={styles.container}>
       <Header {...props} name="profile" />
@@ -1076,6 +1220,12 @@ const MyProfileMarkup = props => {
       ) : (
         <ScrollView
           style={styles.scrollView}
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            props.goToBottom
+              ? scrollViewRef.current.scrollToEnd({animated: true})
+              : {}
+          }
           refreshControl={
             <RefreshControl
               onRefresh={props.onRefresh}
@@ -1336,7 +1486,7 @@ const MyProfileMarkup = props => {
 
           <AddLicenseCertificationModal {...props} />
 
-          {tabsSection(props)}
+          {tabsSection(props, {...props})}
         </ScrollView>
       )}
     </View>

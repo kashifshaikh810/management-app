@@ -92,6 +92,7 @@ const AddLicenseCertificationModal = props => {
                 <TextInput
                   style={styles.commentTextInput}
                   value={props.addLicenseId}
+                  keyboardType="number-pad"
                   onChangeText={text => props.setAddLicenseId(text)}
                 />
               </View>
@@ -212,13 +213,32 @@ const AddLicenseCertificationModal = props => {
               </Pressable>
 
               <Pressable
+                disabled={
+                  props?.isLicenseAndCertificationsLoading ||
+                  (props?.addLicenseName ===
+                    props?.licenseCertificationsData?.addLicenseName &&
+                    props?.addLicenseIssuing ===
+                      props?.licenseCertificationsData?.addLicenseIssuing &&
+                    props?.addLicenseUrl ===
+                      props?.licenseCertificationsData?.addLicenseUrl &&
+                    props?.addLicenseId ===
+                      props?.licenseCertificationsData?.addLicenseId &&
+                    props?.showIssueDateMonthModal?.chooseVal ===
+                      props?.licenseCertificationsData?.issueSectionMonth &&
+                    props?.showIssueDateYearsModal?.chooseVal ===
+                      props?.licenseCertificationsData?.issueSectionYear &&
+                    props?.showExpirationDateMonthModal?.chooseVal ===
+                      props?.licenseCertificationsData?.expireSectionMonth &&
+                    props?.showExpirationDateYearsModal?.chooseVal ===
+                      props?.licenseCertificationsData?.expireSectionYear)
+                }
                 onPress={() => props.submitAddLicense()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
                 ]}>
-                {false ? (
+                {props.isLicenseAndCertificationsLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
                   <Text style={styles.cancelPressableText}>submit</Text>
