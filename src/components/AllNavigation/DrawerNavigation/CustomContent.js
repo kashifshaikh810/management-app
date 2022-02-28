@@ -10,7 +10,7 @@ import CustomContentModal from '../../CustomContentModal/CustomContentModal';
 
 const CustomContent = props => {
   const [showModal, setShowModal] = useState(false);
-  const {currUserData, profileData} = useSelector(state => state.reduc);
+  const {currUserData, profileData} = useSelector(state => state?.reduc);
   let data = currUserData;
 
   const goToMyProfile = () => {

@@ -1,17 +1,34 @@
 import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {DASHBOARD, EMPLOYEES, NEWSFEED, TIMEOFF} from './DrawerNavigationNames';
+import {
+  COMPLAINTS,
+  DASHBOARD,
+  EMPLOYEES,
+  EQUIPMENTANDLICENSE,
+  NEWSFEED,
+  ONBOARDINGANDOFFBOARDING,
+  REPORTS,
+  TIMEOFF,
+} from './DrawerNavigationNames';
 import Dashboard from '../../Screens/Dashboard/Dashboard';
 import DasboardIcon from 'react-native-vector-icons/FontAwesome';
+import HandShakeIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import EmployeesIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import FileIcon from 'react-native-vector-icons/FontAwesome5';
 import TimeOffIcon from 'react-native-vector-icons/AntDesign';
 import NewsFeedIcon from 'react-native-vector-icons/FontAwesome5';
+import EquipmentAndLicenseIcon from 'react-native-vector-icons/FontAwesome5';
+import SettingsIcon from 'react-native-vector-icons/MaterialIcons';
 import Employees from '../../Screens/Employees/Employees';
+import Complaints from '../../Screens/Complaints/Complaints';
+import EquipmentAndLicense from '../../Screens/EquipmentAndLicense/EquipmentAndLicense';
+import Reports from '../../Screens/Reports/Reports';
 import NewsFeed from '../../Screens/NewsFeed/NewsFeed';
 import TimeOff from '../../Screens/TimeOff/TimeOff';
 import CustomContent from '../DrawerNavigation/CustomContent';
 import EmployeeProfile from '../../Screens/EmployeeProfile/EmployeeProfile';
+import OnboardingAndOffboarding from '../../Screens/OnboardingAndOffboarding/OnboardingAndOffboarding';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,7 +46,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerIcon: () => (
-            <DasboardIcon name="dashboard" size={20} color="#fff" />
+            <DasboardIcon name="dashboard" size={17} color="#fff" />
           ),
         }}
         name={DASHBOARD}
@@ -38,7 +55,16 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerIcon: () => (
-            <EmployeesIcon name="account" size={20} color="#fff" />
+            <HandShakeIcon name="handshake" size={17} color="#fff" />
+          ),
+        }}
+        name={ONBOARDINGANDOFFBOARDING}
+        component={OnboardingAndOffboarding}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => (
+            <EmployeesIcon name="account" size={17} color="#fff" />
           ),
         }}
         name={EMPLOYEES}
@@ -47,7 +73,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerIcon: () => (
-            <TimeOffIcon name="clockcircle" size={20} color="#fff" />
+            <TimeOffIcon name="clockcircle" size={17} color="#fff" />
           ),
         }}
         name={TIMEOFF}
@@ -56,11 +82,42 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerIcon: () => (
-            <NewsFeedIcon name="book-reader" size={20} color="#fff" />
+            <NewsFeedIcon name="book-reader" size={17} color="#fff" />
           ),
         }}
         name={NEWSFEED}
         component={NewsFeed}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => (
+            <FileIcon name="file-invoice" size={17} color="#fff" />
+          ),
+        }}
+        name={COMPLAINTS}
+        component={Complaints}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => (
+            <EquipmentAndLicenseIcon
+              name="certificate"
+              size={17}
+              color="#fff"
+            />
+          ),
+        }}
+        name={EQUIPMENTANDLICENSE}
+        component={EquipmentAndLicense}
+      />
+      <Drawer.Screen
+        options={{
+          drawerIcon: () => (
+            <SettingsIcon name="settings" size={17} color="#fff" />
+          ),
+        }}
+        name={REPORTS}
+        component={Reports}
       />
     </Drawer.Navigator>
   );
