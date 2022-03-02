@@ -82,7 +82,7 @@ const myTaskListSection = props => {
   }
 };
 
-const templatesSection = props => {
+const templatesSection = (props, secondProps) => {
   if (props.showTab === 'temp') {
     return (
       <>
@@ -145,6 +145,9 @@ const templatesSection = props => {
             <Text style={styles.onboardHeading}>onboarding or offboarding</Text>
             <View>
               <Pressable
+                onPress={() =>
+                  secondProps.navigation.navigate('TaskListDetail')
+                }
                 style={({pressed}) => [
                   styles.manageButton,
                   pressed ? tw`bg-green-600` : tw`bg-white`,
@@ -287,7 +290,7 @@ const OnboardingAndOffboardingMarkup = props => {
 
           {myTaskListSection(props)}
 
-          {templatesSection(props)}
+          {templatesSection(props, {...props})}
         </View>
 
         <AddListModal {...props} />

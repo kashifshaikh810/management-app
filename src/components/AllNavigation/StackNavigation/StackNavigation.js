@@ -9,6 +9,7 @@ import {
   MY_PROFILE,
   NOTIFICATION,
   SIGNUP,
+  TASK_LIST_DETAIL,
 } from './NavigationName';
 import Login from '../../Screens/Authentication/Login/Login';
 import SignUp from '../../Screens/Authentication/SignUp/SignUp';
@@ -17,6 +18,7 @@ import DrawerNavigation from '../DrawerNavigation/DrawerNavigation';
 import Notification from '../../Screens/Notification/Notification';
 import MyProfile from '../../Screens/MyProfile/MyProfile';
 import EmployeeProfile from '../../Screens/EmployeeProfile/EmployeeProfile';
+import TaskListDetail from '../../Screens/TaskListDetail/TaskListDetail';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,6 +33,7 @@ const StackNavigation = () => {
         <Stack.Screen name={MY_PROFILE} component={MyProfile} />
         <Stack.Screen name={NOTIFICATION} component={Notification} />
         <Stack.Screen name={EMPLOYEE_PROFILE} component={EmployeeProfile} />
+        <Stack.Screen name={TASK_LIST_DETAIL} component={TaskListDetail} />
       </Stack.Navigator>
     </NavigationContainer>
   );
