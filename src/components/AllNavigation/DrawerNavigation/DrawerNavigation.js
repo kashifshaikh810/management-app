@@ -19,7 +19,7 @@ import FileIcon from 'react-native-vector-icons/FontAwesome5';
 import TimeOffIcon from 'react-native-vector-icons/AntDesign';
 import NewsFeedIcon from 'react-native-vector-icons/FontAwesome5';
 import EquipmentAndLicenseIcon from 'react-native-vector-icons/FontAwesome5';
-import SettingsIcon from 'react-native-vector-icons/MaterialIcons';
+import ReportIcon from 'react-native-vector-icons/AntDesign';
 import Employees from '../../Screens/Employees/Employees';
 import Complaints from '../../Screens/Complaints/Complaints';
 import EquipmentAndLicense from '../../Screens/EquipmentAndLicense/EquipmentAndLicense';
@@ -113,7 +113,7 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerIcon: () => (
-            <SettingsIcon name="settings" size={17} color="#fff" />
+            <ReportIcon name="piechart" size={17} color="#fff" />
           ),
         }}
         name={REPORTS}

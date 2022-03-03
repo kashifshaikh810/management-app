@@ -1,9 +1,9 @@
 import {StyleSheet} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '32%',
+    flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   },
   drawerList: {
     width: '100%',
-    height: '100%',
   },
   dpImage: {
     width: '45%',
@@ -66,6 +65,16 @@ const styles = StyleSheet.create({
     color: 'black',
     textTransform: 'capitalize',
   },
+  drawerContainer: {
+    flex: 1,
+  },
+  settingsContainer: tw`flex-1 ml-4 pb-5 mt-4`,
+  settingsAndIconContainer: tw`flex-row`,
+  settingsMain: tw`ml-8 flex-row`,
+  settingsText: tw`text-white capitalize`,
+  iconContainer: tw`w-8/12 ml-1 justify-center items-end`,
+  dropDownItemsContainer: tw`flex-1 ml-12 p-5`,
+  dropDownItems: tw`text-base capitalize text-white m-2`,
 });
 
 export default styles;

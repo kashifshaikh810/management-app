@@ -17,15 +17,17 @@ const DashboardMarkup = props => {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}>
-        <View style={styles.userNameContiner}>
-          {props.isDataLoading ? (
-            <UserNameLoader />
-          ) : (
-            <Text style={styles.userName}>
-              {firstName} {middleName} {lastName}
-            </Text>
-          )}
-        </View>
+        {props.currentUserData && (
+          <View style={styles.userNameContiner}>
+            {props.isDataLoading ? (
+              <UserNameLoader />
+            ) : (
+              <Text style={styles.userName}>
+                {firstName} {middleName} {lastName}
+              </Text>
+            )}
+          </View>
+        )}
 
         <View style={styles.headingContainer}>
           <HomeIcon name="home" size={15} color="green" />

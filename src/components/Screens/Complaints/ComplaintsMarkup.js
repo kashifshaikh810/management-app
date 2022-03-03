@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView, Pressable, SectionList} from 'react-native';
+import {View, Text, ScrollView, Pressable} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import ArrowDownIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ArrowLeftIcon from 'react-native-vector-icons/MaterialIcons';
@@ -94,28 +94,45 @@ const EquipmentAndLicenseMarkup = props => {
               <View
                 style={[
                   styles.viewDetailsPressable,
-                  {backgroundColor: '#006f44', flexDirection: 'row'},
+                  {backgroundColor: '#006f44'},
                 ]}>
-                <ArrowLeftIcon
-                  name="arrow-left"
-                  style={styles.arrowIcon}
-                  size={20}
-                  color="#fff"
-                />
                 <Text style={tw`text-white p-2`}>resolved</Text>
               </View>
             </View>
             <View style={[styles.columnView, tw`ml-5`]}>
               <Text style={styles.allHeadingText}>Actions</Text>
-              <Pressable
-                onPress={() => {}}
-                android_ripple={{color: '#fff'}}
-                style={({pressed}) => [
+              <View
+                style={[
                   styles.viewDetailsPressable,
-                  {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
+                  {backgroundColor: '#006f44', flexDirection: 'row'},
                 ]}>
-                <Text style={styles.cancelPressableText}>view details</Text>
-              </Pressable>
+                <Pressable
+                  onPress={() => props.changeStatus()}
+                  style={({pressed}) => [
+                    {
+                      backgroundColor: pressed ? '#b3b3b3' : '#006f44',
+                      padding: 5,
+                      borderRadius: 15,
+                    },
+                  ]}>
+                  <ArrowLeftIcon
+                    name="arrow-left"
+                    style={styles.arrowIcon}
+                    size={20}
+                    color="#fff"
+                  />
+                </Pressable>
+                <Pressable
+                  onPress={() => props.viewDetails()}
+                  style={({pressed}) => [
+                    {
+                      backgroundColor: pressed ? '#b3b3b3' : '#006f44',
+                      borderRadius: 15,
+                    },
+                  ]}>
+                  <Text style={styles.cancelPressableText}>view details</Text>
+                </Pressable>
+              </View>
             </View>
           </View>
 
