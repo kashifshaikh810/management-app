@@ -13,13 +13,55 @@ import tw from 'tailwind-react-native-classnames';
 const CustomContent = props => {
   const [showModal, setShowModal] = useState(false);
   const [showSubMenu, setShowSubMenu] = useState(false);
+  const [selectSettingsSection, setSelectSettingsSection] = useState('');
   const {currUserData, profileData} = useSelector(state => state?.reduc);
   const scrollViewRef = useRef();
   let data = currUserData;
 
   const goToMyProfile = () => {
-    props.navigation.navigate('MyProfile');
+    props.navigation.navigate('My Profile');
     props.navigation.closeDrawer();
+  };
+
+  const goToCompanyAccount = props => {
+    setSelectSettingsSection('company-account');
+    props.navigation.navigate('Company Account');
+  };
+  const goToPortalSettings = () => {
+    setSelectSettingsSection('portal-settings');
+    props.navigation.navigate('Company Portal Settings');
+  };
+  const goToCompanyEmployees = () => {
+    setSelectSettingsSection('employees');
+    props.navigation.navigate('Company Employees');
+  };
+  const goToCompanyHolidays = () => {
+    setSelectSettingsSection('holidays');
+    props.navigation.navigate('Company Holidays');
+  };
+  const goToCompanyTimeOff = () => {
+    setSelectSettingsSection('time-off');
+    props.navigation.navigate('Company Time Off');
+  };
+  const goToPerformanceReview = () => {
+    setSelectSettingsSection('performance-review');
+    props.navigation.navigate('Company Performance Review');
+  };
+  const goToRewards = () => {
+    setSelectSettingsSection('rewards');
+    props.navigation.navigate('Company Rewards');
+  };
+  const goToSurvey = () => {
+    setSelectSettingsSection('survey');
+    props.navigation.navigate('Company Survey');
+  };
+  const goToCustomFields = () => {
+    setSelectSettingsSection('custom-fields');
+    props.navigation.navigate('Company Custom Fields');
+  };
+  const goToPermissions = () => {
+    setSelectSettingsSection('permissions');
+    props.navigation.navigate('Company Permissions');
   };
 
   const subMenuSection = props => {
@@ -28,19 +70,109 @@ const CustomContent = props => {
         <View
           style={[
             styles.drawerContainer,
-            {backgroundColor: 'rgba(0,0,0,0.1)'},
+            {backgroundColor: 'rgba(0,0,0,0.3)', marginVertical: 20},
           ]}>
           <View style={styles.dropDownItemsContainer}>
-            <Text style={styles.dropDownItems}>company account</Text>
-            <Text style={styles.dropDownItems}>portal settings</Text>
-            <Text style={styles.dropDownItems}>employees</Text>
-            <Text style={styles.dropDownItems}>holidays</Text>
-            <Text style={styles.dropDownItems}>time off</Text>
-            <Text style={styles.dropDownItems}>performance review</Text>
-            <Text style={styles.dropDownItems}>rewards</Text>
-            <Text style={styles.dropDownItems}>survey</Text>
-            <Text style={styles.dropDownItems}>cutom fields</Text>
-            <Text style={styles.dropDownItems}>permissions</Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'company-account'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToCompanyAccount({...props})}>
+              company account
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'portal-settings'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToPortalSettings()}>
+              portal settings
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'employees'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToCompanyEmployees()}>
+              employees
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'holidays'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToCompanyHolidays()}>
+              holidays
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'time-off'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToCompanyTimeOff()}>
+              time off
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'performance-review'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToPerformanceReview()}>
+              performance review
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'rewards'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToRewards()}>
+              rewards
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'survey'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToSurvey()}>
+              survey
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'custom-fields'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToCustomFields()}>
+              custom fields
+            </Text>
+            <Text
+              style={[
+                styles.dropDownItems,
+                selectSettingsSection === 'permissions'
+                  ? tw`text-green-400`
+                  : tw`text-white`,
+              ]}
+              onPress={() => goToPermissions()}>
+              permissions
+            </Text>
           </View>
         </View>
       );
@@ -49,11 +181,13 @@ const CustomContent = props => {
 
   return (
     <ScrollView
+      persistentScrollbar={true}
+      indicatorStyle="white"
       ref={scrollViewRef}
       onContentSizeChange={() =>
         showSubMenu ? scrollViewRef.current.scrollToEnd({animated: true}) : {}
       }
-      style={{flex: 1}}
+      style={styles.drawerContainer}
       showsHorizontalScrollIndicator={false}
       showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -102,8 +236,21 @@ const CustomContent = props => {
           onPress={() => setShowSubMenu(!showSubMenu)}
           style={({pressed}) => [
             {
-              backgroundColor: pressed || showSubMenu ? '#006f44' : '#263238',
+              backgroundColor: pressed ? 'rgba(0,0,0,0.1)' : '#263238',
             },
+            showSubMenu ||
+            selectSettingsSection === 'company-account' ||
+            selectSettingsSection === 'portal-settings' ||
+            selectSettingsSection === 'employees' ||
+            selectSettingsSection === 'holidays' ||
+            selectSettingsSection === 'time-off' ||
+            selectSettingsSection === 'performance-review' ||
+            selectSettingsSection === 'rewards' ||
+            selectSettingsSection === 'survey' ||
+            selectSettingsSection === 'custom-fields' ||
+            selectSettingsSection === 'permissions'
+              ? {backgroundColor: '#006f44'}
+              : {},
             tw`flex-1 rounded-xl`,
           ]}>
           <View style={styles.settingsContainer}>

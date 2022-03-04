@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
   drawerContainer: {
     flex: 1,
   },
-  settingsContainer: tw`flex-1 ml-4 pb-5 mt-4`,
+  settingsContainer: tw`flex-1 ml-4 pb-5 mt-3`,
   settingsAndIconContainer: tw`flex-row`,
   settingsMain: tw`ml-8 flex-row`,
   settingsText: tw`text-white capitalize`,
   iconContainer: tw`w-8/12 ml-1 justify-center items-end`,
   dropDownItemsContainer: tw`flex-1 ml-12 p-5`,
-  dropDownItems: tw`text-base capitalize text-white m-2`,
+  dropDownItems: tw`text-base capitalize m-2 p-1`,
 });
 
 export default styles;

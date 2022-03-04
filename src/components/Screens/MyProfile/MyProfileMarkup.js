@@ -1212,7 +1212,7 @@ const MyProfileMarkup = props => {
   const scrollViewRef = useRef();
   return (
     <View style={styles.container}>
-      <Header {...props} name="profile" />
+      <Header {...props} />
       {props.refreshing ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={70} color="rgba(0,0,0,0.5)" />

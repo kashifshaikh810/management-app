@@ -16,7 +16,6 @@ import SignUp from '../../Screens/Authentication/SignUp/SignUp';
 import ForgotPassword from '../../Screens/Authentication/ForgotPassword/ForgotPassword';
 import DrawerNavigation from '../DrawerNavigation/DrawerNavigation';
 import Notification from '../../Screens/Notification/Notification';
-import MyProfile from '../../Screens/MyProfile/MyProfile';
 import EmployeeProfile from '../../Screens/EmployeeProfile/EmployeeProfile';
 import TaskListDetail from '../../Screens/TaskListDetail/TaskListDetail';
 
@@ -30,7 +29,6 @@ const StackNavigation = () => {
         <Stack.Screen name={SIGNUP} component={SignUp} />
         <Stack.Screen name={FORGOTPASSWORD} component={ForgotPassword} />
         <Stack.Screen name={DRAWER_NAVIGATION} component={DrawerNavigation} />
-        <Stack.Screen name={MY_PROFILE} component={MyProfile} />
         <Stack.Screen name={NOTIFICATION} component={Notification} />
         <Stack.Screen name={EMPLOYEE_PROFILE} component={EmployeeProfile} />
         <Stack.Screen name={TASK_LIST_DETAIL} component={TaskListDetail} />

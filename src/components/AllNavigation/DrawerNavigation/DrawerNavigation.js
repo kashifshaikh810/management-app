@@ -2,10 +2,21 @@ import React from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import {
+  COMPANY_ACCOUNT,
+  COMPANY_CUSTOM_FIELDS,
+  COMPANY_EMPLOYEES,
+  COMPANY_HOLIDAYS,
+  COMPANY_PERFORMANCE_REVIEW,
+  COMPANY_PERMISSIONS,
+  COMPANY_PORTAL_SETTINGS,
+  COMPANY_REWARDS,
+  COMPANY_SURVEY,
+  COMPANY_TIME_OFF,
   COMPLAINTS,
   DASHBOARD,
   EMPLOYEES,
   EQUIPMENTANDLICENSE,
+  MY_PROFILE,
   NEWSFEED,
   ONBOARDINGANDOFFBOARDING,
   REPORTS,
@@ -27,8 +38,19 @@ import Reports from '../../Screens/Reports/Reports';
 import NewsFeed from '../../Screens/NewsFeed/NewsFeed';
 import TimeOff from '../../Screens/TimeOff/TimeOff';
 import CustomContent from '../DrawerNavigation/CustomContent';
+import PortalSettings from '../../Screens/PortalSettings/PortalSettings';
+import CompanyEmployees from '../../Screens/CompanyEmployees/CompanyEmployees';
+import CompanyHolidays from '../../Screens/CompanyHolidays/CompanyHolidays';
+import CompanyTimeOff from '../../Screens/CompanyTimeOff/CompanyTimeOff';
+import CompanyRewards from '../../Screens/CompanyRewards/CompanyRewards';
+import CompanySurvey from '../../Screens/CompanySurvey/CompanySurvey';
+import CompanyCustomFields from '../../Screens/CompanyCustomFields/CompanyCustomFields';
+import CompanyPermissions from '../../Screens/CompanyPermissions/CompanyPermissions';
 import EmployeeProfile from '../../Screens/EmployeeProfile/EmployeeProfile';
+import CompanyPerformanceReview from '../../Screens/CompanyPerformanceReview/CompanyPerformanceReview';
 import OnboardingAndOffboarding from '../../Screens/OnboardingAndOffboarding/OnboardingAndOffboarding';
+import CompanyAccount from '../../Screens/CompanyAccount/CompanyAccount';
+import MyProfile from '../../Screens/MyProfile/MyProfile';
 
 const Drawer = createDrawerNavigator();
 
@@ -118,6 +140,86 @@ const DrawerNavigation = () => {
         }}
         name={REPORTS}
         component={Reports}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={MY_PROFILE}
+        component={MyProfile}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_ACCOUNT}
+        component={CompanyAccount}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_PORTAL_SETTINGS}
+        component={PortalSettings}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_EMPLOYEES}
+        component={CompanyEmployees}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_HOLIDAYS}
+        component={CompanyHolidays}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_TIME_OFF}
+        component={CompanyTimeOff}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_PERFORMANCE_REVIEW}
+        component={CompanyPerformanceReview}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_REWARDS}
+        component={CompanyRewards}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+          drawerStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_SURVEY}
+        component={CompanySurvey}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+          drawerStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_CUSTOM_FIELDS}
+        component={CompanyCustomFields}
+      />
+      <Drawer.Screen
+        options={{
+          drawerItemStyle: {height: 0, display: 'none'},
+          drawerStyle: {height: 0, display: 'none'},
+        }}
+        name={COMPANY_PERMISSIONS}
+        component={CompanyPermissions}
       />
     </Drawer.Navigator>
   );
