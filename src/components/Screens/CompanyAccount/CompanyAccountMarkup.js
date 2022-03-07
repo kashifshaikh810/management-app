@@ -2,35 +2,392 @@ import React from 'react';
 import {View, Text, ScrollView, Image, Pressable} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import EditIcon from 'react-native-vector-icons/MaterialIcons';
+import LockIcon from 'react-native-vector-icons/FontAwesome5';
 import LocationIcon from 'react-native-vector-icons/Ionicons';
 import AlertIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import VisaIcon from 'react-native-vector-icons/FontAwesome';
+import DiscoverIcon from 'react-native-vector-icons/FontAwesome';
+import MasterCardIcon from 'react-native-vector-icons/FontAwesome';
+import InfoIcon from 'react-native-vector-icons/Entypo';
 
 import styles from './styles';
 import Header from '../Header/Header';
 import tw from 'tailwind-react-native-classnames';
+import {FlatList} from 'react-native-gesture-handler';
+import CompanyDetailsModal from './Modals/CompanyDetailsModal/CompanyDetailsModal';
+
+const data = [
+  {
+    type: 'small',
+    numOfEmployees: 'Up to 100 employees',
+    description:
+      'The HR department is one of the critical pillars for business growth, so take care of employer management optimization upfront.',
+    price: 29,
+    buttonType: 'select plan',
+  },
+  {
+    type: 'medium',
+    numOfEmployees: 'Up to 1000 employees',
+    description:
+      'Get a full-fledged software for Human Resource management to reach a new level of interaction within the company.',
+    price: 99,
+    buttonType: 'select plan',
+  },
+  {
+    type: 'large',
+    numOfEmployees: 'More than 1000 people in the platform',
+    description:
+      'Integrate a culture of high performance within the enterprise. Get a centralized repository of employee data in one human resource information system (HRIS) software.',
+    buttonType: 'contact with us',
+  },
+];
+
+const yearlyData = [
+  {
+    type: 'small',
+    numOfEmployees: 'Up to 100 employees',
+    description:
+      'The HR department is one of the critical pillars for business growth, so take care of employer management optimization upfront.',
+    price: 313,
+    buttonType: 'select plan',
+  },
+  {
+    type: 'medium',
+    numOfEmployees: 'Up to 1000 employees',
+    description:
+      'Get a full-fledged software for Human Resource management to reach a new level of interaction within the company.',
+    price: '1,069',
+    buttonType: 'select plan',
+  },
+  {
+    type: 'large',
+    numOfEmployees: 'More than 1000 people in the platform',
+    description:
+      'Integrate a culture of high performance within the enterprise. Get a centralized repository of employee data in one human resource information system (HRIS) software.',
+    buttonType: 'contact with us',
+  },
+];
 
 const billingAndPaymentMethodSection = props => {
   if (props.showSelectedTab === 'billing-and-payment-method') {
     return (
-      <View
-        style={[
-          styles.warningCard,
-          {
-            borderColor: '#ffa700',
-            backgroundColor: '#9d6700',
-          },
-        ]}>
-        <View style={[styles.headingContainer, tw`items-center m-2`]}>
-          <AlertIcon name="alert-circle" size={50} color="#ff4c52" />
-          <View style={{flex: 1}}>
-            <Text style={[styles.warningCardText, {color: '#ffa700'}]}>
-              YOUR COMPANY ACCOUNT STATUS IS: DEMO
-            </Text>
+      <>
+        <View
+          style={[
+            styles.warningCard,
+            {
+              borderColor: '#ffa700',
+              backgroundColor: '#9d6700',
+            },
+          ]}>
+          <View style={[styles.headingContainer, styles.warningCardContent]}>
+            <AlertIcon name="alert-circle" size={50} color="#ff4c52" />
+            <View style={{flex: 1}}>
+              <Text style={[styles.warningCardText, {color: '#ffa700'}]}>
+                YOUR COMPANY ACCOUNT STATUS IS: DEMO
+              </Text>
 
-            <Text>The demo period will end in 9 days, 13/03/2022</Text>
+              <Text>The demo period will end in 9 days, 13/03/2022</Text>
+            </View>
           </View>
         </View>
+
+        <View
+          style={[styles.headingContainer, styles.warningCardItemsContainer]}>
+          <View style={styles.scrollView}>
+            <Text style={styles.headingMain}>BILLING ADDRESS</Text>
+            <Text style={styles.title}>Company name:</Text>
+            <Text style={styles.subTitle}>name of company</Text>
+
+            <Text style={styles.title}>country:</Text>
+            <Text style={styles.subTitle}>name of country</Text>
+
+            <Text style={styles.title}>street address:</Text>
+            <Text style={styles.subTitle}>name of street address</Text>
+
+            <Text style={styles.title}>city:</Text>
+            <Text style={styles.subTitle}>name of city</Text>
+
+            <Text style={styles.title}>state:</Text>
+            <Text style={styles.subTitle}>name of state</Text>
+
+            <Text style={styles.title}>zip code:</Text>
+            <Text style={styles.subTitle}>num of code</Text>
+          </View>
+
+          <View style={styles.scrollView}>
+            <View style={styles.headingContainer}>
+              <Text style={[styles.headingMain, styles.marginRight]}>
+                PAYMENT INFORMATION
+              </Text>
+              <View style={styles.editIconPressableContainer}>
+                <Pressable
+                  onPress={() => {}}
+                  style={({pressed}) => [
+                    styles.editIconPressable,
+                    {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
+                  ]}>
+                  <EditIcon name="edit" size={15} color="#fff" />
+                </Pressable>
+              </View>
+            </View>
+            <Text style={styles.alertText}>
+              Please update payment details to avoid blocking of your account.
+            </Text>
+
+            <Text style={styles.title}>card holder name:</Text>
+            <Text style={styles.subTitle}>N/A</Text>
+
+            <Text style={styles.title}>card number:</Text>
+            <Text style={styles.subTitle}>************N/A</Text>
+
+            <Text style={styles.title}>expiration date:</Text>
+            <Text style={styles.subTitle}>N/A</Text>
+
+            <Text style={[styles.title, tw`uppercase`]}>ccv:</Text>
+            <Text style={styles.subTitle}>***</Text>
+
+            <View style={styles.line} />
+
+            <View
+              style={[
+                styles.headingContainer,
+                styles.lockIconAndIconContainer,
+              ]}>
+              <View
+                style={[
+                  styles.lockIconContainer,
+                  {borderColor: '#ffa700', borderWidth: 5},
+                ]}>
+                <LockIcon name="lock" size={30} color="#ffa700" />
+              </View>
+
+              <Text style={styles.safeText}>
+                Safe money transfers with your Credit Card Visa, Discover and
+                Master Card
+              </Text>
+            </View>
+
+            <View
+              style={[styles.headingContainer, styles.paymentsCardContainer]}>
+              <VisaIcon name="cc-visa" size={30} style={styles.visaIcon} />
+              <DiscoverIcon name="cc-discover" size={30} style={styles.Icon} />
+              <MasterCardIcon
+                name="cc-mastercard"
+                size={30}
+                style={styles.Icon}
+              />
+            </View>
+          </View>
+        </View>
+      </>
+    );
+  }
+};
+
+const paymentHistorySection = props => {
+  if (props.showSelectedTab === 'payment-history') {
+    return (
+      <View style={styles.doNotHaveTextContainer}>
+        <View style={styles.doNotHaveTextMain}>
+          <Text>You do not have subscription.</Text>
+        </View>
       </View>
+    );
+  }
+};
+
+const subscriptionPlanSection = props => {
+  if (props.showSelectedTab === 'subscription-plan') {
+    return (
+      <View>
+        <View style={styles.doNotHaveTextContainer}>
+          <View style={styles.doNotHaveTextMain}>
+            <Text>You do not have subscription.</Text>
+          </View>
+        </View>
+
+        <View style={[styles.headingContainer, styles.paymentTabs]}>
+          <View
+            style={[
+              styles.headingContainer,
+              styles.tabsContainer,
+              styles.borderRadius,
+            ]}>
+            <Pressable
+              style={[
+                styles.monthlyTab,
+                props.showPaymentMethodTab === 'monthly'
+                  ? tw`bg-green-700`
+                  : tw`bg-white`,
+              ]}
+              onPress={() => props.setShowPaymentMethodTab('monthly')}>
+              <Text
+                style={[
+                  styles.monthlyText,
+                  props.showPaymentMethodTab === 'monthly'
+                    ? tw`text-white`
+                    : tw`text-green-400`,
+                ]}>
+                Monthly
+              </Text>
+            </Pressable>
+            <Pressable
+              style={[
+                styles.headingContainer,
+                styles.yearlyTab,
+                props.showPaymentMethodTab === 'yearly'
+                  ? tw`bg-green-700`
+                  : tw`bg-white`,
+              ]}
+              onPress={() => props.setShowPaymentMethodTab('yearly')}>
+              <Text
+                style={[
+                  styles.yearlyText,
+                  props.showPaymentMethodTab === 'yearly'
+                    ? tw`text-white`
+                    : tw`text-green-400`,
+                ]}>
+                Yearly
+              </Text>
+              <View style={styles.offTextContainer}>
+                <Text style={styles.offText}>10% Off</Text>
+              </View>
+            </Pressable>
+          </View>
+        </View>
+        {monthlySection({...props})}
+
+        {yearlySection({...props})}
+      </View>
+    );
+  }
+};
+
+const monthlySection = props => {
+  if (props.showPaymentMethodTab === 'monthly') {
+    return (
+      <>
+        <FlatList
+          scrollEnabled={false}
+          keyExtractor={(item, index) => index.toString()}
+          data={data}
+          renderItem={({item, index}) => (
+            <View style={styles.cardContainer}>
+              <View style={styles.monthlyPaymentCard}>
+                <View style={styles.monthlyPaymentCardItems}>
+                  <Text style={styles.itemTypeText}>{item.type}</Text>
+                  <Text style={styles.numberOfEmployees}>
+                    {item.numOfEmployees}{' '}
+                    {item.price && (
+                      <InfoIcon
+                        name="info-with-circle"
+                        size={15}
+                        style={styles.infoIcon}
+                      />
+                    )}
+                  </Text>
+                  <Text style={styles.itemDescription}>{item.description}</Text>
+                  <View
+                    style={[
+                      styles.headingContainer,
+                      styles.buttonAndPriceContainer,
+                    ]}>
+                    {item.price && (
+                      <>
+                        <Text style={styles.itemPrice}>${item.price}</Text>
+                        <Text style={styles.monthText}>/</Text>
+                        <Text style={styles.monthText}>month</Text>
+                      </>
+                    )}
+
+                    <View
+                      style={[
+                        styles.buttonPressable,
+                        item.price ? tw`items-end` : tw`items-center`,
+                      ]}>
+                      <Pressable
+                        style={({pressed}) => [
+                          styles.buttonType,
+                          !item.price && tw`w-full`,
+                          pressed ? tw`bg-gray-400` : tw`bg-green-600`,
+                        ]}>
+                        <Text style={styles.buttonTypeText}>
+                          {item.buttonType}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          )}
+        />
+      </>
+    );
+  }
+};
+
+const yearlySection = props => {
+  if (props.showPaymentMethodTab === 'yearly') {
+    return (
+      <>
+        <FlatList
+          scrollEnabled={false}
+          keyExtractor={(item, index) => index.toString()}
+          data={yearlyData}
+          renderItem={({item, index}) => (
+            <View style={styles.cardContainer}>
+              <View style={styles.monthlyPaymentCard}>
+                <View style={styles.monthlyPaymentCardItems}>
+                  <Text style={styles.itemTypeText}>{item.type}</Text>
+                  <Text style={styles.numberOfEmployees}>
+                    {item.numOfEmployees}{' '}
+                    {item.price && (
+                      <InfoIcon
+                        name="info-with-circle"
+                        size={15}
+                        style={styles.infoIcon}
+                      />
+                    )}
+                  </Text>
+                  <Text style={styles.itemDescription}>{item.description}</Text>
+                  <View
+                    style={[
+                      styles.headingContainer,
+                      styles.buttonAndPriceContainer,
+                    ]}>
+                    {item.price && (
+                      <>
+                        <Text style={styles.itemPrice}>${item.price}</Text>
+                        <Text style={styles.monthText}>/</Text>
+                        <Text style={styles.monthText}>year</Text>
+                      </>
+                    )}
+
+                    <View
+                      style={[
+                        styles.buttonPressable,
+                        item.price ? tw`items-end` : tw`items-center`,
+                      ]}>
+                      <Pressable
+                        style={({pressed}) => [
+                          styles.buttonType,
+                          !item.price && tw`w-full`,
+                          pressed ? tw`bg-gray-400` : tw`bg-green-600`,
+                        ]}>
+                        <Text style={styles.buttonTypeText}>
+                          {item.buttonType}
+                        </Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </View>
+          )}
+        />
+      </>
     );
   }
 };
@@ -62,12 +419,14 @@ const CompanyAccountMarkup = props => {
 
           <View style={styles.line} />
 
-          <View style={styles.logoImageContainer}>
+          <Pressable
+            style={styles.logoImageContainer}
+            onPress={() => props.uploadCompanyImage()}>
             <Image
               source={{uri: 'https://source.unsplash.com/user/c_v_r/1900x800'}}
               style={styles.logoImage}
             />
-          </View>
+          </Pressable>
         </View>
 
         <View style={styles.card}>
@@ -176,23 +535,28 @@ const CompanyAccountMarkup = props => {
               )}
             </Pressable>
             <Pressable
-              onPress={() => props.setShowSelectedTab('subscription')}
+              onPress={() => props.setShowSelectedTab('subscription-plan')}
               style={[
                 styles.tabsPressable,
-                props.showSelectedTab === 'subscription'
+                props.showSelectedTab === 'subscription-plan'
                   ? tw`bg-white`
                   : tw`bg-gray-200`,
               ]}>
-              <Text style={styles.tabsText}>subscription</Text>
-              {props.showSelectedTab === 'subscription' && (
+              <Text style={styles.tabsText}>subscription plan</Text>
+              {props.showSelectedTab === 'subscription-plan' && (
                 <View style={styles.bottomGreenLine} />
               )}
             </Pressable>
           </View>
 
           {billingAndPaymentMethodSection({...props})}
+
+          {paymentHistorySection({...props})}
+
+          {subscriptionPlanSection({...props})}
         </View>
       </ScrollView>
+      <CompanyDetailsModal {...props} />
     </View>
   );
 };
