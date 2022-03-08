@@ -11,6 +11,33 @@ const CompanyAccount = props => {
 
   const [showPaymentMethodTab, setShowPaymentMethodTab] = useState('monthly');
 
+  // company information modal
+  const [showCompanyDetailsModal, setShowCompanyDetailsModal] = useState(false);
+  const [showCompanyCountryModal, setShowCompanyCountryModal] = useState({
+    show: false,
+    type: '',
+    chooseVal: '',
+  });
+
+  // company update payment information modal
+  const [
+    showCompanyUpdatePaymentInfoModal,
+    setShowCompanyUpdatePaymentInfoModal,
+  ] = useState(false);
+
+  // company select plan modal
+  const [showCompanySelecPlanModal, setShowCompanySelecPlanModal] = useState({
+    show: false,
+    data: {},
+  });
+
+  const [showCompanySelecPlanYearlyModal, setShowCompanySelecPlanYearlyModal] =
+    useState({
+      show: false,
+      type: '',
+      data: {},
+    });
+
   const uploadCompanyImage = async () => {
     try {
       const file = await DocumentPicker.pickSingle({
@@ -38,6 +65,18 @@ const CompanyAccount = props => {
       showPaymentMethodTab={showPaymentMethodTab}
       setShowPaymentMethodTab={setShowPaymentMethodTab}
       uploadCompanyImage={uploadCompanyImage}
+      showCompanyDetailsModal={showCompanyDetailsModal}
+      setShowCompanyDetailsModal={setShowCompanyDetailsModal}
+      showCompanyCountryModal={showCompanyCountryModal}
+      setShowCompanyCountryModal={setShowCompanyCountryModal}
+      showCompanyUpdatePaymentInfoModal={showCompanyUpdatePaymentInfoModal}
+      setShowCompanyUpdatePaymentInfoModal={
+        setShowCompanyUpdatePaymentInfoModal
+      }
+      showCompanySelecPlanModal={showCompanySelecPlanModal}
+      setShowCompanySelecPlanModal={setShowCompanySelecPlanModal}
+      showCompanySelecPlanYearlyModal={showCompanySelecPlanYearlyModal}
+      setShowCompanySelecPlanYearlyModal={setShowCompanySelecPlanYearlyModal}
     />
   );
 };

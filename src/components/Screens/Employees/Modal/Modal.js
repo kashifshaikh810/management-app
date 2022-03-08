@@ -82,6 +82,8 @@ const MyModal = props => {
       props?.setShowExpirationDateMonthModal({show: false, chooseVal: item});
     } else if (props?.showExpirationDateYearsModal?.type === 'Year') {
       props?.setShowExpirationDateYearsModal({show: false, chooseVal: item});
+    } else if (props?.showCompanyCountryModal?.type === 'Company') {
+      props?.setShowCompanyCountryModal({show: false, chooseVal: item});
     }
   };
 
@@ -148,6 +150,8 @@ const MyModal = props => {
       props?.setShowExpirationDateMonthModal({show: false});
     } else if (props?.showExpirationDateYearsModal?.type === 'Year') {
       props?.setShowExpirationDateYearsModal({show: false});
+    } else if (props?.showCompanyCountryModal?.type === 'Company') {
+      props?.setShowCompanyCountryModal({show: false});
     }
   };
 
@@ -185,6 +189,7 @@ const MyModal = props => {
         props?.showIssueDateYearsModal?.show ||
         props?.showExpirationDateMonthModal?.show ||
         props?.showExpirationDateYearsModal?.show ||
+        props?.showCompanyCountryModal?.show ||
         false
       }
       transparent
@@ -258,7 +263,9 @@ const MyModal = props => {
               (props?.showExpirationDateMonthModal?.type === 'Month' &&
                 monthsNameData) ||
               (props?.showExpirationDateYearsModal?.type === 'Year' &&
-                expirationDateData)
+                expirationDateData) ||
+              (props?.showCompanyCountryModal?.type === 'Company' &&
+                countryData)
             }
             renderItem={({item, index}) => {
               return (

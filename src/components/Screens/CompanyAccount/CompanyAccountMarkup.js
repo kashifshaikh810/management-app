@@ -15,6 +15,8 @@ import Header from '../Header/Header';
 import tw from 'tailwind-react-native-classnames';
 import {FlatList} from 'react-native-gesture-handler';
 import CompanyDetailsModal from './Modals/CompanyDetailsModal/CompanyDetailsModal';
+import UpdatePaymentInformationModal from './Modals/UpdatePaymentInformationModal/UpdatePaymentInformationModal';
+import SelectPlanConfirmationModal from './Modals/SelectPlanConfirmationModal/SelectPlanConfirmationModal';
 
 const data = [
   {
@@ -122,7 +124,7 @@ const billingAndPaymentMethodSection = props => {
               </Text>
               <View style={styles.editIconPressableContainer}>
                 <Pressable
-                  onPress={() => {}}
+                  onPress={() => props.setShowCompanyCountryModal(true)}
                   style={({pressed}) => [
                     styles.editIconPressable,
                     {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -307,6 +309,12 @@ const monthlySection = props => {
                         item.price ? tw`items-end` : tw`items-center`,
                       ]}>
                       <Pressable
+                        onPress={() =>
+                          props.setShowCompanySelecPlanModal({
+                            show: true,
+                            data: item,
+                          })
+                        }
                         style={({pressed}) => [
                           styles.buttonType,
                           !item.price && tw`w-full`,
@@ -371,6 +379,13 @@ const yearlySection = props => {
                         item.price ? tw`items-end` : tw`items-center`,
                       ]}>
                       <Pressable
+                        onPress={() =>
+                          props.setShowCompanySelecPlanYearlyModal({
+                            show: true,
+                            type: 'yearly',
+                            data: item,
+                          })
+                        }
                         style={({pressed}) => [
                           styles.buttonType,
                           !item.price && tw`w-full`,
@@ -435,7 +450,7 @@ const CompanyAccountMarkup = props => {
 
             <View style={styles.editIconPressableContainer}>
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.setShowCompanyDetailsModal(true)}
                 style={({pressed}) => [
                   styles.editIconPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -557,6 +572,10 @@ const CompanyAccountMarkup = props => {
         </View>
       </ScrollView>
       <CompanyDetailsModal {...props} />
+
+      <UpdatePaymentInformationModal {...props} />
+
+      <SelectPlanConfirmationModal {...props} />
     </View>
   );
 };

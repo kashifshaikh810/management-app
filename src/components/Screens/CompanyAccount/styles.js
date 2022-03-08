@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
   numberOfEmployees: tw`text-gray-400 capitalize text-sm mt-1`,
   infoIcon: tw`pl-2 text-green-700`,
   itemDescription: tw`text-gray-600 capitalize text-sm mt-2`,
-  buttonAndPriceContainer: tw`items-center mt-3`,
+  buttonAndPriceContainer: tw`items-end mt-3`,
   itemPrice: tw`text-black capitalize font-extrabold text-2xl`,
   monthText: tw`text-gray-400 text-xs ml-1 mt-1`,
   buttonPressable: tw`flex-1 justify-center`,

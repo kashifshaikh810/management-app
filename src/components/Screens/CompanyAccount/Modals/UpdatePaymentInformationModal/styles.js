@@ -22,6 +22,13 @@ const styles = StyleSheet.create({
   cancelPressable: tw`w-5/12 h-12 rounded-xl justify-center items-center`,
   submitPressable: tw`w-5/12 h-12 ml-2 rounded-xl justify-center items-center`,
   cancelPressableText: tw`text-white capitalize text-lg`,
+  headingContainer: tw`flex-row`,
+  lockIconAndIconContainer: tw`flex-1 items-center pt-2 pl-4`,
+  lockIconContainer: tw`w-16 h-16 justify-center items-center rounded-full self-center mr-4`,
+  safeText: tw`text-xs flex-1 ml-2 text-gray-300`,
+  paymentsCardContainer: tw`flex-1 justify-end items-end mr-5`,
+  visaIcon: tw`text-gray-100`,
+  Icon: tw`text-gray-100 ml-2`,
 });
 
 export default styles;

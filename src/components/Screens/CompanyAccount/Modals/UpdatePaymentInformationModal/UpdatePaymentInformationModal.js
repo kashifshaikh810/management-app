@@ -9,30 +9,32 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import SelectArrowIcon from 'react-native-vector-icons/Entypo';
 import CloseIcon from 'react-native-vector-icons/FontAwesome';
+import LockIcon from 'react-native-vector-icons/FontAwesome5';
+import VisaIcon from 'react-native-vector-icons/FontAwesome';
+import DiscoverIcon from 'react-native-vector-icons/FontAwesome';
+import MasterCardIcon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 import tw from 'tailwind-react-native-classnames';
-import MyModal from '../../../Employees/Modal/Modal';
 
-const CompanyDetailsModal = props => {
+const UpdatePaymentInformationModal = props => {
   return (
     <Modal
-      visible={props.showCompanyDetailsModal}
+      visible={props.showCompanyCountryModal}
       animationType="slide"
       transparent
-      onRequestClose={() => props.setShowCompanyDetailsModal(false)}>
+      onRequestClose={() => props.setShowCompanyCountryModal(false)}>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={[styles.container, {backgroundColor: 'rgba(0,0,0,0.5)'}]}>
         <View style={styles.modalBody}>
           <View style={styles.cardHeadingContainer}>
             <Text style={styles.cardHeadingText}>
-              update company information
+              update payment information
             </Text>
             <View style={styles.closeIconContainer}>
               <Pressable
-                onPress={() => props.setShowCompanyDetailsModal(false)}
+                onPress={() => props.setShowCompanyCountryModal(false)}
                 style={({pressed}) => [
                   styles.closePressabel,
                   {backgroundColor: pressed ? '#b3b3b3' : '#fff'},
@@ -53,81 +55,16 @@ const CompanyDetailsModal = props => {
             style={styles.scrollView}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}>
-            <MyModal {...props} />
-
-            <View>
-              <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>company name</Text>
-              </View>
-              <View>
-                <TextInput
-                  selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
-                  style={styles.emailTextInput}
-                />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>Namespace</Text>
-              </View>
-              <View>
-                <TextInput
-                  selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
-                  style={styles.emailTextInput}
-                />
-              </View>
-            </View>
-
-            <View style={[styles.line, tw`mt-4`]} />
-
-            <View style={styles.billingContainer}>
-              <Text style={styles.billingText}>billing address</Text>
-            </View>
-
             <View>
               <View style={styles.emailTextContainer}>
                 <Text style={styles.email}>
-                  country <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <Pressable
-                onPress={() =>
-                  props.setShowCompanyCountryModal({
-                    show: true,
-                    type: 'Company',
-                  })
-                }
-                style={styles.pressable}>
-                <Text style={styles.text}>
-                  {props?.showCompanyCountryModal?.chooseVal}
-                </Text>
-                <View style={styles.dropIconContainer}>
-                  <SelectArrowIcon
-                    name="select-arrows"
-                    size={15}
-                    color="black"
-                  />
-                </View>
-              </Pressable>
-            </View>
-
-            <View>
-              <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>
-                  street address 1 <Text style={styles.star}>*</Text>
+                  card holder name <Text style={styles.star}>*</Text>
                 </Text>
               </View>
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
+                  keyboardType="default"
                   //   value={props.email}
                   //   onChangeText={text => props.setEmail(text)}
                   style={styles.emailTextInput}
@@ -138,47 +75,14 @@ const CompanyDetailsModal = props => {
             <View>
               <View style={styles.emailTextContainer}>
                 <Text style={styles.email}>
-                  city <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View>
-                <TextInput
-                  selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
-                  style={styles.emailTextInput}
-                />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>
-                  state <Text style={styles.star}>*</Text>
-                </Text>
-              </View>
-              <View>
-                <TextInput
-                  selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
-                  style={styles.emailTextInput}
-                />
-              </View>
-            </View>
-
-            <View>
-              <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>
-                  zip code <Text style={styles.star}>*</Text>
+                  card number <Text style={styles.star}>*</Text>
                 </Text>
               </View>
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
+                  placeholder="1234 1234 1234 1234"
                   //   value={props.email}
                   //   onChangeText={text => props.setEmail(text)}
                   style={styles.emailTextInput}
@@ -186,28 +90,77 @@ const CompanyDetailsModal = props => {
               </View>
             </View>
 
-            <View style={[styles.line, tw`mt-4`]} />
-
             <View>
               <View style={styles.emailTextContainer}>
-                <Text style={styles.email}>phone number</Text>
+                <Text style={styles.email}>
+                  expiration date <Text style={styles.star}>*</Text>
+                </Text>
               </View>
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
+                  placeholder="MM / YY"
                   //   value={props.email}
                   //   onChangeText={text => props.setEmail(text)}
                   style={styles.emailTextInput}
                 />
               </View>
+            </View>
+
+            <View>
+              <View style={styles.emailTextContainer}>
+                <Text style={[styles.email, tw`uppercase`]}>
+                  cCV <Text style={styles.star}>*</Text>
+                </Text>
+              </View>
+              <View>
+                <TextInput
+                  selectionColor="#b3b3b3"
+                  keyboardType="number-pad"
+                  placeholder="CCV"
+                  //   value={props.email}
+                  //   onChangeText={text => props.setEmail(text)}
+                  style={styles.emailTextInput}
+                />
+              </View>
+            </View>
+
+            <View
+              style={[
+                styles.headingContainer,
+                styles.lockIconAndIconContainer,
+              ]}>
+              <View
+                style={[
+                  styles.lockIconContainer,
+                  {borderColor: '#ffa700', borderWidth: 5},
+                ]}>
+                <LockIcon name="lock" size={30} color="#ffa700" />
+              </View>
+
+              <Text style={styles.safeText}>
+                Safe money transfers with your Credit Card Visa, Discover and
+                Master Card
+              </Text>
+            </View>
+
+            <View
+              style={[styles.headingContainer, styles.paymentsCardContainer]}>
+              <VisaIcon name="cc-visa" size={30} style={styles.visaIcon} />
+              <DiscoverIcon name="cc-discover" size={30} style={styles.Icon} />
+              <MasterCardIcon
+                name="cc-mastercard"
+                size={30}
+                style={styles.Icon}
+              />
             </View>
 
             <View style={[styles.line, tw`mt-4`]} />
 
             <View style={styles.cancelAndSubmitContainer}>
               <Pressable
-                onPress={() => props.setShowCompanyDetailsModal(false)}
+                onPress={() => props.setShowCompanyCountryModal(false)}
                 disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
@@ -238,4 +191,4 @@ const CompanyDetailsModal = props => {
   );
 };
 
-export default CompanyDetailsModal;
+export default UpdatePaymentInformationModal;
