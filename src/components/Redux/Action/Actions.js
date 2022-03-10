@@ -7,6 +7,8 @@ import {
   FETCH_CONTACT_INFORMATION_DATA,
   FETCH_EDUCATION_DATA,
   FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
+  PRIMARY_COLOR,
+  PRIMARY_HOVER_COLOR,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -98,4 +100,18 @@ export const fetchLicensesAndCertificationsData = () => dispatch => {
         payload: license,
       });
     });
+};
+
+export const changePrimaryColor = selectedColor => dispatch => {
+  dispatch({
+    type: PRIMARY_COLOR,
+    payload: selectedColor,
+  });
+};
+
+export const changePrimaryHoverColor = selectedColor => dispatch => {
+  dispatch({
+    type: PRIMARY_HOVER_COLOR,
+    payload: selectedColor,
+  });
 };

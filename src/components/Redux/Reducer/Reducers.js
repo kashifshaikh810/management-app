@@ -6,6 +6,8 @@ import {
   FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
   FETCH_PROFILE_DETAILS_DATA,
   FETCH_USER_DATA,
+  PRIMARY_COLOR,
+  PRIMARY_HOVER_COLOR,
 } from '../Action/ActionTypes';
 
 const initialState = {
@@ -16,6 +18,8 @@ const initialState = {
   contactInfoData: {},
   educationData: {},
   licenseAndCertificationsData: {},
+  primaryColor: null,
+  primaryHoverColor: null,
 };
 
 export const reducer = (state = initialState, action) => {
@@ -54,6 +58,16 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         licenseAndCertificationsData: action.payload,
+      };
+    case PRIMARY_COLOR:
+      return {
+        ...state,
+        primaryColor: action.payload,
+      };
+    case PRIMARY_HOVER_COLOR:
+      return {
+        ...state,
+        primaryHoverColor: action.payload,
       };
     default:
       return state;
