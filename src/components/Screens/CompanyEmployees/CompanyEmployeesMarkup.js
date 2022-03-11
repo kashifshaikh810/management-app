@@ -1073,12 +1073,7 @@ const CompanyEmployeesMarkup = props => {
           <View>
             <Text style={styles.text}>employee settings</Text>
             <View style={[styles.headingContainer, tw`mt-2`]}>
-              <HomeIcon
-                name="home"
-                size={15}
-                color="green"
-                style={styles.homeIcon}
-              />
+              <HomeIcon name="home" size={15} color="green" />
               <Text style={styles.slash}>/</Text>
               <Text style={styles.headingText}>settings</Text>
               <Text style={styles.slash}>/</Text>
