@@ -37,7 +37,18 @@ const styles = StyleSheet.create({
   enablePressable: tw`w-4/12 h-12 rounded justify-center items-center`,
   disablePressable: tw`w-4/12 h-12 rounded justify-center items-center`,
   enableAndDisablePressableText: tw`capitalize text-lg text-center`,
+  wouldYouLikeContainer: tw`bg-gray-50 m-2 pb-2`,
   wouldYouLike: tw`ml-3 mt-2 text-black text-base uppercase flex-1`,
+  saveSettingsPressable: tw`w-5/12 h-12 rounded justify-center items-center self-center mb-4`,
+  saveSettingsPressableText: tw`capitalize text-lg text-center text-white`,
+  nameTextInput: tw`w-full h-12 border-2 border-gray-200 self-center rounded pl-2`,
+  descriptionTextInput: tw`w-full h-32 border-2 border-gray-200 rounded pl-2`,
+  textInputContainer: tw`m-3`,
+  beginText: tw`pb-2 capitalize`,
+  justify: tw`justify-center`,
+  switchContainer: tw`items-center pl-4`,
+  itemEnd: tw`items-end`,
+  backColor: tw`bg-blue-100`,
 });
 
 export default styles;
