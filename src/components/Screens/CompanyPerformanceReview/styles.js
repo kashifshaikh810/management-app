@@ -1,5 +1,43 @@
 import {StyleSheet} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: tw`flex-1 bg-gray-100`,
+  scrollView: tw`flex-1`,
+  textContainer: tw`mt-5 ml-5 mb-2 items-center`,
+  text: tw`text-lg text-black uppercase font-extrabold`,
+  headingContainer: tw`flex-row`,
+  slash: tw`ml-1.5`,
+  headingText: tw`ml-2 text-gray-500 capitalize`,
+  card: tw`w-11/12 min-h-0 flex-1 m-3 ml-5 bg-white shadow-md`,
+  heading: tw`p-3 ml-2 mt-2 uppercase text-lg font-extrabold text-gray-600`,
+  line: tw`w-full h-0.5 bg-gray-100`,
+  cancelPressableContainer: tw`flex-1 justify-end items-end mr-3`,
+  cancelPressable: tw`w-11/12 h-12 rounded justify-center items-center bg-red-500`,
+  cancelPressableText: tw`text-white capitalize text-xs text-center`,
+  itemCard: tw`w-10/12 min-h-0 flex-1 bg-gray-100 m-5 rounded pb-5`,
+  editAndDeletePressableContainer: tw`flex-1 flex-row mt-6`,
+  editPressable: tw`w-5/12 h-12 rounded justify-center items-center`,
+  deletePressable: tw`w-5/12 h-12 rounded justify-center items-center ml-7`,
+  editAndDeletePressableText: tw`capitalize text-sm text-center`,
+  lableContainer: tw` justify-center items-end`,
+  lableMain: tw`pr-2 pl-2 pb-0.5 pt-0.5 rounded-full mt-4 mr-1`,
+  lableText: tw`text-white text-xs`,
+  firstTextContainer: tw`ml-7`,
+  titleText: tw`text-black text-lg font-extrabold`,
+  subTitleText: tw`text-xs mt-2 text-gray-400 w-60`,
+  dateText: tw`text-xs mt-1 text-gray-400 capitalize`,
+  frequencyText: tw`text-xs mt-1 text-gray-400 capitalize`,
+  lastTextContainer: tw`mt-7`,
+  lastTexts: tw`text-gray-600 text-base`,
+  tabsPressable: tw`p-4`,
+  keyPerformacePressable: tw`p-5 items-center`,
+  tabsText: tw`text-sm font-extrabold uppercase`,
+  enableAndDisablePressableContainer: tw`flex-1 flex-row border-2 border-gray-100 mr-2 self-end p-0.5 rounded`,
+  enablePressable: tw`w-4/12 h-12 rounded justify-center items-center`,
+  disablePressable: tw`w-4/12 h-12 rounded justify-center items-center`,
+  enableAndDisablePressableText: tw`capitalize text-lg text-center`,
+  wouldYouLike: tw`ml-3 mt-2 text-black text-base uppercase flex-1`,
+});
 
 export default styles;

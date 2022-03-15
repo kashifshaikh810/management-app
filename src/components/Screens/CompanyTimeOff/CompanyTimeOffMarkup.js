@@ -1,14 +1,24 @@
 import React from 'react';
-import {View, Text, ScrollView, Pressable, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  TextInput,
+  Image,
+} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import ArrowDownIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {Picker} from '@react-native-picker/picker';
 import EditIcon from 'react-native-vector-icons/MaterialIcons';
 import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import EyeIcon from 'react-native-vector-icons/Entypo';
+import tw from 'tailwind-react-native-classnames';
 
 import styles from './styles';
 import Header from '../Header/Header';
-import tw from 'tailwind-react-native-classnames';
+import AddTimeOffTypeModal from './Modals/AddTimeOffTypeModal/AddTimeOffTypeModal';
+import AddTimeOffPolicyModal from './Modals/AddTimeOffPolicyModal/AddTimeOffPolicyModal';
 
 const inputSection = props => {
   if (props.showInputSection) {
@@ -178,6 +188,13 @@ const CompanyTimeOffMarkup = props => {
 
           <View style={styles.line} />
 
+          {/* <Image
+            source={{
+              uri: 'https://lalkhan.brainyhr.io/images/company_logo_header_placeholder.png',
+            }}
+            style={{width: 290, height: 120, marginLeft: 20}}
+          /> */}
+
           <View>
             <View style={styles.emailTextContainer}>
               <Text style={styles.email}>send PTO requests email copy to</Text>
@@ -241,7 +258,7 @@ const CompanyTimeOffMarkup = props => {
             <Text style={styles.heading}>types</Text>
             <View style={styles.updatePressableContainer}>
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.setShowAddTimeOffTypeModal(true)}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [styles.updatePressable]}>
                 <Text style={[styles.updatePressableText]}>add new type</Text>
@@ -332,7 +349,7 @@ const CompanyTimeOffMarkup = props => {
             <Text style={styles.heading}>policies</Text>
             <View style={styles.updatePressableContainer}>
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.setShowAddTimeOffPolicy(true)}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [styles.updatePressable]}>
                 <Text style={[styles.updatePressableText]}>add new policy</Text>
@@ -369,7 +386,7 @@ const CompanyTimeOffMarkup = props => {
           <View style={[styles.headingContainer, styles.holidayTable]}>
             <View style={styles.holidayTableContainer}>
               <View style={styles.holidTableTextContainer}>
-                <Text style={styles.tableHeadingText}>name</Text>
+                <Text style={styles.tableHeadingText}>policy name</Text>
               </View>
 
               <View>
@@ -380,11 +397,35 @@ const CompanyTimeOffMarkup = props => {
 
             <View style={styles.holidayTableContainer}>
               <View style={styles.holidTableTextContainer}>
-                <Text style={styles.tableHeadingText}>auto approve</Text>
+                <Text style={styles.tableHeadingText}>policy type</Text>
               </View>
 
               <View>
-                <Text style={styles.tableTitleText}>yes</Text>
+                <Text style={styles.commentChildText}>yes</Text>
+              </View>
+              <View style={styles.line} />
+            </View>
+          </View>
+
+          <View style={[styles.headingContainer, styles.holidayTable]}>
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.tableHeadingText}>hours</Text>
+              </View>
+
+              <View>
+                <Text style={styles.commentChildText}>foefoeufoehfoeufoeu</Text>
+              </View>
+              <View style={styles.line} />
+            </View>
+
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.tableHeadingText}>employees</Text>
+              </View>
+
+              <View>
+                <Text style={styles.commentChildText}>all employees</Text>
               </View>
               <View style={styles.line} />
             </View>
@@ -397,6 +438,15 @@ const CompanyTimeOffMarkup = props => {
               </View>
 
               <View style={styles.headingContainer}>
+                <Pressable
+                  // onPress={() => props.setShowCompanyCountryModal(true)}
+                  style={({pressed}) => [
+                    styles.editIconPressable,
+                    {backgroundColor: pressed ? 'rgba(0,0,0,0.5)' : '#f3f3f3'},
+                  ]}>
+                  <EyeIcon name="eye" size={15} color="#b3b3b3" />
+                </Pressable>
+
                 <Pressable
                   // onPress={() => props.setShowCompanyCountryModal(true)}
                   style={({pressed}) => [
@@ -419,6 +469,10 @@ const CompanyTimeOffMarkup = props => {
             </View>
           </View>
         </View>
+
+        <AddTimeOffTypeModal {...props} />
+
+        <AddTimeOffPolicyModal {...props} />
       </ScrollView>
     </View>
   );
