@@ -1,17 +1,12 @@
 import {Dimensions, StyleSheet} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
 const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  container: {
-    width: '100%',
-    height: Dimensions.get('window').height,
-  },
-  backImage: {
-    width: '100%',
-    height: '100%',
-  },
+  container: tw`h-full w-full`,
+  backImage: tw`h-full w-full`,
   cardContainer: {
     width: '100%',
     height: Dimensions.get('window').height,
