@@ -26,12 +26,19 @@ const CompanyPerformanceReview = props => {
 
   // company feedback tab states
   const [companyFeedBackButton, setCompanyFeedBackButton] = useState('disable');
+  const [companyFeedBackSaveInputs, setCompanyFeedBackSaveInputs] = useState(
+    [],
+  );
 
   // rate value items states
   const [
     keyPerformanceRateValueSaveInputs,
     setKeyPerformanceRateValueSaveInputs,
   ] = useState([]);
+
+  // goals achievement tab states
+  const [goalsAchievementButton, setGoalsAchievementButton] =
+    useState('disable');
 
   // core value items function
   const coreValueAddNewInput = () => {
@@ -97,6 +104,22 @@ const CompanyPerformanceReview = props => {
     setKeyPerformanceRateValueSaveInputs(arr);
   };
 
+  // company feedback function
+  const companyFeedBackAddNewInput = () => {
+    let arr = [...companyFeedBackSaveInputs];
+    arr.push({
+      titleInput: 'Title',
+      descInput: 'Description',
+    });
+    setCompanyFeedBackSaveInputs(arr);
+  };
+
+  const removeCompanyFeedBackInput = (item, index) => {
+    let arr = [...companyFeedBackSaveInputs];
+    arr.splice(index, 1);
+    setCompanyFeedBackSaveInputs(arr);
+  };
+
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
@@ -132,6 +155,12 @@ const CompanyPerformanceReview = props => {
       keyPerformanceRateValueSaveInputs={keyPerformanceRateValueSaveInputs}
       companyFeedBackButton={companyFeedBackButton}
       setCompanyFeedBackButton={setCompanyFeedBackButton}
+      companyFeedBackSaveInputs={companyFeedBackSaveInputs}
+      setCompanyFeedBackSaveInputs={setCompanyFeedBackSaveInputs}
+      companyFeedBackAddNewInput={companyFeedBackAddNewInput}
+      removeCompanyFeedBackInput={removeCompanyFeedBackInput}
+      goalsAchievementButton={goalsAchievementButton}
+      setGoalsAchievementButton={setGoalsAchievementButton}
     />
   );
 };

@@ -265,6 +265,7 @@ const addNewConfigurationSection = props => {
         {coreValuesTabSection({...props})}
         {keyPerformaceIndicatorsTabSection({...props})}
         {companyFeedBackTabSection({...props})}
+        {goalsAchievementTabSection({...props})}
       </View>
     );
   }
@@ -1413,15 +1414,363 @@ const companyFeedBackEnableSection = props => {
               styles.testPressable,
               pressed ? tw`bg-gray-200` : tw`bg-green-600`,
             ]}
-            onPress={() => props.keyPerformanceAddNewInput()}>
+            onPress={() => props.companyFeedBackAddNewInput()}>
             <Text style={[styles.addNewItemText, tw`text-white`]}>
               <PlusIcon name="plus" size={18} color="#fff" /> add new item
             </Text>
           </Pressable>
         </View>
 
-        <View style={styles.weCouldNotContainer}>
-          <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
+        {props.companyFeedBackSaveInputs.length === 0 && (
+          <View style={styles.weCouldNotContainer}>
+            <Text style={styles.weCouldNot}>We couldn't find any records.</Text>
+          </View>
+        )}
+
+        {companyFeedBackNewInputSection({...props})}
+      </View>
+    );
+  }
+};
+
+const companyFeedBackNewInputSection = props => {
+  if (props?.companyFeedBackSaveInputs?.length >= 1) {
+    return (
+      <>
+        <FlatList
+          contentContainerStyle={styles.marginTop}
+          keyExtractor={(item, index) => index.toString()}
+          data={props.companyFeedBackSaveInputs}
+          renderItem={({item, index}) => (
+            <>
+              <View style={styles.textInputContainer}>
+                <View style={styles.keyPerformanceIndicatorsCard}>
+                  <Pressable
+                    onPress={() =>
+                      props.removeCompanyFeedBackInput(item, index)
+                    }
+                    style={({pressed}) => [
+                      styles.removeIconPressable,
+                      pressed ? tw`bg-red-100` : tw`bg-white`,
+                      pressed && tw`border-0`,
+                    ]}>
+                    {({pressed}) => (
+                      <RemoveIcon
+                        name="delete"
+                        size={15}
+                        color={pressed ? '#fff' : 'green'}
+                      />
+                    )}
+                  </Pressable>
+                  <View
+                    style={[styles.textInputContainer, styles.marginTopZero]}>
+                    <FloatingLabelInput
+                      label={item.titleInput}
+                      // value={phone}
+                      staticLabel
+                      selectionColor="black"
+                      containerStyles={styles.nameTextInput}
+                      customLabelStyles={{
+                        colorFocused: '#263238',
+                        fontSizeFocused: 13,
+                      }}
+                      labelStyles={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        color: '#263238',
+                      }}
+                      inputStyles={{
+                        color: '#263238',
+                        paddingHorizontal: 10,
+                      }}
+                      // onChangeText={value => {
+                      //   setPhone(value);
+                      // }}
+                    />
+                  </View>
+
+                  <View style={[styles.textInputContainer, styles.marginTop]}>
+                    <FloatingLabelInput
+                      label={item.descInput}
+                      // value={phone}
+                      staticLabel
+                      selectionColor="black"
+                      containerStyles={styles.descriptionTextInput}
+                      customLabelStyles={{
+                        colorFocused: '#263238',
+                        fontSizeFocused: 13,
+                      }}
+                      labelStyles={{
+                        backgroundColor: '#fff',
+                        paddingHorizontal: 5,
+                        color: '#263238',
+                      }}
+                      inputStyles={{
+                        color: '#263238',
+                        paddingHorizontal: 10,
+                      }}
+                      // onChangeText={value => {
+                      //   setPhone(value);
+                      // }}
+                    />
+                  </View>
+
+                  <View style={styles.textInputContainer}>
+                    <Text style={styles.beginText}>departments</Text>
+                    <View style={[styles.nameTextInput, styles.justify]}>
+                      <Picker
+                        mode="dropdown"
+                        selectedValue={props.terminationReasonActiveOrNotAction}
+                        onValueChange={(itemValue, itemIndex) =>
+                          props.setTerminationReasonActiveOrNotAction(itemValue)
+                        }>
+                        <Picker.Item
+                          label="All Departments"
+                          value="All Departments"
+                        />
+                      </Picker>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </>
+          )}
+        />
+      </>
+    );
+  }
+};
+
+const goalsAchievementTabSection = props => {
+  if (props.showTab === 'goals-achievement') {
+    return (
+      <View>
+        <View style={styles.wouldYouLikeContainer}>
+          <Text style={styles.wouldYouLike}>
+            WOULD YOU LIKE TO ENABLE GOAL ACHIEVEMENT?
+          </Text>
+          <View style={styles.enableAndDisablePressableContainer}>
+            <Pressable
+              onPress={() => props.setGoalsAchievementButton('enable')}
+              style={({pressed}) => [
+                styles.enablePressable,
+                props.goalsAchievementButton === 'enable'
+                  ? tw`bg-green-600`
+                  : tw`bg-white`,
+              ]}>
+              <Text
+                style={[
+                  styles.enableAndDisablePressableText,
+                  props.goalsAchievementButton === 'enable'
+                    ? tw`text-white`
+                    : tw`text-gray-200`,
+                ]}>
+                enable
+              </Text>
+            </Pressable>
+
+            <Pressable
+              onPress={() => props.setGoalsAchievementButton('disable')}
+              style={({pressed}) => [
+                styles.disablePressable,
+                props.goalsAchievementButton === 'disable'
+                  ? tw`bg-green-600`
+                  : tw`bg-white`,
+              ]}>
+              <Text
+                style={[
+                  styles.enableAndDisablePressableText,
+                  props.goalsAchievementButton === 'disable'
+                    ? tw`text-white`
+                    : tw`text-gray-200`,
+                ]}>
+                disable
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+        {goalsAchievementEnableSection({...props})}
+      </View>
+    );
+  }
+};
+
+const goalsAchievementEnableSection = props => {
+  if (props.goalsAchievementButton === 'enable') {
+    return (
+      <View>
+        <View style={styles.textInputContainer}>
+          <FloatingLabelInput
+            label="How many goals to set?"
+            // value={phone}
+            staticLabel
+            keyboardType="number-pad"
+            placeholder="1"
+            selectionColor="black"
+            containerStyles={styles.nameTextInput}
+            customLabelStyles={{
+              colorFocused: '#263238',
+              fontSizeFocused: 13,
+            }}
+            labelStyles={{
+              backgroundColor: '#fff',
+              paddingHorizontal: 5,
+              color: '#263238',
+            }}
+            inputStyles={{
+              color: '#263238',
+              paddingHorizontal: 10,
+            }}
+            // onChangeText={value => {
+            //   setPhone(value);
+            // }}
+          />
+        </View>
+
+        <View style={[styles.textInputContainer, styles.marginTop]}>
+          <FloatingLabelInput
+            label="Short Description"
+            // value={phone}
+            staticLabel
+            selectionColor="black"
+            containerStyles={styles.descriptionTextInput}
+            customLabelStyles={{
+              colorFocused: '#263238',
+              fontSizeFocused: 13,
+            }}
+            labelStyles={{
+              backgroundColor: '#fff',
+              paddingHorizontal: 5,
+              color: '#263238',
+            }}
+            inputStyles={{
+              color: '#263238',
+              paddingHorizontal: 10,
+            }}
+            // onChangeText={value => {
+            //   setPhone(value);
+            // }}
+          />
+        </View>
+
+        <Text style={[styles.commentsText, styles.shortDesc, tw`mt-0`]}>
+          S.M.A.R.T GOAL EXECUTION
+        </Text>
+
+        <View style={styles.textInputContainer}>
+          <Text style={styles.beginText}>Include Employee's comment?</Text>
+          <View style={[styles.nameTextInput, styles.justify]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="Yes" value="Yes" />
+              <Picker.Item label="No" value="No" />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={[styles.textInputContainer, styles.marginTopZero]}>
+          <Text style={styles.beginText}>Include Manager's comment?</Text>
+          <View style={[styles.nameTextInput, styles.justify]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="Yes" value="Yes" />
+              <Picker.Item label="No" value="No" />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={[styles.textInputContainer, styles.marginTop]}>
+          <FloatingLabelInput
+            label="Short Description"
+            // value={phone}
+            staticLabel
+            selectionColor="black"
+            containerStyles={styles.descriptionTextInput}
+            customLabelStyles={{
+              colorFocused: '#263238',
+              fontSizeFocused: 13,
+            }}
+            labelStyles={{
+              backgroundColor: '#fff',
+              paddingHorizontal: 5,
+              color: '#263238',
+            }}
+            inputStyles={{
+              color: '#263238',
+              paddingHorizontal: 10,
+            }}
+            // onChangeText={value => {
+            //   setPhone(value);
+            // }}
+          />
+        </View>
+
+        <Text style={[styles.commentsText, styles.shortDesc, tw`mt-0`]}>
+          S.M.A.R.T GOAL PLANNING
+        </Text>
+
+        <View style={styles.textInputContainer}>
+          <Text style={styles.beginText}>Include Employee's comment?</Text>
+          <View style={[styles.nameTextInput, styles.justify]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="Yes" value="Yes" />
+              <Picker.Item label="No" value="No" />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={[styles.textInputContainer, styles.marginTopZero]}>
+          <Text style={styles.beginText}>Include Manager's comment?</Text>
+          <View style={[styles.nameTextInput, styles.justify]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="Yes" value="Yes" />
+              <Picker.Item label="No" value="No" />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={[styles.textInputContainer, styles.marginTop]}>
+          <FloatingLabelInput
+            label="Short Description"
+            // value={phone}
+            staticLabel
+            selectionColor="black"
+            containerStyles={styles.descriptionTextInput}
+            customLabelStyles={{
+              colorFocused: '#263238',
+              fontSizeFocused: 13,
+            }}
+            labelStyles={{
+              backgroundColor: '#fff',
+              paddingHorizontal: 5,
+              color: '#263238',
+            }}
+            inputStyles={{
+              color: '#263238',
+              paddingHorizontal: 10,
+            }}
+            // onChangeText={value => {
+            //   setPhone(value);
+            // }}
+          />
         </View>
       </View>
     );
