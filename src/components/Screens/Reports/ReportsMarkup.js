@@ -142,7 +142,7 @@ const ReportsMarkup = props => {
                   pressed ? tw`bg-gray-100` : tw`bg-white`,
                 ]}>
                 <View style={styles.cardImage}>
-                  <SvgUri width="130" height="130" style uri={item.img} />
+                  <SvgUri width="130" height="130" uri={item.img} />
                 </View>
                 <View style={styles.itemNameContainer}>
                   <Text style={styles.itemName}>{item.name}</Text>

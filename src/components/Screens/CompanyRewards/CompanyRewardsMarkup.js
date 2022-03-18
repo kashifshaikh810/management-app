@@ -1,14 +1,26 @@
 import React from 'react';
-import {View, Text, ScrollView, Pressable, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  TextInput,
+  Switch,
+} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import CheckIcon from 'react-native-vector-icons/FontAwesome5';
 import tw from 'tailwind-react-native-classnames';
 import Toggle from 'react-native-toggle-element';
 import CheckBox from '@react-native-community/checkbox';
 import {Picker} from '@react-native-picker/picker';
+import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
+import ArrowDownIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+import ArrowRightIcon from 'react-native-vector-icons/MaterialIcons';
+import LikeStarIcon from 'react-native-vector-icons/FontAwesome5';
 
 import Header from '../Header/Header';
 import styles from './styles';
+import CreateNewRewardModal from './Modal/CreateNewRewardModal/CreateNewRewardModal';
 
 const generalTabSection = props => {
   if (props.showTab === 'general') {
@@ -205,13 +217,436 @@ const generalTabEnableSection = props => {
         </View>
 
         <View style={styles.line} />
+      </>
+    );
+  }
+};
 
-        <View style={styles.savePressableContainer}>
-          <Pressable style={() => [styles.savePressable]}>
-            <Text style={styles.savePressableText}>save settings</Text>
+const simpleEarningTabSection = props => {
+  if (props.showTab === 'simple-earning') {
+    return (
+      <View>
+        <View style={styles.wouldLikeTextContainer}>
+          <Text style={styles.wouldLikeText}>
+            Would you like to enable Registration Rewards?
+          </Text>
+        </View>
+
+        <View style={styles.engagingTextContainer}>
+          <Text style={styles.engagingText}>
+            * The user will be rewarded with points when logged in to the
+            platform for the first time.
+          </Text>
+        </View>
+
+        <View>
+          <Toggle
+            value={props.wouldYouLikeButton}
+            onPress={newState => props.setWouldYouLikeButton(newState)}
+            leftTitle={props.wouldYouLikeButton && 'Enable'}
+            rightTitle={!props.wouldYouLikeButton && 'Disable'}
+            thumbStyle={[
+              styles.thumbStyle,
+              props.wouldYouLikeButton ? tw`ml-2` : tw`ml-0.5`,
+            ]}
+            trackBarStyle={[
+              styles.trackBarStyle,
+              props.wouldYouLikeButton ? tw`bg-green-600` : tw`bg-gray-400`,
+            ]}
+            thumbInActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-gray-400`} />
+              </View>
+            }
+            thumbActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-green-600`} />
+              </View>
+            }
+          />
+        </View>
+
+        <View style={styles.currencyInputContainer}>
+          <Text style={styles.currencyLabelText}>
+            points rewarded <Text style={styles.star}>*</Text>
+          </Text>
+          <View style={[styles.pointsInput, styles.headingContainer]}>
+            <TextInput
+              keyboardType="number-pad"
+              value={props?.pointsRewardedInput?.toString()}
+              onChangeText={num => props.setPointsRewardedInput(num)}
+            />
+            <View style={styles.dropIconsContainer}>
+              <Pressable
+                onPress={() =>
+                  props.setPointsRewarded(++props.pointsRewardedInput)
+                }
+                style={({pressed}) => [
+                  pressed ? tw`bg-gray-300` : tw`bg-white`,
+                ]}>
+                <ArrowDropIcon name="arrow-drop-up" size={20} />
+              </Pressable>
+              <Pressable
+                onPress={() =>
+                  props.setPointsRewarded(--props.pointsRewardedInput)
+                }
+                style={({pressed}) => [
+                  pressed ? tw`bg-gray-300` : tw`bg-white`,
+                ]}>
+                <ArrowDropIcon name="arrow-drop-down" size={20} />
+              </Pressable>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={styles.wouldLikeTextContainer}>
+          <Text style={styles.wouldLikeText}>
+            Would you like to enable Birthday Rewards?
+          </Text>
+        </View>
+
+        <View style={styles.engagingTextContainer}>
+          <Text style={styles.engagingText}>
+            * The user will be rewarded with points on his/her birthday! Hurray!
+          </Text>
+        </View>
+
+        <View>
+          <Toggle
+            value={props.wouldYouLikeButton}
+            onPress={newState => props.setWouldYouLikeButton(newState)}
+            leftTitle={props.wouldYouLikeButton && 'Enable'}
+            rightTitle={!props.wouldYouLikeButton && 'Disable'}
+            thumbStyle={[
+              styles.thumbStyle,
+              props.wouldYouLikeButton ? tw`ml-2` : tw`ml-0.5`,
+            ]}
+            trackBarStyle={[
+              styles.trackBarStyle,
+              props.wouldYouLikeButton ? tw`bg-green-600` : tw`bg-gray-400`,
+            ]}
+            thumbInActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-gray-400`} />
+              </View>
+            }
+            thumbActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-green-600`} />
+              </View>
+            }
+          />
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={styles.wouldLikeTextContainer}>
+          <Text style={styles.wouldLikeText}>
+            Would you like to enable Anniversary Rewards?
+          </Text>
+        </View>
+
+        <View style={styles.engagingTextContainer}>
+          <Text style={styles.engagingText}>
+            * The user will be rewarded with points on his/her work anniversary.
+          </Text>
+        </View>
+
+        <View>
+          <Toggle
+            value={props.wouldYouLikeButton}
+            onPress={newState => props.setWouldYouLikeButton(newState)}
+            leftTitle={props.wouldYouLikeButton && 'Enable'}
+            rightTitle={!props.wouldYouLikeButton && 'Disable'}
+            thumbStyle={[
+              styles.thumbStyle,
+              props.wouldYouLikeButton ? tw`ml-2` : tw`ml-0.5`,
+            ]}
+            trackBarStyle={[
+              styles.trackBarStyle,
+              props.wouldYouLikeButton ? tw`bg-green-600` : tw`bg-gray-400`,
+            ]}
+            thumbInActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-gray-400`} />
+              </View>
+            }
+            thumbActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-green-600`} />
+              </View>
+            }
+          />
+        </View>
+
+        <View style={styles.line} />
+      </View>
+    );
+  }
+};
+
+const refineRewardsTextInputSection = props => {
+  if (props.showInputSection) {
+    return (
+      <View>
+        <View style={[styles.currencyInputContainer, styles.marginTop]}>
+          <Text style={styles.currencyLabelText}>reward title</Text>
+          <View style={styles.currencyInput}>
+            <TextInput />
+          </View>
+        </View>
+
+        <View style={[styles.currencyInputContainer]}>
+          <Text style={styles.currencyLabelText}>points</Text>
+          <View style={styles.currencyInput}>
+            <TextInput keyboardType="number-pad" />
+          </View>
+        </View>
+
+        <View style={[styles.currencyInputContainer]}>
+          <Text style={styles.currencyLabelText}>status</Text>
+          <View style={styles.currencyInput}>
+            <TextInput />
+          </View>
+        </View>
+
+        <View style={[styles.headingContainer, styles.selfEnd]}>
+          <Pressable
+            android_ripple={{color: '#f1f1f1'}}
+            style={() => [styles.clearPressable]}>
+            <Text style={styles.clearPressableText}>clear</Text>
+          </Pressable>
+
+          <Pressable
+            android_ripple={{color: '#f3f3f3'}}
+            style={() => [
+              styles.savePressable,
+              styles.marginLeft,
+              styles.searchPressable,
+            ]}>
+            <Text style={styles.savePressableText}>search</Text>
           </Pressable>
         </View>
-      </>
+      </View>
+    );
+  }
+};
+
+const customRewardsTabSection = props => {
+  if (props.showTab === 'custom-rewards') {
+    return (
+      <View>
+        <View style={styles.savePressableContainer}>
+          <Pressable
+            onPress={() => props.setShowCreateNewRewardModal(true)}
+            android_ripple={{color: '#f3f3f3'}}
+            style={() => [styles.addNewRewardPressable]}>
+            <Text style={styles.savePressableText}>add new reward</Text>
+          </Pressable>
+        </View>
+
+        <Pressable
+          style={[styles.headingContainer, styles.marginLeft]}
+          onPress={() => props.setShowInputSection(!props.showInputSection)}>
+          <Text style={styles.refineText}>refine rewards list</Text>
+          <ArrowDownIcon
+            name={
+              props.showInputSection
+                ? 'arrow-up-bold-circle'
+                : 'arrow-down-bold-circle'
+            }
+            style={styles.arrowIcon}
+            size={20}
+            color="#006f44"
+          />
+        </Pressable>
+
+        {refineRewardsTextInputSection({...props})}
+
+        {false && (
+          <View style={styles.noRecordTextContainer}>
+            <Text style={styles.noRecordText}>
+              We couldn't find any records.
+            </Text>
+          </View>
+        )}
+
+        <View
+          style={[
+            styles.marginLeft,
+            styles.marginRight,
+            styles.marginTop,
+            styles.marginBottomFour,
+            styles.awardCard,
+          ]}>
+          <View
+            style={[styles.headingContainer, styles.awardCardItemContainer]}>
+            <Switch
+              trackColor={{false: '#b3b3b3', true: '#f5dd4b'}}
+              thumbColor={props.isEnabled ? '#fff' : '#fff'}
+              // onValueChange={props.toggleSwitch}
+              // value={props.isEnabled}
+            />
+            <Text style={styles.titleText}>aaa</Text>
+
+            <View style={[styles.rounded, styles.marginLeft]} />
+
+            <Text style={styles.descText}>(fouehfuoewfuwefoeo</Text>
+          </View>
+
+          <View
+            style={[
+              styles.headingContainer,
+              styles.marginTop,
+              styles.awardCardItemContainer,
+            ]}>
+            <ArrowRightIcon name="subdirectory-arrow-right" size={15} />
+            <LikeStarIcon
+              name="certificate"
+              size={17}
+              color="green"
+              style={tw`ml-2`}
+            />
+            <Text style={styles.pointsNumberText}>31</Text>
+            <Text style={styles.pointsText}>points)</Text>
+          </View>
+        </View>
+      </View>
+    );
+  }
+};
+
+const sharedPointsTabSection = props => {
+  if (props.showTab === 'shared-points') {
+    return (
+      <View>
+        <View style={styles.wouldLikeTextContainer}>
+          <Text style={styles.wouldLikeText}>
+            Would you like to enable Shared Points?
+          </Text>
+        </View>
+
+        <View style={styles.engagingTextContainer}>
+          <Text style={styles.engagingText}>
+            * Rewarding your employees is essential for keeping them engaged and
+            motivated to do their best work. Let's give your employees the
+            opportunity to reward each other.
+          </Text>
+        </View>
+
+        <View>
+          <Toggle
+            value={props.wouldYouLikeButton}
+            onPress={newState => props.setWouldYouLikeButton(newState)}
+            leftTitle={props.wouldYouLikeButton && 'Enable'}
+            rightTitle={!props.wouldYouLikeButton && 'Disable'}
+            thumbStyle={[
+              styles.thumbStyle,
+              props.wouldYouLikeButton ? tw`ml-2` : tw`ml-0.5`,
+            ]}
+            trackBarStyle={[
+              styles.trackBarStyle,
+              props.wouldYouLikeButton ? tw`bg-green-600` : tw`bg-gray-400`,
+            ]}
+            thumbInActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-gray-400`} />
+              </View>
+            }
+            thumbActiveComponent={
+              <View style={styles.checkIconContainer}>
+                <CheckIcon name="check" size={25} style={tw`text-green-600`} />
+              </View>
+            }
+          />
+        </View>
+
+        <View style={styles.cheerUpPressableContainer}>
+          <Pressable
+            style={() => [styles.cheerUpPressable]}
+            android_ripple={{color: '#fff'}}>
+            <Text style={styles.cheerUpPressableText}>cheer up employees</Text>
+          </Pressable>
+        </View>
+
+        <View style={styles.marginLeft}>
+          <Text style={styles.accrualText}>Accrual</Text>
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={[styles.marginTop, styles.marginLeft]}>
+          <Text style={styles.currencyLabelText}>
+            period <Text style={styles.star}>*</Text>
+          </Text>
+          <View style={[styles.textInput, styles.pickerContainer]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="" value="" />
+              <Picker.Item label="Week" value="Week" />
+              <Picker.Item label="Month" value="Month" />
+              <Picker.Item label="Year" value="Year" />
+            </Picker>
+          </View>
+        </View>
+
+        <View
+          style={[
+            styles.currencyInputContainer,
+            styles.marginTop,
+            styles.marginBottomTwo,
+          ]}>
+          <Text style={styles.currencyLabelText}>
+            amount <Text style={styles.star}>*</Text>
+          </Text>
+          <View style={styles.amountInput}>
+            <TextInput />
+          </View>
+        </View>
+
+        <View style={[styles.marginLeft, styles.marginBottomFour]}>
+          <Text style={styles.currencyLabelText}>
+            what to do with unused balance? <Text style={styles.star}>*</Text>
+          </Text>
+          <View style={[styles.textInput, styles.pickerContainer]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="" value="" />
+              <Picker.Item label="Lose it" value="Lose it" />
+              <Picker.Item
+                label="Move to the next period"
+                value="Move to the next period"
+              />
+            </Picker>
+          </View>
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={styles.headingContainer}>
+          <View
+            style={[
+              styles.headingContainer,
+              styles.marginLeft,
+              styles.marginTop,
+              styles.table,
+            ]}>
+            <Text style={styles.marginLeft}>role</Text>
+            <Text style={styles.marginLeft}>max points</Text>
+            <Text style={styles.marginLeft}>step</Text>
+          </View>
+        </View>
+      </View>
     );
   }
 };
@@ -342,8 +777,26 @@ const CompanyRewardsMarkup = props => {
           <View style={styles.line} />
 
           {generalTabSection({...props})}
+          {simpleEarningTabSection({...props})}
+          {customRewardsTabSection({...props})}
+          {sharedPointsTabSection({...props})}
+
+          {props.showTab === 'general' ||
+          props.showTab === 'simple-earning' ||
+          props.showTab === 'shared-points' ||
+          props.showTab === 'awards' ? (
+            <View style={styles.savePressableContainer}>
+              <Pressable style={() => [styles.savePressable]}>
+                <Text style={styles.savePressableText}>save settings</Text>
+              </Pressable>
+            </View>
+          ) : (
+            []
+          )}
         </View>
       </ScrollView>
+      {/* add new reward modal */}
+      <CreateNewRewardModal {...props} />
     </View>
   );
 };
