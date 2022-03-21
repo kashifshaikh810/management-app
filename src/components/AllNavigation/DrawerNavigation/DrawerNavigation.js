@@ -200,7 +200,6 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerItemStyle: {height: 0, display: 'none'},
-          drawerStyle: {height: 0, display: 'none'},
         }}
         name={COMPANY_SURVEY}
         component={CompanySurvey}
@@ -208,7 +207,6 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerItemStyle: {height: 0, display: 'none'},
-          drawerStyle: {height: 0, display: 'none'},
         }}
         name={COMPANY_CUSTOM_FIELDS}
         component={CompanyCustomFields}
@@ -216,7 +214,6 @@ const DrawerNavigation = () => {
       <Drawer.Screen
         options={{
           drawerItemStyle: {height: 0, display: 'none'},
-          drawerStyle: {height: 0, display: 'none'},
         }}
         name={COMPANY_PERMISSIONS}
         component={CompanyPermissions}

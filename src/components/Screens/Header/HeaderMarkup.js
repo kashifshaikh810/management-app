@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TextInput, Image, Pressable, StatusBar} from 'react-native';
+import {View, TextInput, Image, Pressable, StatusBar} from 'react-native';
 
 import styles from './styles';
 import SearchIcon from 'react-native-vector-icons/Feather';
@@ -19,7 +19,10 @@ const HeaderMarkup = props => {
               : props?.navigation?.openDrawer()
           }
           style={({pressed}) => [
-            {backgroundColor: pressed ? '#f3f3f3' : '#fff', borderRadius: 20},
+            {
+              backgroundColor: pressed ? '#f3f3f3' : '#fff',
+              borderRadius: 20,
+            },
           ]}>
           {props.name === 'profile' ? (
             <ArrowBackIcon name="arrow-back" size={30} />
@@ -33,7 +36,7 @@ const HeaderMarkup = props => {
           styles.inputContainer,
           {
             backgroundColor: props.focus ? '#fff' : '#e9e9f0',
-            elevation: props.focus ? 5 : 0,
+            elevation: props.focus ? 10 : 0,
           },
         ]}>
         <SearchIcon
@@ -46,6 +49,7 @@ const HeaderMarkup = props => {
           selectionColor="black"
           returnKeyType="search"
           onFocus={() => props.setFocus(true)}
+          onBlur={() => props.setFocus(false)}
         />
       </View>
       <View style={styles.flagImageContainer}>

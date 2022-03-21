@@ -1,5 +1,45 @@
 import {StyleSheet} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: tw`flex-1 bg-gray-100`,
+  scrollView: tw`flex-1`,
+  textContainer: tw`mt-4 ml-5 mb-2`,
+  text: tw`text-lg text-black uppercase font-extrabold`,
+  headingContainer: tw`flex-row`,
+  slash: tw`ml-1.5`,
+  headingText: tw`ml-2 text-gray-500 capitalize`,
+  marginTop: tw`mt-2`,
+  card: tw`w-11/12 min-h-0 flex-1 m-3 ml-5 bg-white shadow-md`,
+  heading: tw`p-3 ml-2 mt-2 uppercase text-lg font-extrabold text-gray-600`,
+  line: tw`w-full h-0.5 bg-gray-100`,
+  savePressableContainer: tw`flex-1 justify-end items-end mr-2 mb-4 mt-4`,
+  savePressable: tw`w-5/12 h-12 rounded justify-center items-center bg-red-500`,
+  savePressableText: tw`text-white capitalize text-base text-center`,
+  tabsPressable: tw`p-4 pb-0`,
+  tabsText: tw`text-sm font-extrabold uppercase text-black`,
+  tabLine: tw`h-0.5 rounded-full mt-5`,
+  wouldLikeTextContainer: tw`ml-4 mt-4`,
+  wouldLikeText: tw`text-base text-gray-800`,
+  engagingTextContainer: tw`ml-4 mt-3`,
+  engagingText: tw`text-sm text-gray-400 pr-4`,
+  thumbStyle: tw`bg-white h-10 w-10`,
+  trackBarStyle: tw`h-11 m-4`,
+  checkIconContainer: tw`flex-1 justify-center items-center`,
+  itemCenter: tw`items-center`,
+  allowText: tw`text-base text-gray-600 capitalize pr-10`,
+  marginLeft: tw`ml-3`,
+  marginLeftTen: tw`ml-10`,
+  logoText: tw`text-base capitalize text-gray-600 ml-5 mt-5`,
+  removeLogoPressableContainer: tw`flex-1 justify-end mt-7 ml-5`,
+  removeLogoPressable: tw`w-5/12 h-10 rounded justify-center items-center bg-gray-500 mb-4 mt-2`,
+  logoCardPressable: tw`border-2 w-11/12 h-56 border-gray-200 ml-5 mt-2 rounded justify-center items-center`,
+  dragAFileText: tw`uppercase text-base mt-2 text-gray-300`,
+  orText: tw`uppercase text-gray-300 text-sm`,
+  selectAFileTextContainer: tw`bg-blue-50 h-11 w-10/12 rounded justify-center items-center mt-3`,
+  selectAFileText: tw`text-gray-600 text-base`,
+  imageBack: tw`mt-1`,
+  removeBackPressable: tw`w-6/12 h-10 rounded justify-center items-center bg-gray-500 mb-4 mt-2`,
+});
 
 export default styles;

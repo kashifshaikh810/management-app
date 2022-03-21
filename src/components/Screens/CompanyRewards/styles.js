@@ -69,6 +69,11 @@ const styles = StyleSheet.create({
   accrualText: tw`text-lg text-black pb-3 mt-1`,
   marginBottomTwo: tw`mb-2`,
   table: tw`bg-blue-50 w-11/12 h-16 items-center`,
+  tableItems: tw`text-sm text-gray-800 capitalize`,
+  newRulePressable: tw`w-4/12 h-9 rounded justify-center items-center bg-green-700 ml-7`,
+  pickerInput: tw`w-4/12 h-11 border-2 border-gray-200 rounded`,
+  maxPointsInput: tw`w-3/12 h-11 border-2 border-gray-200 rounded ml-5 pl-1`,
+  removePressable: tw`w-3/12 h-10 rounded justify-center items-center bg-green-700 ml-5 mt-4 mb-4`,
 });
 
 export default styles;
