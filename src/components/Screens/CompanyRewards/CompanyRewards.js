@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import CompanyRewardsMarkup from './CompanyRewardsMarkup';
 import DocumentPicker from 'react-native-document-picker';
+import {LogBox} from 'react-native';
 
 const CompanyRewards = props => {
   const [showTab, setShowTab] = useState('general');
@@ -80,6 +81,12 @@ const CompanyRewards = props => {
   useEffect(() => {
     setPointsRewardedInput(pointsRewarded);
   }, [pointsRewarded]);
+
+  useEffect(() => {
+    LogBox.ignoreLogs([
+      'Failed prop type: Invalid prop `rightTitle` of type `boolean` supplied to `ReactNativeToggleElement`, expected `string`.',
+    ]);
+  }, []);
 
   return (
     <CompanyRewardsMarkup

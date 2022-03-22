@@ -1,8 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CompanyCustomFieldsMarkup from './CompanyCustomFieldsMarkup';
 
 const CompanyCustomFields = props => {
-  return <CompanyCustomFieldsMarkup {...props} />;
+  const [showRefineFieldsInputSection, setShowRefineFieldsInputSection] =
+    useState(false);
+
+  return (
+    <CompanyCustomFieldsMarkup
+      {...props}
+      showRefineFieldsInputSection={showRefineFieldsInputSection}
+      setShowRefineFieldsInputSection={setShowRefineFieldsInputSection}
+    />
+  );
 };
 
 export default CompanyCustomFields;

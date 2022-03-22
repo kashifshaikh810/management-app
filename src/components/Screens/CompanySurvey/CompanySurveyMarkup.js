@@ -1,10 +1,19 @@
 import React from 'react';
-import {View, Text, ScrollView, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  ImageBackground,
+  Image,
+} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import tw from 'tailwind-react-native-classnames';
 import Toggle from 'react-native-toggle-element';
 import CheckIcon from 'react-native-vector-icons/FontAwesome5';
 import ImageIcon from 'react-native-vector-icons/FontAwesome5';
+import LinesIcon from 'react-native-vector-icons/FontAwesome5';
+import CheckCircleIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CheckBox from '@react-native-community/checkbox';
 
 import Header from '../Header/Header';
@@ -201,7 +210,9 @@ const designTabSection = props => {
         <View>
           <Text style={styles.logoText}>logo</Text>
 
-          <Pressable style={styles.logoCardPressable}>
+          <Pressable
+            style={styles.logoCardPressable}
+            onPress={() => props.uploadLogoImage()}>
             <ImageIcon name="images" size={70} style={tw`text-gray-300`} />
             <Text style={styles.dragAFileText}>drag a file here</Text>
 
@@ -215,7 +226,10 @@ const designTabSection = props => {
           </Pressable>
 
           <View style={styles.removeLogoPressableContainer}>
-            <Pressable style={() => [styles.removeLogoPressable]}>
+            <Pressable
+              style={() => [styles.removeLogoPressable]}
+              android_ripple={{color: '#fff'}}
+              onPress={() => props.removeLogoImage()}>
               <Text style={styles.savePressableText}>remove logo</Text>
             </Pressable>
           </View>
@@ -226,7 +240,9 @@ const designTabSection = props => {
             background image
           </Text>
 
-          <Pressable style={styles.logoCardPressable}>
+          <Pressable
+            style={styles.logoCardPressable}
+            onPress={() => props.uploadBackgroundImage()}>
             <ImageIcon name="images" size={70} style={tw`text-gray-300`} />
             <Text style={styles.dragAFileText}>drag a file here</Text>
 
@@ -240,10 +256,112 @@ const designTabSection = props => {
           </Pressable>
 
           <View style={styles.removeLogoPressableContainer}>
-            <Pressable style={() => [styles.removeBackPressable]}>
+            <Pressable
+              style={() => [styles.removeBackPressable]}
+              android_ripple={{color: '#fff'}}
+              onPress={() => props.removeBackgroundImage()}>
               <Text style={styles.savePressableText}>remove background</Text>
             </Pressable>
           </View>
+        </View>
+
+        <View style={[styles.line, styles.marginTop]} />
+
+        <View
+          style={[
+            styles.headingContainer,
+            styles.itemCenter,
+            styles.marginLeft,
+            styles.marginTop,
+          ]}>
+          <CheckBox
+            disabled={false}
+            style={{
+              transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+            }}
+            tintColors={{true: 'green', false: 'gray'}}
+            value={props.additionalOption}
+            onValueChange={newValue => props.setAdditionalOption(newValue)}
+          />
+          <Text style={styles.allowText}>Allow full screen</Text>
+        </View>
+
+        <View
+          style={[
+            styles.headingContainer,
+            styles.itemCenter,
+            styles.marginLeft,
+            styles.marginTop,
+          ]}>
+          <CheckBox
+            disabled={false}
+            style={{
+              transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+            }}
+            tintColors={{true: 'green', false: 'gray'}}
+            value={props.additionalOption}
+            onValueChange={newValue => props.setAdditionalOption(newValue)}
+          />
+          <Text style={styles.allowText}>one question per page</Text>
+        </View>
+
+        <View
+          style={[
+            styles.headingContainer,
+            styles.itemCenter,
+            styles.marginLeft,
+            styles.marginTop,
+          ]}>
+          <CheckBox
+            disabled={false}
+            style={{
+              transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+            }}
+            tintColors={{true: 'green', false: 'gray'}}
+            value={props.additionalOption}
+            onValueChange={newValue => props.setAdditionalOption(newValue)}
+          />
+          <Text style={styles.allowText}>allow pagination</Text>
+        </View>
+
+        <View style={[styles.line, styles.marginTop]} />
+
+        <Text style={styles.logoText}>perview</Text>
+        <View style={styles.iconsContainer}>
+          <ImageBackground
+            source={{uri: props?.saveBackgroundImage?.uri}}
+            style={tw`w-full h-full items-center`}>
+            <Image
+              source={{uri: props?.saveLogoImage?.uri}}
+              style={props?.saveLogoImage?.uri && tw`w-11/12 h-80 mt-5`}
+            />
+            <View style={styles.headingContainer}>
+              <CheckCircleIcon
+                name="check-circle"
+                size={25}
+                style={styles.checkIcon}
+              />
+              <LinesIcon name="grip-lines" size={70} style={styles.lineIcon} />
+            </View>
+
+            <View style={styles.headingContainer}>
+              <CheckCircleIcon
+                name="check-circle"
+                size={25}
+                style={styles.checkIcon}
+              />
+              <LinesIcon name="grip-lines" size={70} style={styles.lineIcon} />
+            </View>
+
+            <View style={styles.headingContainer}>
+              <CheckCircleIcon
+                name="check-circle"
+                size={25}
+                style={styles.checkIcon}
+              />
+              <LinesIcon name="grip-lines" size={70} style={styles.lineIcon} />
+            </View>
+          </ImageBackground>
         </View>
       </View>
     );

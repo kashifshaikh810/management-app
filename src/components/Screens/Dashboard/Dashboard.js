@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {LogBox} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchEditBioData,
@@ -15,6 +16,9 @@ const Dashboard = props => {
 
   useEffect(() => {
     setCurrentUserData(currUserData);
+    LogBox.ignoreLogs(['react-native-gesture-handler']);
+    LogBox.ignoreLogs(['Cannot update a component']);
+    LogBox.ignoreLogs(['Require cycle']);
   }, [currUserData]);
 
   useEffect(() => {
