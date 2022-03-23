@@ -11,6 +11,8 @@ import tw from 'tailwind-react-native-classnames';
 
 import Header from '../Header/Header';
 import styles from './styles';
+import NewEmployeeTabModal from './Modal/NewEmployeeTabModal/NewEmployeeTabModal';
+import CreateCustomFieldModal from './Modal/CreateCustomFieldModal/CreateCustomFieldModal';
 
 const refineFieldsTextInputSection = props => {
   if (props.showRefineFieldsInputSection) {
@@ -81,7 +83,10 @@ const CompanyCustomFieldsMarkup = props => {
             <Text style={styles.heading}>employee custom tabs</Text>
 
             <View style={styles.createPressableContainer}>
-              <Pressable style={styles.createPressable}>
+              <Pressable
+                style={styles.createPressable}
+                android_ripple={{color: '#fff'}}
+                onPress={() => props.setShowNewEmployeeTabModal(true)}>
                 <Text style={styles.createPressableText}>
                   create employee tab
                 </Text>
@@ -133,7 +138,10 @@ const CompanyCustomFieldsMarkup = props => {
             <Text style={styles.heading}>fields</Text>
 
             <View style={styles.createPressableContainer}>
-              <Pressable style={styles.createPressable}>
+              <Pressable
+                style={styles.createPressable}
+                android_ripple={{color: '#fff'}}
+                onPress={() => props.setShowCreateCustomFieldModal(true)}>
                 <Text style={styles.createPressableText}>
                   create custom field
                 </Text>
@@ -196,53 +204,96 @@ const CompanyCustomFieldsMarkup = props => {
             </View>
           </View>
 
-          <View>
-            <View style={[styles.headingContainer, styles.tableContainer]}>
-              <View style={styles.headingContainer}>
-                <SelectArrowIcon
-                  name="select-arrows"
-                  size={15}
-                  color="#b3b3b3"
-                  style={styles.selectIcon}
-                />
-                <Text style={styles.tableHeading}>field</Text>
+          <View style={[styles.headingContainer, styles.holidayTable]}>
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.tableHeadingText}>
+                  <SelectArrowIcon
+                    name="select-arrows"
+                    size={15}
+                    color="#b3b3b3"
+                    style={styles.selectIcon}
+                  />
+                  field
+                </Text>
               </View>
 
-              <View style={styles.headingContainer}>
-                <SelectArrowIcon
-                  name="select-arrows"
-                  size={15}
-                  color="#b3b3b3"
-                  style={styles.selectIcon}
-                />
-                <Text style={styles.tableHeading}>type</Text>
+              <View>
+                <Text style={styles.tableTitleText}>
+                  field: <Text style={styles.tableSubtitleText}>name</Text>
+                </Text>
               </View>
+              <View style={styles.line} />
             </View>
 
-            <View style={[styles.headingContainer, tw`flex-1 justify-around`]}>
-              <Text>a</Text>
-              <Text>v</Text>
-            </View>
-
-            <View style={[styles.headingContainer, styles.tableContainer]}>
-              <View style={styles.headingContainer}>
-                <SelectArrowIcon
-                  name="select-arrows"
-                  size={15}
-                  color="#b3b3b3"
-                  style={styles.selectIcon}
-                />
-                <Text style={styles.tableHeading}>required</Text>
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.tableHeadingText}>
+                  <SelectArrowIcon
+                    name="select-arrows"
+                    size={15}
+                    color="#b3b3b3"
+                    style={styles.selectIcon}
+                  />
+                  type
+                </Text>
               </View>
 
-              <Text style={styles.actionsText}>actions</Text>
+              <View>
+                <Text style={styles.tableTitleText}>
+                  type: <Text style={styles.tableSubtitleText}>name</Text>
+                </Text>
+              </View>
+              <View style={styles.line} />
             </View>
-            <View style={[styles.headingContainer, tw`flex-1 justify-around`]}>
-              <Text>a</Text>
-              <Text>v</Text>
+          </View>
+
+          <View style={[styles.headingContainer, styles.holidayTable]}>
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.tableHeadingText}>
+                  <SelectArrowIcon
+                    name="select-arrows"
+                    size={15}
+                    color="#b3b3b3"
+                    style={styles.selectIcon}
+                  />
+                  required
+                </Text>
+              </View>
+
+              <View>
+                <Text style={styles.tableTitleText}>
+                  required: <Text style={styles.tableSubtitleText}>yes</Text>
+                </Text>
+              </View>
+              <View style={styles.line} />
+            </View>
+
+            <View style={styles.holidayTableContainer}>
+              <View style={styles.holidTableTextContainer}>
+                <Text style={styles.actionsText}>actions</Text>
+              </View>
+
+              <View style={[styles.headingContainer, styles.marginTop]}>
+                <EditIcon name="edit" size={15} color="#b3b3b3" />
+                <DeleteIcon
+                  name="delete"
+                  size={15}
+                  color="#b3b3b3"
+                  style={styles.marginLeft}
+                />
+              </View>
+              <View style={styles.line} />
             </View>
           </View>
         </View>
+
+        {/* new employee tab modal */}
+        <NewEmployeeTabModal {...props} />
+
+        {/* new custom field modal */}
+        <CreateCustomFieldModal {...props} />
       </ScrollView>
     </View>
   );

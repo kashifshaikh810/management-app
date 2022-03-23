@@ -45,6 +45,14 @@ const styles = StyleSheet.create({
   tableHeading: tw`capitalize text-base text-black`,
   selectIcon: tw`mt-0.5 mr-1`,
   actionsText: tw`capitalize text-base text-gray-500`,
+  holidayTable: tw`flex-1 justify-between`,
+  holidayTableContainer: tw`flex-col p-5 w-6/12`,
+  holidTableTextContainer: tw`bg-blue-100 p-2`,
+  tableHeadingText: tw`capitalize text-base text-gray-500 font-extrabold`,
+  tableTitleText: tw`capitalize mt-2 text-sm text-black w-40 font-extrabold`,
+  commentChildText: tw`capitalize mt-2 text-sm text-black w-32`,
+  tableDateText: tw`text-xs text-gray-400`,
+  tableSubtitleText: tw`mt-2 text-sm text-gray-500 w-40`,
 });
 
 export default styles;
