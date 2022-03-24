@@ -15,6 +15,9 @@ import EditIcon from 'react-native-vector-icons/MaterialIcons';
 
 import Header from '../Header/Header';
 import styles from './styles';
+import {Picker} from '@react-native-picker/picker';
+import CheckBox from '@react-native-community/checkbox';
+import AddNewRoleModal from './Modal/AddNewRoleModal/AddNewRoleModal';
 
 const myData = [
   {
@@ -37,6 +40,27 @@ const myData = [
     createdDate: '07/7/2022',
     status: 'Active',
     actions: 'icons',
+  },
+];
+
+const myUserData = [
+  {
+    name: 'Memon',
+    email: 'memon123@mail.com',
+    role: 'Employee',
+    status: 'Pending',
+  },
+  {
+    name: 'Shah Sahab',
+    email: 'shahsahab91@mail.com',
+    role: 'Manager',
+    status: 'Active',
+  },
+  {
+    name: 'Mehmood Khan',
+    email: 'mehmood54@mail.com',
+    role: 'Owner',
+    status: 'Active',
   },
 ];
 
@@ -123,6 +147,7 @@ const rolesTabSection = props => {
               </View>
             )}
             contentContainerStyle={styles.scrollView}
+            keyExtractor={(item, index) => index.toString()}
             data={myData}
             renderItem={({item, index}) => (
               <>
@@ -175,6 +200,110 @@ const rolesTabSection = props => {
   }
 };
 
+const usersTabSection = props => {
+  if (props.showTab === 'users') {
+    return (
+      <View>
+        <View style={[styles.fieldInputContainer, styles.marginTop]}>
+          <Text style={styles.fieldLabelText}>change role</Text>
+          <View style={[styles.fieldInput, styles.pickerContainer]}>
+            <Picker
+              mode="dropdown"
+              selectedValue={props.terminationReasonActiveOrNotAction}
+              onValueChange={(itemValue, itemIndex) =>
+                props.setTerminationReasonActiveOrNotAction(itemValue)
+              }>
+              <Picker.Item label="" value="" />
+              <Picker.Item
+                label="fetch from database"
+                value="fetch from database"
+              />
+            </Picker>
+          </View>
+          <View style={styles.applyPressableContainer}>
+            <Pressable
+              android_ripple={{color: '#f3f3f3'}}
+              style={() => [
+                styles.savePressable,
+                styles.marginTop,
+                styles.searchPressable,
+              ]}>
+              <Text style={styles.savePressableText}>apply</Text>
+            </Pressable>
+          </View>
+        </View>
+
+        <ScrollView horizontal={true} style={styles.scrollView}>
+          <FlatList
+            keyExtractor={(item, index) => index.toString()}
+            ListHeaderComponent={() => (
+              <View style={[styles.headingContainer, styles.userTable]}>
+                <View style={styles.marginRightFive}>
+                  <CheckBox
+                    disabled={false}
+                    style={{
+                      transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+                    }}
+                    tintColors={{true: 'gray', false: 'black'}}
+                    value={props.toggleCheckBox}
+                    onValueChange={newValue =>
+                      props.setToggleCheckBox(newValue)
+                    }
+                  />
+                </View>
+                <Text style={styles.nameHeadingText}>name</Text>
+                <Text style={styles.emailHeadingText}>email</Text>
+                <Text style={styles.roleHeadingText}>roles</Text>
+                <Text style={styles.userStatusHeadingText}>Status</Text>
+              </View>
+            )}
+            contentContainerStyle={styles.scrollView}
+            data={myUserData}
+            renderItem={({item, index}) => (
+              <>
+                <View
+                  style={[
+                    styles.headingContainer,
+                    styles.userHeadingItemsContainer,
+                  ]}>
+                  <View style={styles.marginRightFive}>
+                    <CheckBox
+                      disabled={false}
+                      style={{
+                        transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+                      }}
+                      tintColors={{true: 'gray', false: 'black'}}
+                      value={props.toggleCheckBox}
+                      onValueChange={newValue =>
+                        props.setToggleCheckBox(newValue)
+                      }
+                    />
+                  </View>
+                  <Text style={styles.nameTableItemText}>{item.name}</Text>
+                  <Text style={styles.emailTableItemText}>{item.email}</Text>
+                  <Text style={styles.roleTableItemText}>{item.role}</Text>
+                  <View style={tw`w-10`}>
+                    <Text
+                      style={[
+                        styles.userStatusTableItemText,
+                        item.status === 'Pending'
+                          ? tw`bg-gray-500`
+                          : tw`bg-green-400`,
+                      ]}>
+                      {item.status}
+                    </Text>
+                  </View>
+                </View>
+                <View style={[styles.line, styles.tableLine]} />
+              </>
+            )}
+          />
+        </ScrollView>
+      </View>
+    );
+  }
+};
+
 const CompanyPermissionsMarkup = props => {
   return (
     <View style={styles.container}>
@@ -199,6 +328,7 @@ const CompanyPermissionsMarkup = props => {
 
           <View style={styles.createPressableContainer}>
             <Pressable
+              onPress={() => props.setShowNewRoleModal(true)}
               style={() => [styles.createPressable]}
               android_ripple={{color: '#fff'}}>
               <Text style={styles.createPressableText}>add new role</Text>
@@ -245,7 +375,12 @@ const CompanyPermissionsMarkup = props => {
           <View style={styles.line} />
 
           {rolesTabSection({...props})}
+
+          {usersTabSection({...props})}
         </View>
+
+        {/* add new role modal */}
+        <AddNewRoleModal {...props} />
       </ScrollView>
     </View>
   );

@@ -42,6 +42,19 @@ const styles = StyleSheet.create({
   selfEnd: tw`self-end mr-7`,
   savePressable: tw`w-5/12 h-12 rounded justify-center items-center bg-red-500`,
   savePressableText: tw`text-white capitalize text-base text-center`,
+  pickerContainer: tw`justify-center`,
+  applyPressableContainer: tw`justify-center items-end h-16`,
+  userTable: tw`flex-1 items-center ml-5 pl-2 pr-8 h-11 w-11/12 h-10 mt-3 bg-blue-100`,
+  nameHeadingText: tw`w-24 capitalize text-base font-extrabold text-gray-500`,
+  marginRightFive: tw`mr-5`,
+  emailHeadingText: tw`capitalize text-base font-extrabold text-gray-500 ml-3 w-32`,
+  roleHeadingText: tw`capitalize text-base font-extrabold text-gray-500 ml-3 w-24`,
+  userStatusHeadingText: tw`capitalize text-base font-extrabold text-gray-500 ml-2 w-12`,
+  userHeadingItemsContainer: tw`flex-1 items-center w-11/12 h-10 ml-5 pl-2 mt-3 pr-8`,
+  nameTableItemText: tw`w-24 text-sm text-gray-500`,
+  emailTableItemText: tw`ml-3 w-32 text-sm text-gray-500`,
+  roleTableItemText: tw`ml-3 w-24 text-sm text-gray-500`,
+  userStatusTableItemText: tw`w-12 pb-0.5 pt-0.5 mr-2 rounded-full text-white text-center text-xs`,
 });
 
 export default styles;
