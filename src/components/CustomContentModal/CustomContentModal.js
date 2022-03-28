@@ -17,7 +17,7 @@ const CustomContentModal = props => {
   };
 
   const goToProfile = () => {
-    navigation.navigate('MyProfile');
+    navigation.navigate('My Profile');
     props.setShowModal(false);
     props.navigation.closeDrawer();
   };

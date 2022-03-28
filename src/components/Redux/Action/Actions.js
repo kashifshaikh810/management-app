@@ -9,6 +9,8 @@ import {
   FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
   PRIMARY_COLOR,
   PRIMARY_HOVER_COLOR,
+  GET_TASK_LISTS,
+  CREATE_TASK_LISTS,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -114,4 +116,30 @@ export const changePrimaryHoverColor = selectedColor => dispatch => {
     type: PRIMARY_HOVER_COLOR,
     payload: selectedColor,
   });
+};
+
+export const fetchTaskListData = () => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/companyAddList/${uid}`)
+    .on('value', snapshot => {
+      let listData = snapshot.val() ? Object.values(snapshot.val()) : [];
+      dispatch({
+        type: GET_TASK_LISTS,
+        payload: listData,
+      });
+    });
+};
+
+export const fetchCreateTaskListData = title => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/createCompanyTasks/${uid}/${title}`)
+    .on('value', snapshot => {
+      let createListData = snapshot.val() ? Object.values(snapshot.val()) : [];
+      dispatch({
+        type: CREATE_TASK_LISTS,
+        payload: createListData,
+      });
+    });
 };

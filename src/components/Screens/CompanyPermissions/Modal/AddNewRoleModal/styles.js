@@ -53,6 +53,8 @@ const styles = StyleSheet.create({
   roleTableItemText: tw`ml-3 w-24 text-sm text-gray-500`,
   userStatusTableItemText: tw`w-12 pb-0.5 pt-0.5 mr-2 rounded-full text-white text-center text-xs`,
   tableLine: tw`w-11/12 mt-5 self-center`,
+  itemCenter: tw`items-center`,
+  switchText: tw`uppercase text-sm font-extrabold text-gray-600`,
 });
 
 export default styles;

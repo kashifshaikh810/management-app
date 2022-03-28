@@ -1,5 +1,12 @@
-import React, {useState} from 'react';
-import {View, Text, ScrollView, Pressable} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  FlatList,
+  ActivityIndicator,
+} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import tw from 'tailwind-react-native-classnames';
 import EditIcon from 'react-native-vector-icons/MaterialIcons';
@@ -10,14 +17,57 @@ import styles from './styles';
 import ActionModal from './ActionModal/ActionModal';
 import CreateTaskModal from './CreateTaskModal/CreateTaskModal';
 import AddListModal from '../OnboardingAndOffboarding/AddListModal/AddListModal';
+import {Auth, Database} from '../../firebaseTools';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchCreateTaskListData} from '../../Redux/Action/Actions';
 
 const TaskListDetail = props => {
   const [showActionModal, setShowActionModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
   const [showCreateTaskModal, setShowCreateTaskModal] = useState({
     show: false,
     type: '',
   });
+  const [createTaskData, setCreateTaskData] = useState([]);
+
+  // create task input
+  const [createTasktitle, setCreateTaskTitle] = useState('');
+  const [createTaskdescription, setCreateTaskDescription] = useState('');
+
+  // redux
+  const dispatch = useDispatch();
+  const {createListsData} = useSelector(state => state.reduc);
+
+  const taskData = props?.route?.params?.tasksData;
+
+  const createTask = () => {
+    let uid = Auth()?.currentUser?.uid;
+    let title = taskData.title;
+    if (createTasktitle && createTaskdescription) {
+      Database().ref(`/createCompanyTasks/${uid}/${title}`).push({
+        id: uid,
+        createTasktitle: createTasktitle,
+        createTaskdescription: createTaskdescription,
+      });
+      setCreateTaskTitle('');
+      setCreateTaskDescription('');
+      setShowCreateTaskModal(false);
+    }
+  };
+
+  useEffect(() => {
+    setIsLoading(true);
+    let title = taskData?.title;
+    dispatch(fetchCreateTaskListData(title));
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+  }, [props.route.params]);
+
+  useEffect(() => {
+    setCreateTaskData(createListsData);
+  }, [createListsData]);
 
   return (
     <View style={styles.container}>
@@ -39,7 +89,7 @@ const TaskListDetail = props => {
           <Text style={styles.slash}>/</Text>
           <Text style={styles.headingText}>onboarding/offboarding</Text>
           <Text style={styles.slash}>/</Text>
-          <Text style={styles.headingText}>name here...</Text>
+          <Text style={styles.headingText}>{taskData.title}</Text>
         </View>
 
         <View
@@ -82,58 +132,66 @@ const TaskListDetail = props => {
           </Pressable>
         </View>
 
-        <View style={styles.card}>
-          <View style={styles.heading}>
-            <Text>content name</Text>
+        {isLoading ? (
+          <View style={styles.loader}>
+            <ActivityIndicator color="green" size={30} />
           </View>
-
-          <View style={styles.desc}>
-            <Text>description</Text>
-          </View>
-        </View>
-
-        <View style={styles.todoCard}>
-          <View style={styles.headingContainer}>
-            <View style={styles.heading}>
-              <Text>content name</Text>
+        ) : (
+          <>
+            <View style={styles.card}>
+              <View style={styles.heading}>
+                <Text style={styles.title}>{taskData.title}</Text>
+              </View>
+              <View style={styles.desc}>
+                <Text style={styles.description}>{taskData.description}</Text>
+              </View>
             </View>
-            <View style={[styles.headingContainer, styles.iconsContainer]}>
-              <Pressable
-                onPress={() => {}}
-                style={({pressed}) => [
-                  styles.icon,
-                  pressed ? tw`bg-gray-200` : tw`bg-yellow-400`,
-                ]}>
-                <EditIcon name="edit" size={15} color="#fff" />
-              </Pressable>
+            <View style={styles.todoCard}>
+              <FlatList
+                data={createTaskData}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({item, index}) => (
+                  <>
+                    <View style={[styles.headingContainer, styles.itemCenter]}>
+                      <View style={styles.heading}>
+                        <Text style={styles.title}>{item.createTasktitle}</Text>
+                      </View>
+                      <View
+                        style={[
+                          styles.headingContainer,
+                          styles.iconsContainer,
+                        ]}>
+                        <Pressable
+                          onPress={() => {}}
+                          style={({pressed}) => [
+                            styles.icon,
+                            pressed ? tw`bg-gray-200` : tw`bg-yellow-400`,
+                          ]}>
+                          <EditIcon name="edit" size={15} color="#fff" />
+                        </Pressable>
 
-              <Pressable
-                onPress={() => {}}
-                style={({pressed}) => [
-                  styles.icon,
-                  pressed ? tw`bg-gray-200` : tw`bg-red-400`,
-                ]}>
-                <DeleteIcon name="delete" size={17} color="#fff" />
-              </Pressable>
+                        <Pressable
+                          onPress={() => {}}
+                          style={({pressed}) => [
+                            styles.icon,
+                            pressed ? tw`bg-gray-200` : tw`bg-red-400`,
+                          ]}>
+                          <DeleteIcon name="delete" size={17} color="#fff" />
+                        </Pressable>
+                      </View>
+                    </View>
+                    <View style={styles.desc}>
+                      <Text style={styles.description}>
+                        {item.createTaskdescription}
+                      </Text>
+                    </View>
+                    <View style={styles.line} />
+                  </>
+                )}
+              />
             </View>
-          </View>
-
-          <View style={styles.desc}>
-            <Text>description</Text>
-          </View>
-
-          <View style={styles.line} />
-
-          <View style={styles.heading}>
-            <Text>content name</Text>
-          </View>
-
-          <View style={styles.desc}>
-            <Text>description</Text>
-          </View>
-
-          <View style={styles.line} />
-        </View>
+          </>
+        )}
 
         <ActionModal
           {...props}
@@ -146,6 +204,11 @@ const TaskListDetail = props => {
           {...props}
           showCreateTaskModal={showCreateTaskModal}
           setShowCreateTaskModal={setShowCreateTaskModal}
+          createTask={createTask}
+          createTasktitle={createTasktitle}
+          setCreateTaskTitle={setCreateTaskTitle}
+          createTaskdescription={createTaskdescription}
+          setCreateTaskDescription={setCreateTaskDescription}
         />
 
         <AddListModal

@@ -30,9 +30,11 @@ const styles = StyleSheet.create({
   refineText: tw`text-lg uppercase text-black`,
   arrowIcon: tw`ml-2 mt-1`,
   clearText: tw`capitalize`,
-  templatesCard: tw`bg-gray-100 flex-1 mr-2 h-60 w-5/12 ml-5 justify-center`,
-  onboardHeading: tw`ml-2`,
-  manageButton: tw`w-10/12 h-10 ml-2 mt-1 border-2 border-green-500 justify-center items-center rounded-xl`,
+  templatesCard: tw`bg-gray-100 mr-2 ml-5 flex-1 justify-center mb-4 pt-4`,
+  onboardHeading: tw`ml-2 mr-1 uppercase text-black font-extrabold mb-2 text-base`,
+  description: tw`ml-2 mt-3 mr-1 text-sm text-gray-600 mb-3`,
+  manageButton: tw`w-10/12 h-10 ml-2 mt-1 border-2 border-green-500 justify-center items-center rounded mb-5`,
+  marginTop: tw`mt-4`,
 });
 
 export default styles;

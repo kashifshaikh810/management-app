@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Text, ScrollView, Pressable, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Pressable,
+  TextInput,
+  FlatList,
+} from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
@@ -135,60 +142,55 @@ const templatesSection = (props, secondProps) => {
           </>
         )}
 
-        <View style={styles.headingContainer}>
-          <View
-            style={[
-              styles.templatesCard,
-              props.showInputSection ? tw`mt-5` : tw`mt-1`,
-            ]}>
-            <Text style={styles.onboardHeading}>Test Test Test</Text>
-            <Text style={styles.onboardHeading}>onboarding or offboarding</Text>
-            <View>
-              <Pressable
-                onPress={() =>
-                  secondProps.navigation.navigate('TaskListDetail')
-                }
-                style={({pressed}) => [
-                  styles.manageButton,
-                  pressed ? tw`bg-green-600` : tw`bg-white`,
+        {props.companyTasksListData ? (
+          <FlatList
+            nestedScrollEnabled={true}
+            data={props?.companyTasksListData}
+            contentContainerStyle={styles.marginTop}
+            keyExtractor={(item, index) => index.toString()}
+            numColumns={2}
+            renderItem={({item, index}) => (
+              <View
+                style={[
+                  styles.templatesCard,
+                  props.showInputSection ? tw`mt-5` : tw`mt-1`,
                 ]}>
-                {({pressed}) => (
-                  <Text style={pressed ? tw`text-white` : tw`text-green-500`}>
-                    Manage
-                  </Text>
-                )}
-              </Pressable>
+                <Text style={styles.onboardHeading}>{item.title}</Text>
+                <Text style={styles.onboardHeading}>
+                  {item.showOnboardingOrOffboarding}
+                </Text>
+                <View>
+                  <Text style={styles.description}>{item.description}</Text>
+                </View>
+                <View>
+                  <Pressable
+                    onPress={() =>
+                      secondProps.navigation.navigate('TaskListDetail', {
+                        tasksData: item,
+                      })
+                    }
+                    style={({pressed}) => [
+                      styles.manageButton,
+                      pressed ? tw`bg-green-600` : tw`bg-white`,
+                    ]}>
+                    {({pressed}) => (
+                      <Text
+                        style={pressed ? tw`text-white` : tw`text-green-500`}>
+                        Manage
+                      </Text>
+                    )}
+                  </Pressable>
+                </View>
+              </View>
+            )}
+          />
+        ) : (
+          <View style={(styles.noRecordsContainer, tw`m-5`)}>
+            <View style={styles.noRecords}>
+              <Text>We couldn't find any records.</Text>
             </View>
           </View>
-
-          <View
-            style={[
-              styles.templatesCard,
-              props.showInputSection ? tw`mt-5` : tw`mt-1`,
-            ]}>
-            <Text style={styles.onboardHeading}>Test Test Test</Text>
-            <Text style={styles.onboardHeading}>onboarding or offboarding</Text>
-            <View>
-              <Pressable
-                style={({pressed}) => [
-                  styles.manageButton,
-                  pressed ? tw`bg-green-600` : tw`bg-white`,
-                ]}>
-                {({pressed}) => (
-                  <Text style={pressed ? tw`text-white` : tw`text-green-500`}>
-                    Manage
-                  </Text>
-                )}
-              </Pressable>
-            </View>
-          </View>
-        </View>
-
-        {/* <View style={(styles.noRecordsContainer, tw`m-5`)}>
-          <View style={styles.noRecords}>
-            <Text>We couldn't find any records.</Text>
-          </View>
-        </View> */}
+        )}
       </>
     );
   }

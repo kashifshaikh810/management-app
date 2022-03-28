@@ -34,7 +34,12 @@ const CreateTaskModal = props => {
                   Title <Text style={styles.star}>*</Text>
                 </Text>
 
-                <TextInput style={styles.textInput} selectionColor="#b3b3b3" />
+                <TextInput
+                  style={styles.textInput}
+                  selectionColor="#b3b3b3"
+                  value={props.createTasktitle}
+                  onChangeText={text => props.setCreateTaskTitle(text)}
+                />
               </View>
 
               <View style={styles.textInputContainer}>
@@ -49,6 +54,8 @@ const CreateTaskModal = props => {
                     }}
                     placeholder="Start Typing Here"
                     scrollEnabled={true}
+                    value={props.createTaskdescription}
+                    onChangeText={text => props.setCreateTaskDescription(text)}
                     selectionColor="#b3b3b3"
                   />
                 </View>
@@ -68,7 +75,7 @@ const CreateTaskModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.createTask(props)}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.addNewListPressable,

@@ -1,4 +1,5 @@
 import {
+  CREATE_TASK_LISTS,
   FETCH_CONTACT_INFORMATION_DATA,
   FETCH_EDIT_BIO_DATA,
   FETCH_EDUCATION_DATA,
@@ -6,6 +7,7 @@ import {
   FETCH_LICENSES_AND_CERTIFICATIONS_DATA,
   FETCH_PROFILE_DETAILS_DATA,
   FETCH_USER_DATA,
+  GET_TASK_LISTS,
   PRIMARY_COLOR,
   PRIMARY_HOVER_COLOR,
 } from '../Action/ActionTypes';
@@ -20,6 +22,8 @@ const initialState = {
   licenseAndCertificationsData: {},
   primaryColor: null,
   primaryHoverColor: null,
+  companyTaskLists: [],
+  createListsData: [],
 };
 
 export const reducer = (state = initialState, action) => {
@@ -68,6 +72,16 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         primaryHoverColor: action.payload,
+      };
+    case GET_TASK_LISTS:
+      return {
+        ...state,
+        companyTaskLists: action.payload,
+      };
+    case CREATE_TASK_LISTS:
+      return {
+        ...state,
+        createListsData: action.payload,
       };
     default:
       return state;

@@ -7,9 +7,10 @@ import {
   ActivityIndicator,
   Pressable,
   TextInput,
+  ScrollView,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
 import tw from 'tailwind-react-native-classnames';
+
 import styles from './styles';
 
 const AddListModal = props => {
@@ -73,7 +74,12 @@ const AddListModal = props => {
                   Title <Text style={styles.star}>*</Text>
                 </Text>
 
-                <TextInput style={styles.textInput} selectionColor="#b3b3b3" />
+                <TextInput
+                  style={styles.textInput}
+                  selectionColor="#b3b3b3"
+                  value={props.title}
+                  onChangeText={text => props.setTitle(text)}
+                />
               </View>
 
               <View style={styles.textInputContainer}>
@@ -86,6 +92,8 @@ const AddListModal = props => {
                     }}
                     scrollEnabled={true}
                     selectionColor="#b3b3b3"
+                    value={props.description}
+                    onChangeText={text => props.setDescription(text)}
                   />
                 </View>
               </View>
@@ -108,13 +116,18 @@ const AddListModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.addListCompany()}
+                disabled={
+                  !props.showOnboardingOrOffboarding &&
+                  !props.title &&
+                  !props.description
+                }
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.addNewListPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
                 ]}>
-                {false ? (
+                {props.isLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
                   <Text style={styles.cancelPressableText}>add new list</Text>
