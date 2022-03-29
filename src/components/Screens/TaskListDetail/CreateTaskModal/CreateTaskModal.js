@@ -16,15 +16,21 @@ import styles from './styles';
 const CreateTaskModal = props => {
   return (
     <Modal
-      visible={props.showCreateTaskModal}
+      visible={props?.showEditTaskModal.show || props.showCreateTaskModal}
       animationType="fade"
       transparent
-      onRequestClose={() => props.setShowCreateTaskModal(false)}>
+      onRequestClose={() =>
+        props?.showEditTaskModal
+          ? props?.setShowEditTaskModal({show: false})
+          : props.setShowCreateTaskModal(false)
+      }>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={[styles.container, {backgroundColor: 'rgba(0,0,0,0.5)'}]}>
         <View style={styles.modalBody}>
           <View style={styles.newListHeading}>
-            <Text style={styles.newListText}>new task</Text>
+            <Text style={styles.newListText}>
+              {props?.showEditTaskModal.show ? 'edit task' : 'new task'}
+            </Text>
           </View>
           <View style={styles.line} />
           <ScrollView style={tw`flex-1 mb-2`}>
@@ -64,27 +70,37 @@ const CreateTaskModal = props => {
 
             <View style={styles.pressablesContainer}>
               <Pressable
-                onPress={() => props.setShowCreateTaskModal(false)}
+                onPress={() =>
+                  props?.showEditTaskModal.show
+                    ? props.closeEditTaskModal()
+                    : props.setShowCreateTaskModal(false)
+                }
                 disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.cancelPressable,
                   {backgroundColor: pressed ? '#f3f3f3' : 'gray'},
                 ]}>
-                <Text style={styles.cancelPressableText}>cancel</Text>
+                <Text style={styles.cancelPressableText}>close</Text>
               </Pressable>
 
               <Pressable
-                onPress={() => props.createTask(props)}
+                onPress={() =>
+                  props.showEditTaskModal.show
+                    ? props.editTaskList(props)
+                    : props.createTask(props)
+                }
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.addNewListPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#006f44'},
                 ]}>
-                {false ? (
+                {props.isAddNewListLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
-                  <Text style={styles.cancelPressableText}>add new list</Text>
+                  <Text style={styles.cancelPressableText}>
+                    {props?.showEditTaskModal.show ? 'save' : 'add new list'}
+                  </Text>
                 )}
               </Pressable>
             </View>

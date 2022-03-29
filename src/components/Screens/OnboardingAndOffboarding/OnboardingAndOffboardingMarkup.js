@@ -6,6 +6,7 @@ import {
   Pressable,
   TextInput,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 
@@ -14,6 +15,7 @@ import Header from '../Header/Header';
 import tw from 'tailwind-react-native-classnames';
 import ArrowDownIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddListModal from './AddListModal/AddListModal';
+import {paramsListsData, tryOnly} from '../../Redux/Action/Actions';
 
 const myTaskSection = props => {
   if (props.showTab === 'my-task') {
@@ -90,6 +92,17 @@ const myTaskListSection = props => {
 };
 
 const templatesSection = (props, secondProps) => {
+  let listsKeys = secondProps.listsKeys;
+
+  const navigateToTaskDetails = (item, index) => {
+    secondProps.navigation.navigate('TaskListDetail', {
+      tasksData: item,
+      tasksKey: listsKeys[index],
+      index: index,
+    });
+    secondProps.dispatch(paramsListsData(item));
+  };
+
   if (props.showTab === 'temp') {
     return (
       <>
@@ -142,7 +155,11 @@ const templatesSection = (props, secondProps) => {
           </>
         )}
 
-        {props.companyTasksListData ? (
+        {props.isDataLoading ? (
+          <View style={styles.loader}>
+            <ActivityIndicator size={30} color="green" />
+          </View>
+        ) : props.companyTasksListData.length >= 1 ? (
           <FlatList
             nestedScrollEnabled={true}
             data={props?.companyTasksListData}
@@ -164,11 +181,7 @@ const templatesSection = (props, secondProps) => {
                 </View>
                 <View>
                   <Pressable
-                    onPress={() =>
-                      secondProps.navigation.navigate('TaskListDetail', {
-                        tasksData: item,
-                      })
-                    }
+                    onPress={() => navigateToTaskDetails(item, index)}
                     style={({pressed}) => [
                       styles.manageButton,
                       pressed ? tw`bg-green-600` : tw`bg-white`,

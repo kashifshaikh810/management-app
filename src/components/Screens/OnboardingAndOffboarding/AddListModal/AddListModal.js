@@ -116,7 +116,11 @@ const AddListModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => props.addListCompany()}
+                onPress={() =>
+                  props.showEditListModal
+                    ? props.editTask()
+                    : props.addListCompany()
+                }
                 disabled={
                   !props.showOnboardingOrOffboarding &&
                   !props.title &&
@@ -130,7 +134,9 @@ const AddListModal = props => {
                 {props.isLoading ? (
                   <ActivityIndicator color="#fff" />
                 ) : (
-                  <Text style={styles.cancelPressableText}>add new list</Text>
+                  <Text style={styles.cancelPressableText}>
+                    {props.showEditListModal ? 'update list' : 'add new list'}
+                  </Text>
                 )}
               </Pressable>
             </View>

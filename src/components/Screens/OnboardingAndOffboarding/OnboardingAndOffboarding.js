@@ -7,9 +7,11 @@ import {fetchTaskListData} from '../../Redux/Action/Actions';
 
 const OnboardingAndOffboarding = props => {
   const [showTab, setShowTab] = useState('my-task');
+  const [listsKeys, setListsKeys] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
   const [showAddListModal, setShowAddListModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(false);
   const [showOnboardingOrOffboarding, setShowOnboardingOrOffboarding] =
     useState('');
   const [companyTasksListData, setCompanyTasksListData] = useState([]);
@@ -26,17 +28,24 @@ const OnboardingAndOffboarding = props => {
     let uid = Auth()?.currentUser?.uid;
     if (showOnboardingOrOffboarding && title && description) {
       setIsLoading(true);
-      Database().ref(`/companyAddList/${uid}`).push({
-        companyId: uid,
-        showOnboardingOrOffboarding: showOnboardingOrOffboarding,
-        title: title,
-        description: description,
-      });
-      setIsLoading(false);
-      setShowAddListModal(false);
-      setShowOnboardingOrOffboarding('');
-      setTitle('');
-      setDescription('');
+      Database()
+        .ref(`/companyAddList/${uid}`)
+        .push({
+          companyId: uid,
+          showOnboardingOrOffboarding: showOnboardingOrOffboarding,
+          title: title,
+          description: description,
+        })
+        .then(() => {
+          setIsLoading(false);
+          setShowAddListModal(false);
+          setShowOnboardingOrOffboarding('');
+          setTitle('');
+          setDescription('');
+        })
+        .catch(err => {
+          console.log(err, 'err');
+        });
     }
   };
 
@@ -47,7 +56,14 @@ const OnboardingAndOffboarding = props => {
 
   // for data show
   useEffect(() => {
-    setCompanyTasksListData(companyTaskLists);
+    setIsDataLoading(true);
+    let tasksLists = companyTaskLists ? Object.values(companyTaskLists) : [];
+    let tasksListsKeys = companyTaskLists ? Object.keys(companyTaskLists) : [];
+    setListsKeys(tasksListsKeys);
+    setCompanyTasksListData(tasksLists);
+    setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
   }, [companyTaskLists]);
 
   return (
@@ -68,6 +84,9 @@ const OnboardingAndOffboarding = props => {
       setDescription={setDescription}
       isLoading={isLoading}
       companyTasksListData={companyTasksListData}
+      listsKeys={listsKeys}
+      dispatch={dispatch}
+      isDataLoading={isDataLoading}
     />
   );
 };

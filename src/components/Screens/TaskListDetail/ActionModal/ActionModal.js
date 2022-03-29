@@ -43,7 +43,7 @@ const ActionModal = props => {
               <Text>Assign List</Text>
             </Pressable>
             <Pressable
-              onPress={() => {}}
+              onPress={() => props.removeFromLists()}
               style={({pressed}) => [
                 styles.pressable,
                 {backgroundColor: pressed ? '#f3f3f3' : '#fff'},

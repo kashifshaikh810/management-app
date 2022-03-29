@@ -8,6 +8,7 @@ import {
   FETCH_PROFILE_DETAILS_DATA,
   FETCH_USER_DATA,
   GET_TASK_LISTS,
+  PARAM_LISTS_DATA,
   PRIMARY_COLOR,
   PRIMARY_HOVER_COLOR,
 } from '../Action/ActionTypes';
@@ -24,6 +25,7 @@ const initialState = {
   primaryHoverColor: null,
   companyTaskLists: [],
   createListsData: [],
+  taskData: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -82,6 +84,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         createListsData: action.payload,
+      };
+    case PARAM_LISTS_DATA:
+      return {
+        ...state,
+        taskData: action.payload,
       };
     default:
       return state;

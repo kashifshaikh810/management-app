@@ -11,6 +11,8 @@ import {
   PRIMARY_HOVER_COLOR,
   GET_TASK_LISTS,
   CREATE_TASK_LISTS,
+  TRY_ONLY,
+  PARAM_LISTS_DATA,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -123,7 +125,7 @@ export const fetchTaskListData = () => dispatch => {
   Database()
     .ref(`/companyAddList/${uid}`)
     .on('value', snapshot => {
-      let listData = snapshot.val() ? Object.values(snapshot.val()) : [];
+      let listData = snapshot.val() ? snapshot.val() : [];
       dispatch({
         type: GET_TASK_LISTS,
         payload: listData,
@@ -131,15 +133,22 @@ export const fetchTaskListData = () => dispatch => {
     });
 };
 
-export const fetchCreateTaskListData = title => dispatch => {
+export const fetchCreateTaskListData = index => dispatch => {
   let uid = Auth()?.currentUser?.uid;
   Database()
-    .ref(`/createCompanyTasks/${uid}/${title}`)
+    .ref(`/createCompanyTasks/${uid}/${index}`)
     .on('value', snapshot => {
-      let createListData = snapshot.val() ? Object.values(snapshot.val()) : [];
+      let createListData = snapshot.val() ? snapshot.val() : [];
       dispatch({
         type: CREATE_TASK_LISTS,
         payload: createListData,
       });
     });
+};
+
+export const paramsListsData = items => dispatch => {
+  dispatch({
+    type: PARAM_LISTS_DATA,
+    payload: items,
+  });
 };
