@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   manageButton: tw`w-10/12 h-10 ml-2 mt-1 border-2 border-green-500 justify-center items-center rounded mb-5`,
   marginTop: tw`mt-4`,
   loader: tw`h-64 w-full justify-center items-center`,
+  justifyCenter: tw`justify-center`,
 });
 
 export default styles;

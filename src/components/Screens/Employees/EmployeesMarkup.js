@@ -17,11 +17,13 @@ import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
 import EmailIcon from 'react-native-vector-icons/MaterialIcons';
 import DOBIcon from 'react-native-vector-icons/FontAwesome';
 import EyeIcon from 'react-native-vector-icons/FontAwesome';
+import PlusIcon from 'react-native-vector-icons/AntDesign';
 
 import {DummyData} from './DummyData';
 import styles from './styles';
 import Header from '../Header/Header';
 import MyModal from './Modal/Modal';
+import AddNewEmployeeModal from './Modal/AddNewEmployeeModal/AddNewEmployeeModal';
 
 const inputSection = props => {
   if (props.changeArrow) {
@@ -148,8 +150,34 @@ const EmployeesMarkup = props => {
     <View style={styles.container}>
       <Header {...props} />
       <ScrollView style={styles.scrollView}>
-        <View style={styles.empHeadingContainer}>
-          <Text style={styles.empHeading}>EMPLOYEES</Text>
+        <View style={{flexDirection: 'row'}}>
+          <View style={[styles.empHeadingContainer]}>
+            <Text style={styles.empHeading}>EMPLOYEES</Text>
+            <Pressable
+              onPress={() => {}}
+              style={({pressed}) => [
+                styles.addNewEmployeePressable,
+                {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+              ]}>
+              {({pressed}) => (
+                <>
+                  <PlusIcon
+                    name="plus"
+                    size={16}
+                    color={pressed ? '#fff' : '#b3b3b3'}
+                    style={styles.icon}
+                  />
+                  <Text
+                    style={[
+                      styles.view,
+                      {color: pressed ? '#fff' : '#263238'},
+                    ]}>
+                    Add New Employee
+                  </Text>
+                </>
+              )}
+            </Pressable>
+          </View>
         </View>
 
         <View style={styles.headingContainer}>
@@ -217,6 +245,8 @@ const EmployeesMarkup = props => {
           {inputSection(props)}
 
           <MyModal {...props} />
+
+          <AddNewEmployeeModal {...props} />
 
           <FlatList
             keyExtractor={(item, index) => index.toString()}

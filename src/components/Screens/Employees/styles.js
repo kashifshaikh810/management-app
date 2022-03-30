@@ -9,10 +9,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   empHeadingContainer: {
-    marginHorizontal: 15,
     width: '100%',
-    height: 40,
-    justifyContent: 'flex-end',
+    height: 70,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginLeft: 15,
+    paddingRight: 35,
+    alignItems: 'center',
   },
   empHeading: {
     fontSize: 20,
@@ -24,7 +27,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     height: 40,
-    alignItems: 'center',
     marginHorizontal: 15,
   },
   headingTextSlash: {
@@ -260,6 +262,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginHorizontal: 5,
+    textAlign: 'center',
+    textAlignVertical: 'center',
   },
   email: {
     color: '#263238',
@@ -275,10 +279,19 @@ const styles = StyleSheet.create({
   },
   view: {
     fontSize: 16,
+    textAlign: 'center',
   },
   totalItems: {
     marginHorizontal: 10,
     marginVertical: 10,
+  },
+  addNewEmployeePressable: {
+    flexDirection: 'row',
+    width: '60%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
   },
 });
 

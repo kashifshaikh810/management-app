@@ -55,7 +55,6 @@ const TaskListDetail = props => {
   const {createListsData, taskData} = useSelector(state => state.reduc);
 
   // params
-  // let taskData = props?.route?.params?.tasksData;
   let taskKey = props?.route?.params?.tasksKey;
   let index = props?.route?.params?.index;
 
@@ -221,12 +220,21 @@ const TaskListDetail = props => {
         } else {
           setIsTaskListsLoading(false);
           props.navigation.navigate('Onboarding/Offboarding');
+          ToastAndroid.showWithGravityAndOffset(
+            'Deleted Successfully...',
+            ToastAndroid.LONG,
+            ToastAndroid.BOTTOM,
+            25,
+            50,
+          );
         }
       })
       .catch(err => {
         console.log(err, 'err');
       });
   };
+
+  const createDuplicateList = () => {};
 
   useEffect(() => {
     setIsTaskListsLoading(true);
@@ -343,7 +351,7 @@ const TaskListDetail = props => {
                       <View
                         style={[styles.headingContainer, styles.itemCenter]}>
                         <View style={styles.heading}>
-                          <Text style={styles.title}>
+                          <Text style={[styles.title, tw`uppercase`]}>
                             {item.createTasktitle}
                           </Text>
                         </View>
@@ -397,6 +405,7 @@ const TaskListDetail = props => {
           setShowActionModal={setShowActionModal}
           setShowEditListModal={setShowEditListModal}
           removeFromLists={removeFromLists}
+          createDuplicateList={createDuplicateList}
         />
 
         <CreateTaskModal

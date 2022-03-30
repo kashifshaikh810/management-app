@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   addPressableContainer: tw`w-11/12 h-12 justify-center items-end m-2`,
   addPressable: tw`w-4/12 mt-3 h-10 justify-center items-center rounded-xl ml-2`,
   addPressableText: tw`capitalize`,
-  card: tw`bg-white flex-1 min-h-0 w-11/12 self-center mt-7 p-8 pl-4`,
+  card: tw`bg-white flex-1 min-h-0 w-11/12 self-center mt-7 p-3 pl-4`,
   heading: tw`flex-1 mt-4`,
   line: tw`w-full h-0.5 bg-gray-100 mt-2`,
   desc: tw`mt-1 flex-1 mb-5`,

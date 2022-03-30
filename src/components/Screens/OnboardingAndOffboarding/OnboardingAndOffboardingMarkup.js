@@ -9,13 +9,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
+import {Picker} from '@react-native-picker/picker';
 
 import styles from './styles';
 import Header from '../Header/Header';
 import tw from 'tailwind-react-native-classnames';
 import ArrowDownIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AddListModal from './AddListModal/AddListModal';
-import {paramsListsData, tryOnly} from '../../Redux/Action/Actions';
+import {paramsListsData} from '../../Redux/Action/Actions';
 
 const myTaskSection = props => {
   if (props.showTab === 'my-task') {
@@ -129,13 +130,27 @@ const templatesSection = (props, secondProps) => {
               <TextInput
                 selectionColor="#b3b3b3"
                 style={styles.taskListInput}
+                value={props.templatesSearchName}
+                onChangeText={text => props.setTemplatesSearchName(text)}
               />
 
               <Text style={styles.taskListInputText}>Category</Text>
-              <View style={styles.taskListInput} />
+              <View style={[styles.taskListInput, styles.justifyCenter]}>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={props.templatesSectionSearchCategory}
+                  onValueChange={(itemValue, itemIndex) =>
+                    props.setTemplatesSectionSearchCategory(itemValue)
+                  }>
+                  <Picker.Item label="" value="" />
+                  <Picker.Item label="onboarding" value="onboarding" />
+                  <Picker.Item label="offboarding" value="offboarding" />
+                </Picker>
+              </View>
 
               <View style={[styles.headingContainer, tw`mt-2`]}>
                 <Pressable
+                  onPress={() => props.clearTemplatesSearchInputs()}
                   style={({pressed}) => [
                     styles.clearButton,
                     pressed ? tw`bg-gray-100` : tw`bg-white`,
@@ -143,6 +158,7 @@ const templatesSection = (props, secondProps) => {
                   <Text style={styles.clearText}>clear</Text>
                 </Pressable>
                 <Pressable
+                  onPress={() => props.searchTemplatesSearchInputs()}
                   style={({pressed}) => [
                     styles.searchButton,
                     pressed ? tw`bg-white` : tw`bg-green-600`,

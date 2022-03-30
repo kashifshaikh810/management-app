@@ -27,7 +27,7 @@ const ActionModal = props => {
               <Text>Edit</Text>
             </Pressable>
             <Pressable
-              onPress={() => {}}
+              onPress={() => props.createDuplicateList()}
               style={({pressed}) => [
                 styles.pressable,
                 {backgroundColor: pressed ? '#f3f3f3' : '#fff'},

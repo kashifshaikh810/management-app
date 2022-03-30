@@ -24,6 +24,11 @@ const OnboardingAndOffboarding = props => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  //templates tab search inputs
+  const [templatesSectionSearchCategory, setTemplatesSectionSearchCategory] =
+    useState('');
+  const [templatesSearchName, setTemplatesSearchName] = useState('');
+
   const addListCompany = () => {
     let uid = Auth()?.currentUser?.uid;
     if (showOnboardingOrOffboarding && title && description) {
@@ -49,10 +54,33 @@ const OnboardingAndOffboarding = props => {
     }
   };
 
+  // templates tab functions
+  const searchTemplatesSearchInputs = () => {
+    if (templatesSearchName || templatesSectionSearchCategory) {
+      setIsDataLoading(true);
+      let arr = [...companyTasksListData];
+      let searchRes = arr.filter((item, index) => {
+        return (
+          item.title === templatesSearchName ||
+          item.showOnboardingOrOffboarding === templatesSectionSearchCategory
+        );
+      });
+      setCompanyTasksListData(searchRes);
+      setTimeout(() => {
+        setIsDataLoading(false);
+      }, 1500);
+    }
+  };
+
+  const clearTemplatesSearchInputs = () => {
+    setTemplatesSearchName('');
+    setTemplatesSectionSearchCategory('');
+  };
+
   // for data fetch
   useEffect(() => {
     dispatch(fetchTaskListData());
-  }, []);
+  }, [templatesSearchName, templatesSectionSearchCategory]);
 
   // for data show
   useEffect(() => {
@@ -87,6 +115,12 @@ const OnboardingAndOffboarding = props => {
       listsKeys={listsKeys}
       dispatch={dispatch}
       isDataLoading={isDataLoading}
+      templatesSectionSearchCategory={templatesSectionSearchCategory}
+      setTemplatesSectionSearchCategory={setTemplatesSectionSearchCategory}
+      templatesSearchName={templatesSearchName}
+      setTemplatesSearchName={setTemplatesSearchName}
+      searchTemplatesSearchInputs={searchTemplatesSearchInputs}
+      clearTemplatesSearchInputs={clearTemplatesSearchInputs}
     />
   );
 };
