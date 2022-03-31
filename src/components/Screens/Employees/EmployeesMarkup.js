@@ -154,7 +154,7 @@ const EmployeesMarkup = props => {
           <View style={[styles.empHeadingContainer]}>
             <Text style={styles.empHeading}>EMPLOYEES</Text>
             <Pressable
-              onPress={() => {}}
+              onPress={() => props.setShowAddNewEmployeeModal(true)}
               style={({pressed}) => [
                 styles.addNewEmployeePressable,
                 {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},

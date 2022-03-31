@@ -11,14 +11,17 @@ import {
   Image,
 } from 'react-native';
 import CloseIcon from 'react-native-vector-icons/FontAwesome';
-import ArrowDropIcon from 'react-native-vector-icons/MaterialIcons';
+import {Picker} from '@react-native-picker/picker';
 import RadioIcon from 'react-native-vector-icons/Fontisto';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import MyModal from '../Modal';
 import styles from './styles';
+import tw from 'tailwind-react-native-classnames';
+import CheckBox from '@react-native-community/checkbox';
 
-const DateRangeSection = props => {
+// date of birth
+const birthdayDateSection = props => {
   return (
     <>
       <View style={styles.dateRange}>
@@ -37,10 +40,7 @@ const DateRangeSection = props => {
                 color: '#263238',
               },
             ]}>
-            {(props.profileDetails &&
-              props.isFromSelected &&
-              props.fromSectionDate) ||
-              props?.profileDetails?.dateOfBirth}
+            {props.isFromSelected && props.birthdayDate}
           </Text>
         </Pressable>
       </View>
@@ -59,30 +59,52 @@ const DateRangeSection = props => {
   );
 };
 
+// date of hire
+const dateOfHireSection = props => {
+  return (
+    <>
+      <View style={styles.dateRange}>
+        <Text style={styles.dateRangeText}>
+          Date of Hire <Text style={styles.star}>*</Text>
+        </Text>
+      </View>
+      <View style={styles.datePickContainer}>
+        <Pressable
+          style={styles.fromTextInput}
+          onPress={() => props.hireShowDatepicker()}>
+          <Text
+            style={[
+              styles.dateRangeText,
+              {
+                color: '#263238',
+              },
+            ]}>
+            {props.hireDateSection}
+          </Text>
+        </Pressable>
+      </View>
+
+      {props.showOfHire && (
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={props.dateOfHire}
+          mode={props.modeOfHire}
+          is24Hour={true}
+          display="default"
+          onChange={props.hireOnChange}
+        />
+      )}
+    </>
+  );
+};
+
 const AddNewEmployeeModal = props => {
-  // const res = () => {
-  //   let mar =
-  //     props.isLoading ||
-  //     (props.firstName === props?.profileDetails?.firstName &&
-  //       props.middleName === props?.profileDetails?.middleName &&
-  //       props.lastName === props?.profileDetails?.lastName &&
-  //       props.selectSingleOrMarried === props?.profileDetails?.maritalStatus &&
-  //       props.email === props?.profileDetails?.email &&
-  //       props.alternativeEmail === props?.profileDetails?.alternativeEmail &&
-  //       props.isShowGenderModal?.chooseVal === props?.profileDetails?.gender &&
-  //       props.isShowZoneModal?.chooseVal === props?.profileDetails?.timeZone &&
-  //       props.isShowLanguagesModal?.chooseVal ===
-  //         props?.profileDetails?.language);
-
-  //   return mar;
-  // };
-
   return (
     <Modal
-      visible={true}
+      visible={props.showAddNewEmployeeModal}
       animationType="slide"
       transparent
-      onRequestClose={() => props.setShowProfileDetailsModal(false)}>
+      onRequestClose={() => props.setShowAddNewEmployeeModal(false)}>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={styles.container}>
         <View style={styles.modalBody}>
@@ -90,7 +112,7 @@ const AddNewEmployeeModal = props => {
             <Text style={styles.cardHeadingText}>New Employee</Text>
             <View style={styles.closeIconContainer}>
               <Pressable
-                onPress={() => props.setShowProfileDetailsModal(false)}
+                onPress={() => props.setShowAddNewEmployeeModal(false)}
                 style={({pressed}) => [
                   styles.closePressabel,
                   {backgroundColor: pressed ? '#b3b3b3' : '#fff'},
@@ -141,7 +163,7 @@ const AddNewEmployeeModal = props => {
               </View>
             </View>
 
-            {DateRangeSection(props)}
+            {birthdayDateSection(props)}
 
             <View>
               <View style={styles.commentTextContainer}>
@@ -160,30 +182,58 @@ const AddNewEmployeeModal = props => {
             </View>
 
             <View>
-              <View style={styles.reqTypeContainer}>
+              <View style={styles.commentTextContainer}>
                 <Text style={styles.reqType}>
                   gender <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <Pressable
-                onPress={() =>
-                  props.setIsShowGenderModal({show: true, type: 'Gender'})
-                }
-                style={styles.pressable}>
-                <Text style={styles.text}>
-                  {(props?.isShowGenderModal &&
-                    props?.isShowGenderModal?.chooseVal) ||
-                    props?.profileDetails?.gender}
-                </Text>
-                <View style={styles.dropIconContainer}>
-                  <ArrowDropIcon
-                    name="arrow-drop-up"
+              <View style={styles.radioIconsContainer}>
+                <View style={styles.directionRow}>
+                  <RadioIcon
+                    onPress={() => props.setGender('Male')}
+                    name={
+                      props.gender === 'Male'
+                        ? 'radio-btn-active'
+                        : 'radio-btn-passive'
+                    }
                     size={20}
-                    style={styles.dropIcon}
+                    color={props.gender === 'Male' ? '#006f44' : '#b3b3b3'}
+                    style={styles.marHorizontal}
                   />
-                  <ArrowDropIcon name="arrow-drop-down" size={20} />
+                  <Text style={styles.radioText}>male</Text>
                 </View>
-              </Pressable>
+                <View style={[styles.directionRow, styles.marHorizontal]}>
+                  <RadioIcon
+                    onPress={() => props.setGender('Female')}
+                    name={
+                      props.gender === 'Female'
+                        ? 'radio-btn-active'
+                        : 'radio-btn-passive'
+                    }
+                    size={20}
+                    color={props.gender === 'Female' ? '#006f44' : '#b3b3b3'}
+                    style={styles.marHorizontal}
+                  />
+                  <Text style={styles.radioText}>female</Text>
+                </View>
+
+                <View style={[styles.directionRow, styles.marHorizontal]}>
+                  <RadioIcon
+                    onPress={() => props.setGender('Gender-Neutral')}
+                    name={
+                      props.gender === 'Gender-Neutral'
+                        ? 'radio-btn-active'
+                        : 'radio-btn-passive'
+                    }
+                    size={20}
+                    color={
+                      props.gender === 'Gender-Neutral' ? '#006f44' : '#b3b3b3'
+                    }
+                    style={styles.marHorizontal}
+                  />
+                  <Text style={styles.radioText}>gender-neutral</Text>
+                </View>
+              </View>
             </View>
 
             <View>
@@ -195,17 +245,15 @@ const AddNewEmployeeModal = props => {
               <View style={styles.radioIconsContainer}>
                 <View style={styles.directionRow}>
                   <RadioIcon
-                    onPress={() => props.setSelectSingleOrMarried('Married')}
+                    onPress={() => props.setMaritialStatus('Married')}
                     name={
-                      props.selectSingleOrMarried === 'Married'
+                      props.maritialStatus === 'Married'
                         ? 'radio-btn-active'
                         : 'radio-btn-passive'
                     }
                     size={20}
                     color={
-                      props.selectSingleOrMarried === 'Married'
-                        ? '#006f44'
-                        : '#b3b3b3'
+                      props.maritialStatus === 'Married' ? '#006f44' : '#b3b3b3'
                     }
                     style={styles.marHorizontal}
                   />
@@ -213,17 +261,15 @@ const AddNewEmployeeModal = props => {
                 </View>
                 <View style={[styles.directionRow, styles.marHorizontal]}>
                   <RadioIcon
-                    onPress={() => props.setSelectSingleOrMarried('Single')}
+                    onPress={() => props.setMaritialStatus('Single')}
                     name={
-                      props.selectSingleOrMarried === 'Single'
+                      props.maritialStatus === 'Single'
                         ? 'radio-btn-active'
                         : 'radio-btn-passive'
                     }
                     size={20}
                     color={
-                      props.selectSingleOrMarried === 'Single'
-                        ? '#006f44'
-                        : '#b3b3b3'
+                      props.maritialStatus === 'Single' ? '#006f44' : '#b3b3b3'
                     }
                     style={styles.marHorizontal}
                   />
@@ -232,27 +278,72 @@ const AddNewEmployeeModal = props => {
               </View>
             </View>
 
-            <MyModal {...props} />
+            {dateOfHireSection({...props})}
 
             <View>
               <View style={styles.commentTextContainer}>
                 <Text style={styles.reqType}>
-                  alternative email <Text style={styles.star}>*</Text>
+                  direct manager <Text style={styles.star}>*</Text>
                 </Text>
               </View>
-              <View>
-                <TextInput
-                  keyboardType="email-address"
-                  value={props.alternativeEmail}
-                  onChangeText={text => props.setAlternativeEmail(text)}
-                  style={styles.commentTextInput}
-                />
+              <View
+                style={tw`w-11/12 h-12 border-2 border-gray-400 self-center rounded justify-center`}>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={props.terminationReasonActiveOrNotAction}
+                  onValueChange={(itemValue, itemIndex) =>
+                    props.setTerminationReasonActiveOrNotAction(itemValue)
+                  }>
+                  <Picker.Item label="" value="" />
+                  <Picker.Item
+                    label="add your company users"
+                    value="add your company users"
+                  />
+                </Picker>
               </View>
             </View>
 
+            <MyModal {...props} />
+
+            <View style={[styles.line, styles.marginTop]} />
+
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                disabled={false}
+                style={{
+                  transform: [{scaleX: 0.8}, {scaleY: 0.8}],
+                }}
+                tintColors={{true: 'green', false: 'gray'}}
+                value={props.showRoleDropDown}
+                onValueChange={newValue => props.setShowRoleDropDown(newValue)}
+              />
+              <Text style={styles.reqType}>add a user in the system</Text>
+            </View>
+
+            {props.showRoleDropDown && (
+              <View
+                style={tw`w-11/12 h-12 border-2 border-gray-400 self-center rounded justify-center`}>
+                <Picker
+                  mode="dropdown"
+                  selectedValue={props.terminationReasonActiveOrNotAction}
+                  onValueChange={(itemValue, itemIndex) =>
+                    props.setTerminationReasonActiveOrNotAction(itemValue)
+                  }>
+                  <Picker.Item
+                    label="Please select role"
+                    value="Please select role"
+                  />
+                  <Picker.Item
+                    label="show from database"
+                    value="show from database"
+                  />
+                </Picker>
+              </View>
+            )}
+
             <View style={styles.cancelAndSendReqContainer}>
               <Pressable
-                onPress={() => props.setShowProfileDetailsModal(false)}
+                onPress={() => props.setShowAddNewEmployeeModal(false)}
                 disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
@@ -263,8 +354,7 @@ const AddNewEmployeeModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => props.submit()}
-                // disabled={res()}
+                onPress={() => props.submitAddNewEmployee()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,

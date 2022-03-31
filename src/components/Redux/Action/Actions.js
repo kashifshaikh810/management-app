@@ -11,7 +11,6 @@ import {
   PRIMARY_HOVER_COLOR,
   GET_TASK_LISTS,
   CREATE_TASK_LISTS,
-  TRY_ONLY,
   PARAM_LISTS_DATA,
 } from './ActionTypes';
 

@@ -185,6 +185,15 @@ const styles = StyleSheet.create({
     color: '#263238',
     textTransform: 'capitalize',
   },
+  marginTop: {
+    marginTop: 12,
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 10,
+    marginTop: 10,
+  },
 });
 
 export default styles;
