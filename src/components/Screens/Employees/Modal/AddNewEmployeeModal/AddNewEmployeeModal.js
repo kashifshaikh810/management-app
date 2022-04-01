@@ -175,7 +175,23 @@ const AddNewEmployeeModal = props => {
                 <TextInput
                   keyboardType="email-address"
                   value={props.email}
-                  onChangeText={text => props.setEmail(text)}
+                  onChangeText={text => props.emailFunc(text)}
+                  style={styles.commentTextInput}
+                />
+              </View>
+            </View>
+
+            <View>
+              <View style={styles.commentTextContainer}>
+                <Text style={styles.reqType}>
+                  password <Text style={styles.star}>*</Text>
+                </Text>
+              </View>
+              <View>
+                <TextInput
+                  secureTextEntry={true}
+                  value={props.password}
+                  onChangeText={text => props.passwordFunc(text)}
                   style={styles.commentTextInput}
                 />
               </View>
@@ -340,6 +356,12 @@ const AddNewEmployeeModal = props => {
                 </Picker>
               </View>
             )}
+
+            {props?.showErr ? (
+              <View>
+                <Text style={styles.err}>{props.showErr}</Text>
+              </View>
+            ) : null}
 
             <View style={styles.cancelAndSendReqContainer}>
               <Pressable

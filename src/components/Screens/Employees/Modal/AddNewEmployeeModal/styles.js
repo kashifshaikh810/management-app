@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import tw from 'tailwind-react-native-classnames';
 
 const styles = StyleSheet.create({
   container: {
@@ -194,6 +195,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
   },
+  err: tw`text-red-400 text-base text-center mt-4 font-extrabold`,
 });
 
 export default styles;

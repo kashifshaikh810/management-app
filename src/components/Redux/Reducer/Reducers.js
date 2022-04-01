@@ -1,5 +1,6 @@
 import {
   CREATE_TASK_LISTS,
+  FETCH_COMPANY_EMPLOYEES,
   FETCH_CONTACT_INFORMATION_DATA,
   FETCH_EDIT_BIO_DATA,
   FETCH_EDUCATION_DATA,
@@ -26,6 +27,7 @@ const initialState = {
   companyTaskLists: [],
   createListsData: [],
   taskData: {},
+  companyEmployees: [],
 };
 
 export const reducer = (state = initialState, action) => {
@@ -89,6 +91,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         taskData: action.payload,
+      };
+    case FETCH_COMPANY_EMPLOYEES:
+      return {
+        ...state,
+        companyEmployees: action.payload,
       };
     default:
       return state;

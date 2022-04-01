@@ -1,7 +1,10 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import EmployeesMarkup from './EmployeesMarkup';
+import {ToastAndroid} from 'react-native';
 
 import {Auth, Database} from '../../firebaseTools/index';
+import {useDispatch, useSelector} from 'react-redux';
+import {fetchCurrentCompanyEmployees} from '../../Redux/Action/Actions';
 
 const Employees = props => {
   const [changeArrow, setChangeArrow] = useState(false);
@@ -15,6 +18,9 @@ const Employees = props => {
     type: '',
     chooseVal: '',
   });
+  const [companyEmployeesData, setcompanyEmployeesData] = useState([]);
+  const [activeEmployees, setActiveEmployees] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
 
   // add new employee modal states
   const [showRoleDropDown, setShowRoleDropDown] = useState(false);
@@ -24,6 +30,9 @@ const Employees = props => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
   const [maritialStatus, setMaritialStatus] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [showErr, setShowErr] = useState('');
 
   // birth day date picker states
   const [date, setDate] = useState(new Date());
@@ -35,6 +44,12 @@ const Employees = props => {
   const [dateOfHire, setDateOfHire] = useState(new Date());
   const [modeOfHire, setModeOfHire] = useState('date');
   const [showOfHire, setShowOfHire] = useState(false);
+
+  // redux tools
+  const {currUserData, profileData, companyEmployees} = useSelector(
+    state => state.reduc,
+  );
+  const dispatch = useDispatch();
 
   const search = () => {};
 
@@ -108,8 +123,34 @@ const Employees = props => {
     hireShowMode('date');
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+    ToastAndroid.showWithGravityAndOffset(
+      'Page Reloading...',
+      ToastAndroid.LONG,
+      ToastAndroid.BOTTOM,
+      25,
+      50,
+    );
+  };
+
+  const emailFunc = text => {
+    setEmail(text);
+    setShowErr('');
+  };
+
+  const passwordFunc = text => {
+    setPassword(text);
+    setShowErr('');
+  };
+
   const submitAddNewEmployee = async () => {
     let uid = Auth()?.currentUser?.uid;
+    let companyEmail = currUserData ? currUserData.email : '';
+    let companyPassword = currUserData ? currUserData.password : '';
     if (
       firstName &&
       lastName &&
@@ -117,35 +158,144 @@ const Employees = props => {
       birthdayDate &&
       hireDateSection &&
       gender &&
-      maritialStatus
+      maritialStatus &&
+      password
     ) {
-      Database()
-        .ref(`/newEmployess/${email}`)
-        .set({
-          userId: uid,
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          dateOfBirth: birthdayDate,
-          employeeHireDate: hireDateSection,
-          gender: gender,
-          maritialStatus: maritialStatus,
-          alternativeEmail: '',
-          language: '',
-          profileImage: '',
-          timeZone: '',
-          middleName: '',
-        })
-        .then(() => {
-          console.log('success');
-          setShowAddNewEmployeeModal(false);
+      setIsLoading(true);
+      await Auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(({user}) => {
+          Auth().signOut();
+          Auth()
+            .signInWithEmailAndPassword(companyEmail, companyPassword)
+            .then(() => {
+              Database()
+                .ref(`/newEmployess/${uid}/${user.uid}`)
+                .set({
+                  userID: user.uid,
+                  companyId: uid,
+                  firstName: firstName,
+                  lastName: lastName,
+                  email: email,
+                  dateOfBirth: birthdayDate,
+                  employeeHireDate: hireDateSection,
+                  gender: gender,
+                  maritialStatus: maritialStatus,
+                  alternativeEmail: '',
+                  language: '',
+                  profileImage: '',
+                  timeZone: '',
+                  middleName: '',
+                  activityType: 'pending',
+                  userType: 'employee',
+                })
+                .then(() => {
+                  Database()
+                    .ref(`/profileDetails/${user.uid}`)
+                    .set({
+                      userID: user.uid,
+                      companyId: uid,
+                      firstName: firstName,
+                      lastName: lastName,
+                      email: email,
+                      dateOfBirth: birthdayDate,
+                      employeeHireDate: hireDateSection,
+                      gender: gender,
+                      maritialStatus: maritialStatus,
+                      alternativeEmail: '',
+                      language: '',
+                      profileImage: '',
+                      timeZone: '',
+                      middleName: '',
+                    })
+                    .then(() => {
+                      Database()
+                        .ref(`/userSignUp/${user.uid}`)
+                        .set({
+                          userID: user.uid,
+                          companyId: uid,
+                          firstName: firstName,
+                          lastName: lastName,
+                          phone: '',
+                          email: email,
+                          password: password,
+                          userType: 'employee',
+                        })
+                        .then(() => {
+                          setFirstName('');
+                          setLastName('');
+                          setIsFromSelected(false);
+                          setEmail('');
+                          setPassword('');
+                          setGender('');
+                          setMaritialStatus('');
+                          setDateOfHire(new Date());
+                          setIsLoading(false);
+                          setShowAddNewEmployeeModal(false);
+                          ToastAndroid.showWithGravityAndOffset(
+                            'Employee Successfully Added... ',
+                            ToastAndroid.LONG,
+                            ToastAndroid.BOTTOM,
+                            25,
+                            50,
+                          );
+                        })
+                        .catch(err => {
+                          console.log(err, 'err');
+                          setIsLoading(false);
+                        });
+                    })
+                    .catch(err => {
+                      console.log(err, 'err');
+                      setIsLoading(false);
+                    });
+                })
+                .catch(err => {
+                  console.log(err, 'err');
+                  setIsLoading(false);
+                });
+            })
+            .catch(err => {
+              console.log(err, 'err');
+              setIsLoading(false);
+            });
         })
         .catch(err => {
           console.log(err, 'err');
+          if (err.code === 'auth/email-already-in-use') {
+            setShowErr('The email address is already use by another account');
+          } else if (err.code === 'auth/invalid-email') {
+            setShowErr('The email address is invalid');
+          } else if (err.code === 'auth/weak-password') {
+            setShowErr('The password length must be greater then 6');
+          }
+          setIsLoading(false);
         });
     }
   };
 
+  // for fetch data
+  useEffect(() => {
+    let uid = Auth()?.currentUser?.uid;
+    let companyId = profileData?.companyId;
+    if (currUserData.userType === 'employee') {
+      dispatch(fetchCurrentCompanyEmployees(companyId));
+    } else {
+      dispatch(fetchCurrentCompanyEmployees(uid));
+    }
+  }, [refreshing]);
+
+  // for show data
+  useEffect(() => {
+    let data = companyEmployees ? Object.values(companyEmployees) : [];
+    let numOfActiveEmployees = data.filter((item, index) => {
+      return item.activityType === 'active';
+    });
+    setActiveEmployees(numOfActiveEmployees?.length);
+    setcompanyEmployeesData(data);
+  }, [companyEmployees]);
+
+  console.log(currUserData);
   return (
     <EmployeesMarkup
       {...props}
@@ -180,12 +330,20 @@ const Employees = props => {
       lastName={lastName}
       setLastName={setLastName}
       email={email}
-      setEmail={setEmail}
+      emailFunc={emailFunc}
       gender={gender}
       setGender={setGender}
       maritialStatus={maritialStatus}
       setMaritialStatus={setMaritialStatus}
       submitAddNewEmployee={submitAddNewEmployee}
+      password={password}
+      passwordFunc={passwordFunc}
+      isLoading={isLoading}
+      showErr={showErr}
+      companyEmployeesData={companyEmployeesData}
+      activeEmployees={activeEmployees}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
     />
   );
 };

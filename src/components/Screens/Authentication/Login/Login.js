@@ -17,6 +17,7 @@ import LinkeInIcon from 'react-native-vector-icons/Entypo';
 
 import styles from './styles';
 import {Auth, Database} from '../../../firebaseTools';
+import {useSelector} from 'react-redux';
 
 const Login = props => {
   const [showErr, setShowErr] = useState('');
@@ -25,21 +26,52 @@ const Login = props => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const {currUserData} = useSelector(state => state.reduc);
+
   const logIn = () => {
     if (email && password) {
       setIsLoading(true);
       Auth()
         .signInWithEmailAndPassword(email, password)
-        .then(({user}) => {
-          Database()
-            .ref(`/userLogin/${user.uid}`)
-            .set({userID: user.uid, email: email, password: password});
-          Alert.alert('Login Success.', 'You are successfully login', [
-            {text: 'OK'},
-          ]);
-          setIsLoading(false);
-          setEmail('');
-          setPassword('');
+        .then(async ({user}) => {
+          await Database()
+            .ref(`/userSignUp/${user.uid}`)
+            .on('value', async snapshot => {
+              let userType = snapshot.val()?.userType;
+              let companyId = snapshot.val()?.companyId;
+              console.log(snapshot.val());
+              if (userType === 'employee') {
+                await Database()
+                  .ref(`/newEmployess/${companyId}`)
+                  .child(user.uid)
+                  .update({activityType: 'active'})
+                  .then(() => {
+                    console.log('active');
+                  })
+                  .catch(err => {
+                    console.log(err, 'err');
+                  });
+              }
+            })
+            .then(async () => {
+              await Database()
+                .ref(`/userLogin/${user.uid}`)
+                .set({userID: user.uid, email: email, password: password})
+                .then(() => {
+                  setIsLoading(false);
+                  setEmail('');
+                  setPassword('');
+                  Alert.alert('Login Success.', 'You are successfully login', [
+                    {text: 'OK'},
+                  ]);
+                })
+                .catch(err => {
+                  console.log(err, 'err');
+                });
+            })
+            .catch(err => {
+              console.log(err, 'err');
+            });
         })
         .catch(err => {
           if (err.code === 'auth/invalid-email') {
@@ -56,10 +88,12 @@ const Login = props => {
 
   const emailFunc = text => {
     setEmail(text);
+    setShowErr('');
   };
 
   const passwordFunc = text => {
     setPassword(text);
+    setShowErr('');
   };
 
   if (Auth()?.currentUser?.uid) {

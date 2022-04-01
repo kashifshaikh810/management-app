@@ -12,6 +12,7 @@ import {
   GET_TASK_LISTS,
   CREATE_TASK_LISTS,
   PARAM_LISTS_DATA,
+  FETCH_COMPANY_EMPLOYEES,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -150,4 +151,16 @@ export const paramsListsData = items => dispatch => {
     type: PARAM_LISTS_DATA,
     payload: items,
   });
+};
+
+export const fetchCurrentCompanyEmployees = uid => dispatch => {
+  Database()
+    .ref(`/newEmployess/${uid}`)
+    .on('value', snapshot => {
+      let companyEmployees = snapshot.val() ? snapshot.val() : [];
+      dispatch({
+        type: FETCH_COMPANY_EMPLOYEES,
+        payload: companyEmployees,
+      });
+    });
 };

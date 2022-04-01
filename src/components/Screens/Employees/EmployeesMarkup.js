@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   FlatList,
   Image,
+  RefreshControl,
 } from 'react-native';
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import DefaultIcon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -18,6 +19,7 @@ import EmailIcon from 'react-native-vector-icons/MaterialIcons';
 import DOBIcon from 'react-native-vector-icons/FontAwesome';
 import EyeIcon from 'react-native-vector-icons/FontAwesome';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
+import TelephoneIcon from 'react-native-vector-icons/Entypo';
 
 import {DummyData} from './DummyData';
 import styles from './styles';
@@ -149,7 +151,14 @@ const EmployeesMarkup = props => {
   return (
     <View style={styles.container}>
       <Header {...props} />
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={props.refreshing}
+            onRefresh={props.onRefresh}
+          />
+        }>
         <View style={{flexDirection: 'row'}}>
           <View style={[styles.empHeadingContainer]}>
             <Text style={styles.empHeading}>EMPLOYEES</Text>
@@ -188,7 +197,9 @@ const EmployeesMarkup = props => {
 
         <View style={styles.activeEmployeesCard}>
           <View>
-            <Text style={styles.numOfActiveEmployees}>11</Text>
+            <Text style={styles.numOfActiveEmployees}>
+              {props.activeEmployees}
+            </Text>
             <Text style={styles.activeEmployeesHeading}>active employees</Text>
           </View>
 
@@ -199,7 +210,11 @@ const EmployeesMarkup = props => {
 
         <View style={styles.totalEmployeesCard}>
           <View>
-            <Text style={styles.numOfTotalEmployees}>20</Text>
+            <Text style={styles.numOfTotalEmployees}>
+              {props.companyEmployeesData
+                ? props?.companyEmployeesData?.length
+                : 0}
+            </Text>
             <Text style={styles.totalEmployeesHeading}>TOTAL EMPLOYEES</Text>
           </View>
 
@@ -254,22 +269,50 @@ const EmployeesMarkup = props => {
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
-            data={DummyData}
+            data={props?.companyEmployeesData}
             renderItem={({item, index}) => {
               return (
                 <View style={styles.itemsCard}>
                   <View style={styles.itemsContentContainer}>
                     <View style={styles.activeTextParent}>
-                      <View style={styles.activeTextContainer}>
-                        <Text style={styles.activeText}>Active</Text>
+                      <View
+                        style={[
+                          styles.activeTextContainer,
+                          {
+                            backgroundColor:
+                              item.activityType === 'pending'
+                                ? '#b3b3b3'
+                                : '#13bd7c',
+                          },
+                          {width: item.activityType === 'pending' ? 60 : 50},
+                        ]}>
+                        <Text style={styles.activeText}>
+                          {item.activityType}
+                        </Text>
                       </View>
                     </View>
                     <View style={styles.imageAndNameContainer}>
-                      <View style={styles.userDPImageContainer}>
-                        <Image
-                          source={{uri: item.userProfileImage}}
-                          style={styles.userDPImage}
-                        />
+                      <View
+                        style={[
+                          styles.userDPImageContainer,
+                          {
+                            borderColor:
+                              item.activityType === 'pending'
+                                ? '#b3b3b3'
+                                : '#13bd7c',
+                          },
+                        ]}>
+                        {item.profileImage ? (
+                          <Image
+                            source={{uri: item.profileImage}}
+                            style={styles.userDPImage}
+                          />
+                        ) : (
+                          <Image
+                            source={require('../../Assists/images/defaultProfile.png')}
+                            style={styles.userDPImage}
+                          />
+                        )}
                       </View>
 
                       <View style={styles.namePositionAndDepartmentContainer}>
@@ -285,15 +328,24 @@ const EmployeesMarkup = props => {
                           )}
                         </Pressable>
                         <Text style={styles.text}>
-                          Position: {item.position}
+                          Position: {item.position || 'N/A'}
                         </Text>
                         <Text style={styles.text}>
-                          Department: {item.Department}
+                          Department: {item.Department || 'N/A'}
                         </Text>
                       </View>
                     </View>
 
                     <View style={styles.emailAndDOBContainer}>
+                      <View style={styles.emailContainer}>
+                        <TelephoneIcon
+                          name="phone"
+                          size={15}
+                          color="#b1b1b1"
+                          style={styles.icon}
+                        />
+                        <Text style={styles.email}>{item.phone || 'N/A'}</Text>
+                      </View>
                       <View style={styles.emailContainer}>
                         <EmailIcon
                           name="email"
@@ -301,7 +353,7 @@ const EmployeesMarkup = props => {
                           color="#b1b1b1"
                           style={styles.icon}
                         />
-                        <Text style={styles.email}>{item.userEmail}</Text>
+                        <Text style={styles.email}>{item.email}</Text>
                       </View>
                       <View style={styles.emailContainer}>
                         <DOBIcon
@@ -310,7 +362,7 @@ const EmployeesMarkup = props => {
                           color="#b1b1b1"
                           style={styles.icon}
                         />
-                        <Text style={styles.email}>{item.userDOB}</Text>
+                        <Text style={styles.email}>{item.dateOfBirth}</Text>
                       </View>
                     </View>
 
@@ -344,9 +396,8 @@ const EmployeesMarkup = props => {
             }}
           />
 
-          <View style={styles.totalItems}>
-            <Text>Total Items: 28</Text>
-          </View>
+          <View style={styles.totalItems} />
+          {/* <Text>Total Items: {props?.companyEmployeesData?.length}</Text> */}
         </View>
       </ScrollView>
     </View>

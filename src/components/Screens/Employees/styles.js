@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   itemsCard: {
     backgroundColor: '#f9f9fb',
     width: '85%',
-    height: Dimensions.get('window').height / 2.7,
+    height: Dimensions.get('window').height / 2.4,
     marginVertical: 15,
     alignSelf: 'center',
     marginHorizontal: 9,
@@ -208,7 +208,6 @@ const styles = StyleSheet.create({
     height: 70,
     borderWidth: 2,
     borderRadius: 35,
-    borderColor: '#13bd7c',
     justifyContent: 'center',
     alignItems: 'center',
     marginVertical: 10,
@@ -223,15 +222,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   activeTextContainer: {
-    width: 50,
     height: 22,
     borderRadius: 15,
-    backgroundColor: '#13bd7c',
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 15,
   },
   activeText: {
+    textTransform: 'capitalize',
     fontSize: 15,
     color: '#fff',
   },
