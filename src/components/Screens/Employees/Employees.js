@@ -21,6 +21,7 @@ const Employees = props => {
   const [companyEmployeesData, setcompanyEmployeesData] = useState([]);
   const [activeEmployees, setActiveEmployees] = useState('');
   const [refreshing, setRefreshing] = useState(false);
+  const [acitveUserData, setAcitveUserData] = useState({});
 
   // add new employee modal states
   const [showRoleDropDown, setShowRoleDropDown] = useState(false);
@@ -50,14 +51,6 @@ const Employees = props => {
     state => state.reduc,
   );
   const dispatch = useDispatch();
-
-  const search = () => {};
-
-  const clearAllInput = () => {};
-
-  const viewEmployeeProfile = () => {
-    props.navigation.navigate('EmployeeProfile');
-  };
 
   // birth day date picker functions
   let birthdayDate = new Date(date);
@@ -186,7 +179,7 @@ const Employees = props => {
                   profileImage: '',
                   timeZone: '',
                   middleName: '',
-                  activityType: 'pending',
+                  activityType: 'inactive',
                   userType: 'employee',
                 })
                 .then(() => {
@@ -274,6 +267,14 @@ const Employees = props => {
     }
   };
 
+  const search = () => {};
+
+  const clearAllInput = () => {};
+
+  const viewEmployeeProfile = () => {
+    props.navigation.navigate('EmployeeProfile');
+  };
+
   // for fetch data
   useEffect(() => {
     let uid = Auth()?.currentUser?.uid;
@@ -295,7 +296,10 @@ const Employees = props => {
     setcompanyEmployeesData(data);
   }, [companyEmployees]);
 
-  console.log(currUserData);
+  useEffect(() => {
+    setAcitveUserData(currUserData);
+  }, [currUserData]);
+
   return (
     <EmployeesMarkup
       {...props}
@@ -344,6 +348,7 @@ const Employees = props => {
       activeEmployees={activeEmployees}
       refreshing={refreshing}
       onRefresh={onRefresh}
+      acitveUserData={acitveUserData}
     />
   );
 };

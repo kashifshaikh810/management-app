@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+  closeIconContainer: {flex: 1, alignItems: 'flex-end'},
 });
 
 export default styles;

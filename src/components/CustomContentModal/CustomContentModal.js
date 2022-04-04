@@ -1,14 +1,18 @@
 import React, {useState} from 'react';
 import {View, Text, Modal, Pressable} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
-import {Auth} from '../firebaseTools/index';
+import {Auth, Database} from '../firebaseTools/index';
 import styles from '../AllNavigation/DrawerNavigation/styles';
 import ChangePassword from '../Screens/Authentication/ChangePassword/ChangePassword';
 
 const CustomContentModal = props => {
   const [showChangePasswordModal, setShowChangePasswordModal] = useState(false);
   const navigation = useNavigation();
+
+  // redux tool
+  const {currUserData} = useSelector(state => state.reduc);
 
   const changePassword = () => {
     setShowChangePasswordModal(true);
@@ -23,8 +27,30 @@ const CustomContentModal = props => {
   };
 
   const logOut = async () => {
-    await Auth().signOut();
-    props.navigation.navigate('Login');
+    let userType = currUserData?.userType;
+    let companyId = currUserData?.companyId;
+    let uid = Auth()?.currentUser?.uid;
+    await Auth()
+      .signOut()
+      .then(() => {
+        if (userType === 'employee') {
+          Database()
+            .ref(`/newEmployess/${companyId}`)
+            .child(uid)
+            .update({activityType: 'inActive'})
+            .then(() => {
+              console.log('success');
+            })
+            .catch(err => {
+              console.log(err, 'err');
+            });
+        }
+        props.setShowModal(false);
+        props.navigation.navigate('Login');
+      })
+      .catch(err => {
+        console.log(err, 'err');
+      });
   };
 
   return (

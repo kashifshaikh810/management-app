@@ -213,8 +213,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   userDPImage: {
-    width: 57,
-    height: 57,
+    width: 62,
+    height: 62,
     borderRadius: 27,
   },
   activeTextParent: {
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   itemsPressable: {
     flexDirection: 'row',
-    width: '90%',
+    width: '40%',
     height: '17%',
     justifyContent: 'center',
     alignItems: 'center',
@@ -290,6 +290,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
+  },
+  buttonsContainer: {
+    width: '100%',
+    height: 240,
+    justifyContent: 'space-evenly',
+    flexDirection: 'row',
   },
 });
 

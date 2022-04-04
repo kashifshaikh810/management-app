@@ -20,8 +20,8 @@ import DOBIcon from 'react-native-vector-icons/FontAwesome';
 import EyeIcon from 'react-native-vector-icons/FontAwesome';
 import PlusIcon from 'react-native-vector-icons/AntDesign';
 import TelephoneIcon from 'react-native-vector-icons/Entypo';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import {DummyData} from './DummyData';
 import styles from './styles';
 import Header from '../Header/Header';
 import MyModal from './Modal/Modal';
@@ -162,30 +162,32 @@ const EmployeesMarkup = props => {
         <View style={{flexDirection: 'row'}}>
           <View style={[styles.empHeadingContainer]}>
             <Text style={styles.empHeading}>EMPLOYEES</Text>
-            <Pressable
-              onPress={() => props.setShowAddNewEmployeeModal(true)}
-              style={({pressed}) => [
-                styles.addNewEmployeePressable,
-                {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
-              ]}>
-              {({pressed}) => (
-                <>
-                  <PlusIcon
-                    name="plus"
-                    size={16}
-                    color={pressed ? '#fff' : '#b3b3b3'}
-                    style={styles.icon}
-                  />
-                  <Text
-                    style={[
-                      styles.view,
-                      {color: pressed ? '#fff' : '#263238'},
-                    ]}>
-                    Add New Employee
-                  </Text>
-                </>
-              )}
-            </Pressable>
+            {props.acitveUserData.activityType === 'undefined' && (
+              <Pressable
+                onPress={() => props.setShowAddNewEmployeeModal(true)}
+                style={({pressed}) => [
+                  styles.addNewEmployeePressable,
+                  {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+                ]}>
+                {({pressed}) => (
+                  <>
+                    <PlusIcon
+                      name="plus"
+                      size={16}
+                      color={pressed ? '#fff' : '#b3b3b3'}
+                      style={styles.icon}
+                    />
+                    <Text
+                      style={[
+                        styles.view,
+                        {color: pressed ? '#fff' : '#263238'},
+                      ]}>
+                      Add New Employee
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+            )}
           </View>
         </View>
 
@@ -280,11 +282,13 @@ const EmployeesMarkup = props => {
                           styles.activeTextContainer,
                           {
                             backgroundColor:
-                              item.activityType === 'pending'
+                              item.activityType === 'inActive'
                                 ? '#b3b3b3'
                                 : '#13bd7c',
                           },
-                          {width: item.activityType === 'pending' ? 60 : 50},
+                          {
+                            width: item.activityType === 'inActive' ? 60 : 50,
+                          },
                         ]}>
                         <Text style={styles.activeText}>
                           {item.activityType}
@@ -297,7 +301,7 @@ const EmployeesMarkup = props => {
                           styles.userDPImageContainer,
                           {
                             borderColor:
-                              item.activityType === 'pending'
+                              item.activityType === 'inActive'
                                 ? '#b3b3b3'
                                 : '#13bd7c',
                           },
@@ -366,30 +370,57 @@ const EmployeesMarkup = props => {
                       </View>
                     </View>
 
-                    <Pressable
-                      onPress={() => props.viewEmployeeProfile()}
-                      style={({pressed}) => [
-                        styles.itemsPressable,
-                        {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
-                      ]}>
-                      {({pressed}) => (
-                        <>
-                          <EyeIcon
-                            name="eye"
-                            size={16}
-                            color={pressed ? '#fff' : '#b3b3b3'}
-                            style={styles.icon}
-                          />
-                          <Text
-                            style={[
-                              styles.view,
-                              {color: pressed ? '#fff' : '#263238'},
-                            ]}>
-                            View
-                          </Text>
-                        </>
-                      )}
-                    </Pressable>
+                    <View style={styles.buttonsContainer}>
+                      <Pressable
+                        onPress={() => props.viewEmployeeProfile()}
+                        style={({pressed}) => [
+                          styles.itemsPressable,
+                          {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+                        ]}>
+                        {({pressed}) => (
+                          <>
+                            <EyeIcon
+                              name="eye"
+                              size={16}
+                              color={pressed ? '#fff' : '#b3b3b3'}
+                              style={styles.icon}
+                            />
+                            <Text
+                              style={[
+                                styles.view,
+                                {color: pressed ? '#fff' : '#263238'},
+                              ]}>
+                              View
+                            </Text>
+                          </>
+                        )}
+                      </Pressable>
+
+                      <Pressable
+                        onPress={() => {}}
+                        style={({pressed}) => [
+                          styles.itemsPressable,
+                          {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+                        ]}>
+                        {({pressed}) => (
+                          <>
+                            <DeleteIcon
+                              name="delete"
+                              size={16}
+                              color={pressed ? '#fff' : '#b3b3b3'}
+                              style={styles.icon}
+                            />
+                            <Text
+                              style={[
+                                styles.view,
+                                {color: pressed ? '#fff' : '#263238'},
+                              ]}>
+                              Remove
+                            </Text>
+                          </>
+                        )}
+                      </Pressable>
+                    </View>
                   </View>
                 </View>
               );
