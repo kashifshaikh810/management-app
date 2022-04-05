@@ -372,7 +372,7 @@ const EmployeesMarkup = props => {
 
                     <View style={styles.buttonsContainer}>
                       <Pressable
-                        onPress={() => props.viewEmployeeProfile()}
+                        onPress={() => props.viewEmployeeProfile(item, index)}
                         style={({pressed}) => [
                           styles.itemsPressable,
                           {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},

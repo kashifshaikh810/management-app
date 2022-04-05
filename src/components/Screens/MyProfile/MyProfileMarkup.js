@@ -373,26 +373,26 @@ const educationSection = props => {
       {props?.userEducationData ? (
         <View style={styles.infoContent}>
           <Text style={styles.infoHeading}>
-            aa:{' '}
+            collage:{' '}
             <Text style={styles.infoHeadingExplain}>
               {props?.userEducationData?.collageOrUniversity}
             </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            lfaf:{' '}
+            major:{' '}
             <Text style={styles.infoHeadingExplain}>
               {props?.userEducationData?.degree}
             </Text>
           </Text>
           <Text style={styles.infoHeading}>
-            ffaf:{' '}
+            degree:{' '}
             <Text style={styles.infoHeadingExplain}>
               {props?.userEducationData?.major}
             </Text>
           </Text>
 
           <Text style={styles.infoHeading}>
-            aaa:{' '}
+            year graduated:{' '}
             <Text style={styles.infoHeadingExplain}>
               {props?.userEducationData?.yearGraduated}
             </Text>

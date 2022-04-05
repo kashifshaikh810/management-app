@@ -40,13 +40,17 @@ const CustomContentModal = props => {
             .update({activityType: 'inActive'})
             .then(() => {
               console.log('success');
+              props.setShowModal(false);
+              props.navigation.navigate('Login');
             })
             .catch(err => {
               console.log(err, 'err');
             });
+        } else {
+          console.log('success');
+          props.setShowModal(false);
+          props.navigation.navigate('Login');
         }
-        props.setShowModal(false);
-        props.navigation.navigate('Login');
       })
       .catch(err => {
         console.log(err, 'err');

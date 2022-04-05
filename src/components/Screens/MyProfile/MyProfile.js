@@ -366,13 +366,8 @@ const MyProfile = props => {
     try {
       const file = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
-      })
-        .then(() => {
-          setProfileImage(file);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      });
+      setProfileImage(file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log(err, 'errr');
@@ -388,6 +383,9 @@ const MyProfile = props => {
     let dateOfBirth = fromSectionDate;
     let gender = isShowGenderModal?.chooseVal;
     let timeZone = isShowZoneModal?.chooseVal;
+    let dataOfCurrUser = currUserData;
+    let userType = dataOfCurrUser?.userType;
+    let companyId = dataOfCurrUser?.companyId;
 
     if (
       firstName ||
@@ -445,30 +443,74 @@ const MyProfile = props => {
                     timeZone: timeZone,
                   })
                   .then(() => {
-                    Database()
-                      .ref('/userSignUp/')
-                      .child(currUserUid)
-                      .update({
-                        firstName: firstName,
-                        middleName: middleName,
-                        lastName: lastName,
-                      })
-                      .then(() => {
-                        Alert.alert('Employee has been updated successfully.');
-                        setShowProfileDetailsModal(false);
-                        setIsLoading(false);
-                      })
-                      .catch(err => {
-                        console.log(err);
-                      });
+                    if (
+                      firstName ||
+                      lastName ||
+                      profileImage ||
+                      gender ||
+                      selectSingleOrMarried ||
+                      dateOfBirth ||
+                      email ||
+                      language ||
+                      middleName ||
+                      timeZone
+                    ) {
+                      if (userType === 'employee') {
+                        Database()
+                          .ref(`/newEmployess/${companyId}`)
+                          .child(currUserUid)
+                          .update({
+                            userId: currUserUid,
+                            profileImage: myDownloadURL,
+                            firstName: firstName,
+                            middleName: middleName,
+                            lastName: lastName,
+                            gender: gender,
+                            maritalStatus: selectSingleOrMarried,
+                            dateOfBirth: dateOfBirth,
+                            email: email,
+                            alternativeEmail: alternativeEmail,
+                            language: language,
+                            timeZone: timeZone,
+                          })
+                          .then(() => {
+                            console.log('updated for company...');
+                            Database()
+                              .ref('/userSignUp/')
+                              .child(currUserUid)
+                              .update({
+                                firstName: firstName,
+                                middleName: middleName,
+                                lastName: lastName,
+                              })
+                              .then(() => {
+                                Alert.alert(
+                                  'Employee has been updated successfully.',
+                                );
+                                setShowProfileDetailsModal(false);
+                                setIsLoading(false);
+                              })
+                              .catch(err => {
+                                console.log(err);
+                                setIsLoading(false);
+                              });
+                          })
+                          .catch(err => {
+                            console.log(err, 'err');
+                            setIsLoading(false);
+                          });
+                      }
+                    }
                   })
                   .catch(err => {
                     console.log(err);
+                    setIsLoading(false);
                   });
               });
           });
         } catch (err) {
           console.log(err);
+          setIsLoading(false);
         }
       } else {
         Database()
@@ -496,16 +538,36 @@ const MyProfile = props => {
                 lastName: lastName,
               })
               .then(() => {
+                if (userType === 'employee') {
+                  Database()
+                    .ref(`/newEmployess/${companyId}`)
+                    .child(currUserUid)
+                    .update({
+                      userId: currUserUid,
+                      firstName: firstName,
+                      middleName: middleName,
+                      lastName: lastName,
+                      gender: gender,
+                      maritalStatus: selectSingleOrMarried,
+                      dateOfBirth: dateOfBirth,
+                      email: email,
+                      alternativeEmail: alternativeEmail,
+                      language: language,
+                      timeZone: timeZone,
+                    });
+                }
                 Alert.alert('Employee has been updated successfully.');
                 setShowProfileDetailsModal(false);
                 setIsLoading(false);
               })
               .catch(err => {
                 console.log(err);
+                setIsLoading(false);
               });
           })
           .catch(err => {
             console.log(err);
+            setIsLoading(false);
           });
       }
     } else {

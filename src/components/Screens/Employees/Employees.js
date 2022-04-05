@@ -4,7 +4,14 @@ import {ToastAndroid} from 'react-native';
 
 import {Auth, Database} from '../../firebaseTools/index';
 import {useDispatch, useSelector} from 'react-redux';
-import {fetchCurrentCompanyEmployees} from '../../Redux/Action/Actions';
+import {
+  fetchCompanyEmployeeEducation,
+  fetchCompanyEmployeeProfileDetails,
+  fetchCompanyUser,
+  fetchCompanyUserBio,
+  fetchCurrentCompanyEmployees,
+  fetchEditBioData,
+} from '../../Redux/Action/Actions';
 
 const Employees = props => {
   const [changeArrow, setChangeArrow] = useState(false);
@@ -165,7 +172,7 @@ const Employees = props => {
               Database()
                 .ref(`/newEmployess/${uid}/${user.uid}`)
                 .set({
-                  userID: user.uid,
+                  userId: user.uid,
                   companyId: uid,
                   firstName: firstName,
                   lastName: lastName,
@@ -186,7 +193,7 @@ const Employees = props => {
                   Database()
                     .ref(`/profileDetails/${user.uid}`)
                     .set({
-                      userID: user.uid,
+                      userId: user.uid,
                       companyId: uid,
                       firstName: firstName,
                       lastName: lastName,
@@ -205,7 +212,7 @@ const Employees = props => {
                       Database()
                         .ref(`/userSignUp/${user.uid}`)
                         .set({
-                          userID: user.uid,
+                          userId: user.uid,
                           companyId: uid,
                           firstName: firstName,
                           lastName: lastName,
@@ -271,20 +278,14 @@ const Employees = props => {
 
   const clearAllInput = () => {};
 
-  const viewEmployeeProfile = () => {
+  const viewEmployeeProfile = (item, index) => {
+    let employeeId = item.userId;
+    // dispatch(fetchCompanyUser(employeeId));
+    // dispatch(fetchCompanyUserBio(employeeId));
+    // dispatch(fetchCompanyEmployeeProfileDetails(employeeId));
+    dispatch(fetchCompanyEmployeeEducation(employeeId));
     props.navigation.navigate('EmployeeProfile');
   };
-
-  // for fetch data
-  useEffect(() => {
-    let uid = Auth()?.currentUser?.uid;
-    let companyId = profileData?.companyId;
-    if (currUserData.userType === 'employee') {
-      dispatch(fetchCurrentCompanyEmployees(companyId));
-    } else {
-      dispatch(fetchCurrentCompanyEmployees(uid));
-    }
-  }, [refreshing]);
 
   // for show data
   useEffect(() => {
@@ -300,6 +301,15 @@ const Employees = props => {
     setAcitveUserData(currUserData);
   }, [currUserData]);
 
+  // for fetch data
+  useEffect(() => {
+    let uid = Auth()?.currentUser?.uid;
+    let companyId = currUserData?.companyId;
+    dispatch(fetchCurrentCompanyEmployees(companyId));
+    console.log('working....');
+  }, [refreshing]);
+
+  console.log(companyEmployees, '//');
   return (
     <EmployeesMarkup
       {...props}

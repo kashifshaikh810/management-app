@@ -13,6 +13,10 @@ import {
   CREATE_TASK_LISTS,
   PARAM_LISTS_DATA,
   FETCH_COMPANY_EMPLOYEES,
+  FETCH_COMPANY_USER,
+  FETCH_COMPANY_USER_BIO,
+  FETCH_COMPANY_USER_PROFILE_DETAILS,
+  FETCH_COMPANY_USER_EDUCATION,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -157,10 +161,59 @@ export const fetchCurrentCompanyEmployees = uid => dispatch => {
   Database()
     .ref(`/newEmployess/${uid}`)
     .on('value', snapshot => {
-      let companyEmployees = snapshot.val() ? snapshot.val() : [];
+      let companyEmployees = snapshot ? snapshot.val() : [];
+      console.log(companyEmployees);
       dispatch({
         type: FETCH_COMPANY_EMPLOYEES,
         payload: companyEmployees,
+      });
+    });
+};
+
+export const fetchCompanyUser = employeeId => dispatch => {
+  Database()
+    .ref(`/userSignUp/${employeeId}`)
+    .on('value', snapshot => {
+      let companyUser = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_USER,
+        payload: companyUser,
+      });
+    });
+};
+
+export const fetchCompanyUserBio = employeeId => dispatch => {
+  Database()
+    .ref(`/editBio/${employeeId}`)
+    .on('value', snapshot => {
+      let employeeBio = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_USER_BIO,
+        payload: employeeBio,
+      });
+    });
+};
+
+export const fetchCompanyEmployeeProfileDetails = employeeId => dispatch => {
+  Database()
+    .ref(`/profileDetails/${employeeId}`)
+    .on('value', snapshot => {
+      let data = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_USER_PROFILE_DETAILS,
+        payload: data,
+      });
+    });
+};
+
+export const fetchCompanyEmployeeEducation = employeeId => dispatch => {
+  Database()
+    .ref(`/education/${employeeId}`)
+    .on('value', snapshot => {
+      let companyEmployeeEducation = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_USER_EDUCATION,
+        payload: companyEmployeeEducation,
       });
     });
 };
