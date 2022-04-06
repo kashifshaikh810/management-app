@@ -161,8 +161,7 @@ export const fetchCurrentCompanyEmployees = uid => dispatch => {
   Database()
     .ref(`/newEmployess/${uid}`)
     .on('value', snapshot => {
-      let companyEmployees = snapshot ? snapshot.val() : [];
-      console.log(companyEmployees);
+      let companyEmployees = snapshot ? snapshot.val() : {};
       dispatch({
         type: FETCH_COMPANY_EMPLOYEES,
         payload: companyEmployees,

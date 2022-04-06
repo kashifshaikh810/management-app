@@ -1,8 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {Keyboard} from 'react-native';
 import {Auth} from '../../firebaseTools';
-import {fetchCurrentCompanyEmployees} from '../../Redux/Action/Actions';
+import {
+  fetchCompanyEmployeeEducation,
+  fetchCompanyEmployeeProfileDetails,
+  fetchCompanyUser,
+  fetchCompanyUserBio,
+  fetchCurrentCompanyEmployees,
+} from '../../Redux/Action/Actions';
 import HeaderMarkup from './HeaderMarkup';
 
 const Header = props => {
@@ -13,11 +18,23 @@ const Header = props => {
   const [companyEmployeesData, setCompanyEmployeesData] = useState([]);
 
   // redux tools
-  const {companyEmployees} = useSelector(state => state.reduc);
+  const {currUserData, companyEmployees} = useSelector(state => state.reduc);
   const dispatch = useDispatch();
 
   const clearTextInput = () => {
     setSearch('');
+  };
+
+  const goToEmployeeProfile = (item, index) => {
+    let employeeId = item.userId;
+    dispatch(fetchCompanyUser(employeeId));
+    dispatch(fetchCompanyUserBio(employeeId));
+    dispatch(fetchCompanyEmployeeProfileDetails(employeeId));
+    dispatch(fetchCompanyEmployeeEducation(employeeId));
+    props.navigation.navigate('EmployeeProfile');
+    setshowSearchEmployeesModal(false);
+    setSearch('');
+    setFocus(false);
   };
 
   // for showing modal
@@ -32,7 +49,11 @@ const Header = props => {
   // for fetch data
   useEffect(() => {
     let uid = Auth()?.currentUser?.uid;
-    dispatch(fetchCurrentCompanyEmployees(uid));
+    if (currUserData.userType === 'employee') {
+      dispatch(fetchCurrentCompanyEmployees(currUserData.companyId));
+    } else {
+      dispatch(fetchCurrentCompanyEmployees(uid));
+    }
   }, []);
 
   // for showing data
@@ -48,13 +69,22 @@ const Header = props => {
   }, [search]);
 
   useEffect(() => {
-    if (focus) {
-      null;
-    } else {
-      setshowSearchEmployeesModal(false);
-      setSearch('');
+    if (companyEmployeesData.length === 0) {
+      if (focus) {
+        null;
+      } else {
+        setshowSearchEmployeesModal(false);
+        setSearch('');
+      }
     }
   }, [focus]);
+
+  useEffect(() => {
+    if (companyEmployeesData.length >= 1) {
+      setFocus(true);
+      setshowSearchEmployeesModal(true);
+    }
+  }, [companyEmployeesData.length]);
 
   return (
     <HeaderMarkup
@@ -67,6 +97,7 @@ const Header = props => {
       setshowSearchEmployeesModal={setshowSearchEmployeesModal}
       clearTextInput={clearTextInput}
       companyEmployeesData={companyEmployeesData}
+      goToEmployeeProfile={goToEmployeeProfile}
     />
   );
 };

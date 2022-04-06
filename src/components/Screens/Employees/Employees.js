@@ -25,10 +25,11 @@ const Employees = props => {
     type: '',
     chooseVal: '',
   });
-  const [companyEmployeesData, setcompanyEmployeesData] = useState([]);
+  const [companyEmployeesData, setCompanyEmployeesData] = useState([]);
   const [activeEmployees, setActiveEmployees] = useState('');
   const [refreshing, setRefreshing] = useState(false);
   const [acitveUserData, setAcitveUserData] = useState({});
+  const [isDataLoading, setIsDataLoading] = useState(false);
 
   // add new employee modal states
   const [showRoleDropDown, setShowRoleDropDown] = useState(false);
@@ -54,7 +55,7 @@ const Employees = props => {
   const [showOfHire, setShowOfHire] = useState(false);
 
   // redux tools
-  const {currUserData, profileData, companyEmployees} = useSelector(
+  const {currUserData, companyEmployees, companyUserEducation} = useSelector(
     state => state.reduc,
   );
   const dispatch = useDispatch();
@@ -280,9 +281,9 @@ const Employees = props => {
 
   const viewEmployeeProfile = (item, index) => {
     let employeeId = item.userId;
-    // dispatch(fetchCompanyUser(employeeId));
-    // dispatch(fetchCompanyUserBio(employeeId));
-    // dispatch(fetchCompanyEmployeeProfileDetails(employeeId));
+    dispatch(fetchCompanyUser(employeeId));
+    dispatch(fetchCompanyUserBio(employeeId));
+    dispatch(fetchCompanyEmployeeProfileDetails(employeeId));
     dispatch(fetchCompanyEmployeeEducation(employeeId));
     props.navigation.navigate('EmployeeProfile');
   };
@@ -294,7 +295,7 @@ const Employees = props => {
       return item.activityType === 'active';
     });
     setActiveEmployees(numOfActiveEmployees?.length);
-    setcompanyEmployeesData(data);
+    setCompanyEmployeesData(data);
   }, [companyEmployees]);
 
   useEffect(() => {
@@ -304,12 +305,22 @@ const Employees = props => {
   // for fetch data
   useEffect(() => {
     let uid = Auth()?.currentUser?.uid;
-    let companyId = currUserData?.companyId;
-    dispatch(fetchCurrentCompanyEmployees(companyId));
-    console.log('working....');
+    let id = currUserData?.userID;
+    let companyId = currUserData.companyId;
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      setIsDataLoading(true);
+      dispatch(fetchCurrentCompanyEmployees(companyId || uid));
+      dispatch(fetchCompanyEmployeeEducation(id));
+      setTimeout(() => {
+        setIsDataLoading(false);
+      }, 100);
+    });
+
+    return () => {
+      unsubscribe;
+    };
   }, [refreshing]);
 
-  console.log(companyEmployees, '//');
   return (
     <EmployeesMarkup
       {...props}
@@ -359,6 +370,7 @@ const Employees = props => {
       refreshing={refreshing}
       onRefresh={onRefresh}
       acitveUserData={acitveUserData}
+      isDataLoading={isDataLoading}
     />
   );
 };

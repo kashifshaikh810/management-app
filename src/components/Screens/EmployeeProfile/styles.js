@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   cardHeadingContainer: {
     marginHorizontal: 20,
     marginVertical: 25,
+    flexDirection: 'row',
   },
   line: {
     width: '100%',
@@ -203,6 +204,17 @@ const styles = StyleSheet.create({
     color: '#4d4f5c',
     fontWeight: '400',
     fontSize: 16,
+  },
+  editContainer: {
+    flex: 1,
+    alignItems: 'flex-end',
+  },
+  plusIconPressable: {
+    width: 25,
+    height: 25,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

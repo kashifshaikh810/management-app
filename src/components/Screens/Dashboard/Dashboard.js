@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {LogBox} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import {Auth} from '../../firebaseTools';
 import {
+  fetchCurrentCompanyEmployees,
   fetchEditBioData,
   fetchProfileDetails,
   fetchUser,
@@ -19,6 +21,13 @@ const Dashboard = props => {
     LogBox.ignoreLogs(['react-native-gesture-handler']);
     LogBox.ignoreLogs(['Cannot update a component']);
     LogBox.ignoreLogs(['Require cycle']);
+    let uid = Auth()?.currentUser?.uid;
+    console.log(currUserData);
+    if (currUserData.userType === 'employee') {
+      dispatch(fetchCurrentCompanyEmployees(currUserData.companyId));
+    } else {
+      dispatch(fetchCurrentCompanyEmployees(uid));
+    }
   }, [currUserData]);
 
   useEffect(() => {
@@ -28,7 +37,7 @@ const Dashboard = props => {
     dispatch(fetchEditBioData());
     setTimeout(() => {
       setIsDataLoading(false);
-    }, 2000);
+    }, 500);
   }, []);
 
   return (

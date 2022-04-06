@@ -16,7 +16,7 @@ const SearchEmplyeesModal = props => {
               <>
                 <Pressable
                   style={styles.flatList}
-                  onPress={() => console.log('aaa')}>
+                  onPress={() => props.goToEmployeeProfile(item, index)}>
                   <View style={styles.activeTextParent}>
                     <View
                       style={[

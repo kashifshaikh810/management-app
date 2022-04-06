@@ -3,6 +3,7 @@ import {
   FETCH_COMPANY_EMPLOYEES,
   FETCH_COMPANY_USER,
   FETCH_COMPANY_USER_BIO,
+  FETCH_COMPANY_USER_EDUCATION,
   FETCH_COMPANY_USER_PROFILE_DETAILS,
   FETCH_CONTACT_INFORMATION_DATA,
   FETCH_EDIT_BIO_DATA,
@@ -30,10 +31,11 @@ const initialState = {
   companyTaskLists: [],
   createListsData: [],
   taskData: {},
-  companyEmployees: ['kuch nh he bc'],
+  companyEmployees: [],
   companyUser: {},
   companyUserBio: {},
   companyUserProfileDetails: {},
+  companyUserEducation: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -117,6 +119,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         companyUserProfileDetails: action.payload,
+      };
+    case FETCH_COMPANY_USER_EDUCATION:
+      return {
+        ...state,
+        companyUserEducation: action.payload,
       };
     default:
       return state;

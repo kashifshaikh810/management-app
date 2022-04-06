@@ -200,7 +200,13 @@ const EmployeesMarkup = props => {
         <View style={styles.activeEmployeesCard}>
           <View>
             <Text style={styles.numOfActiveEmployees}>
-              {props.activeEmployees}
+              {props.isDataLoading ? (
+                <ActivityIndicator />
+              ) : props.activeEmployees ? (
+                props.activeEmployees
+              ) : (
+                0
+              )}
             </Text>
             <Text style={styles.activeEmployeesHeading}>active employees</Text>
           </View>
@@ -213,9 +219,13 @@ const EmployeesMarkup = props => {
         <View style={styles.totalEmployeesCard}>
           <View>
             <Text style={styles.numOfTotalEmployees}>
-              {props.companyEmployeesData
-                ? props?.companyEmployeesData?.length
-                : 0}
+              {props.isDataLoading ? (
+                <ActivityIndicator />
+              ) : props.companyEmployeesData ? (
+                props?.companyEmployeesData?.length
+              ) : (
+                0
+              )}
             </Text>
             <Text style={styles.totalEmployeesHeading}>TOTAL EMPLOYEES</Text>
           </View>
@@ -265,167 +275,173 @@ const EmployeesMarkup = props => {
 
           <AddNewEmployeeModal {...props} />
 
-          <FlatList
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={1}
-            nestedScrollEnabled
-            showsHorizontalScrollIndicator={false}
-            showsVerticalScrollIndicator={false}
-            data={props?.companyEmployeesData}
-            renderItem={({item, index}) => {
-              return (
-                <View style={styles.itemsCard}>
-                  <View style={styles.itemsContentContainer}>
-                    <View style={styles.activeTextParent}>
-                      <View
-                        style={[
-                          styles.activeTextContainer,
-                          {
-                            backgroundColor:
-                              item.activityType === 'inActive'
-                                ? '#b3b3b3'
-                                : '#13bd7c',
-                          },
-                          {
-                            width: item.activityType === 'inActive' ? 60 : 50,
-                          },
-                        ]}>
-                        <Text style={styles.activeText}>
-                          {item.activityType}
-                        </Text>
+          {props.isDataLoading ? (
+            <ActivityIndicator />
+          ) : (
+            <FlatList
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={1}
+              nestedScrollEnabled
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              data={props?.companyEmployeesData}
+              renderItem={({item, index}) => {
+                return (
+                  <View style={styles.itemsCard}>
+                    <View style={styles.itemsContentContainer}>
+                      <View style={styles.activeTextParent}>
+                        <View
+                          style={[
+                            styles.activeTextContainer,
+                            {
+                              backgroundColor:
+                                item.activityType === 'inActive'
+                                  ? '#b3b3b3'
+                                  : '#13bd7c',
+                            },
+                            {
+                              width: item.activityType === 'inActive' ? 60 : 50,
+                            },
+                          ]}>
+                          <Text style={styles.activeText}>
+                            {item.activityType}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <View style={styles.imageAndNameContainer}>
-                      <View
-                        style={[
-                          styles.userDPImageContainer,
-                          {
-                            borderColor:
-                              item.activityType === 'inActive'
-                                ? '#b3b3b3'
-                                : '#13bd7c',
-                          },
-                        ]}>
-                        {item.profileImage ? (
-                          <Image
-                            source={{uri: item.profileImage}}
-                            style={styles.userDPImage}
-                          />
-                        ) : (
-                          <Image
-                            source={require('../../Assists/images/defaultProfile.png')}
-                            style={styles.userDPImage}
-                          />
-                        )}
+                      <View style={styles.imageAndNameContainer}>
+                        <View
+                          style={[
+                            styles.userDPImageContainer,
+                            {
+                              borderColor:
+                                item.activityType === 'inActive'
+                                  ? '#b3b3b3'
+                                  : '#13bd7c',
+                            },
+                          ]}>
+                          {item.profileImage ? (
+                            <Image
+                              source={{uri: item.profileImage}}
+                              style={styles.userDPImage}
+                            />
+                          ) : (
+                            <Image
+                              source={require('../../Assists/images/defaultProfile.png')}
+                              style={styles.userDPImage}
+                            />
+                          )}
+                        </View>
+
+                        <View style={styles.namePositionAndDepartmentContainer}>
+                          <Pressable>
+                            {({pressed}) => (
+                              <Text
+                                style={[
+                                  styles.fistNameAndLastName,
+                                  {color: pressed ? '#006f44' : '#263238'},
+                                ]}>
+                                {item.firstName} {item.lastName}
+                              </Text>
+                            )}
+                          </Pressable>
+                          <Text style={styles.text}>
+                            Position: {item.position || 'N/A'}
+                          </Text>
+                          <Text style={styles.text}>
+                            Department: {item.Department || 'N/A'}
+                          </Text>
+                        </View>
                       </View>
 
-                      <View style={styles.namePositionAndDepartmentContainer}>
-                        <Pressable>
+                      <View style={styles.emailAndDOBContainer}>
+                        <View style={styles.emailContainer}>
+                          <TelephoneIcon
+                            name="phone"
+                            size={15}
+                            color="#b1b1b1"
+                            style={styles.icon}
+                          />
+                          <Text style={styles.email}>
+                            {item.phone || 'N/A'}
+                          </Text>
+                        </View>
+                        <View style={styles.emailContainer}>
+                          <EmailIcon
+                            name="email"
+                            size={15}
+                            color="#b1b1b1"
+                            style={styles.icon}
+                          />
+                          <Text style={styles.email}>{item.email}</Text>
+                        </View>
+                        <View style={styles.emailContainer}>
+                          <DOBIcon
+                            name="birthday-cake"
+                            size={15}
+                            color="#b1b1b1"
+                            style={styles.icon}
+                          />
+                          <Text style={styles.email}>{item.dateOfBirth}</Text>
+                        </View>
+                      </View>
+
+                      <View style={styles.buttonsContainer}>
+                        <Pressable
+                          onPress={() => props.viewEmployeeProfile(item, index)}
+                          style={({pressed}) => [
+                            styles.itemsPressable,
+                            {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+                          ]}>
                           {({pressed}) => (
-                            <Text
-                              style={[
-                                styles.fistNameAndLastName,
-                                {color: pressed ? '#006f44' : '#263238'},
-                              ]}>
-                              {item.firstName} {item.lastName}
-                            </Text>
+                            <>
+                              <EyeIcon
+                                name="eye"
+                                size={16}
+                                color={pressed ? '#fff' : '#b3b3b3'}
+                                style={styles.icon}
+                              />
+                              <Text
+                                style={[
+                                  styles.view,
+                                  {color: pressed ? '#fff' : '#263238'},
+                                ]}>
+                                View
+                              </Text>
+                            </>
                           )}
                         </Pressable>
-                        <Text style={styles.text}>
-                          Position: {item.position || 'N/A'}
-                        </Text>
-                        <Text style={styles.text}>
-                          Department: {item.Department || 'N/A'}
-                        </Text>
-                      </View>
-                    </View>
 
-                    <View style={styles.emailAndDOBContainer}>
-                      <View style={styles.emailContainer}>
-                        <TelephoneIcon
-                          name="phone"
-                          size={15}
-                          color="#b1b1b1"
-                          style={styles.icon}
-                        />
-                        <Text style={styles.email}>{item.phone || 'N/A'}</Text>
+                        <Pressable
+                          onPress={() => {}}
+                          style={({pressed}) => [
+                            styles.itemsPressable,
+                            {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
+                          ]}>
+                          {({pressed}) => (
+                            <>
+                              <DeleteIcon
+                                name="delete"
+                                size={16}
+                                color={pressed ? '#fff' : '#b3b3b3'}
+                                style={styles.icon}
+                              />
+                              <Text
+                                style={[
+                                  styles.view,
+                                  {color: pressed ? '#fff' : '#263238'},
+                                ]}>
+                                Remove
+                              </Text>
+                            </>
+                          )}
+                        </Pressable>
                       </View>
-                      <View style={styles.emailContainer}>
-                        <EmailIcon
-                          name="email"
-                          size={15}
-                          color="#b1b1b1"
-                          style={styles.icon}
-                        />
-                        <Text style={styles.email}>{item.email}</Text>
-                      </View>
-                      <View style={styles.emailContainer}>
-                        <DOBIcon
-                          name="birthday-cake"
-                          size={15}
-                          color="#b1b1b1"
-                          style={styles.icon}
-                        />
-                        <Text style={styles.email}>{item.dateOfBirth}</Text>
-                      </View>
-                    </View>
-
-                    <View style={styles.buttonsContainer}>
-                      <Pressable
-                        onPress={() => props.viewEmployeeProfile(item, index)}
-                        style={({pressed}) => [
-                          styles.itemsPressable,
-                          {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
-                        ]}>
-                        {({pressed}) => (
-                          <>
-                            <EyeIcon
-                              name="eye"
-                              size={16}
-                              color={pressed ? '#fff' : '#b3b3b3'}
-                              style={styles.icon}
-                            />
-                            <Text
-                              style={[
-                                styles.view,
-                                {color: pressed ? '#fff' : '#263238'},
-                              ]}>
-                              View
-                            </Text>
-                          </>
-                        )}
-                      </Pressable>
-
-                      <Pressable
-                        onPress={() => {}}
-                        style={({pressed}) => [
-                          styles.itemsPressable,
-                          {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
-                        ]}>
-                        {({pressed}) => (
-                          <>
-                            <DeleteIcon
-                              name="delete"
-                              size={16}
-                              color={pressed ? '#fff' : '#b3b3b3'}
-                              style={styles.icon}
-                            />
-                            <Text
-                              style={[
-                                styles.view,
-                                {color: pressed ? '#fff' : '#263238'},
-                              ]}>
-                              Remove
-                            </Text>
-                          </>
-                        )}
-                      </Pressable>
                     </View>
                   </View>
-                </View>
-              );
-            }}
-          />
+                );
+              }}
+            />
+          )}
 
           <View style={styles.totalItems} />
           {/* <Text>Total Items: {props?.companyEmployeesData?.length}</Text> */}
