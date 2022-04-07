@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {
   fetchCompanyEmployeeEducation,
   fetchCompanyEmployeeProfileDetails,
+  fetchCompanyNoteForEmployee,
   fetchCompanyUser,
   fetchCompanyUserBio,
   fetchCurrentCompanyEmployees,
@@ -285,6 +286,7 @@ const Employees = props => {
     dispatch(fetchCompanyUserBio(employeeId));
     dispatch(fetchCompanyEmployeeProfileDetails(employeeId));
     dispatch(fetchCompanyEmployeeEducation(employeeId));
+    dispatch(fetchCompanyNoteForEmployee(employeeId));
     props.navigation.navigate('EmployeeProfile');
   };
 

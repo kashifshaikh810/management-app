@@ -16,18 +16,32 @@ import styles from './styles';
 const AddNewNoteForEmployeeModal = props => {
   return (
     <Modal
-      visible={props.showAddNewNoteModal}
+      visible={props.showAddNewNoteModal || props.showEditNoteModal || false}
       animationType="slide"
       transparent
-      onRequestClose={() => props.setShowAddNewNoteModal(false)}>
+      onRequestClose={() =>
+        (props.showEditNoteModal && props.setShowEditNoteModal(false),
+        props.setCompanyNote('')) ||
+        (props.showAddNewNoteModal && props.setShowAddNewNoteModal(false),
+        props.setCompanyNote(''))
+      }>
       <StatusBar barStyle="dark-content" backgroundColor="rgba(0,0,0,0.5)" />
       <View style={styles.container}>
         <View style={styles.modalBody}>
           <View style={styles.cardHeadingContainer}>
-            <Text style={styles.cardHeadingText}>new note</Text>
+            <Text style={styles.cardHeadingText}>
+              {(props.showAddNewNoteModal && 'new note') ||
+                (props.showEditNoteModal && 'edit note')}
+            </Text>
             <View style={styles.closeIconContainer}>
               <Pressable
-                onPress={() => props.setShowAddNewNoteModal(false)}
+                onPress={() =>
+                  (props.showEditNoteModal && props.setShowEditNoteModal(false),
+                  props.setCompanyNote('')) ||
+                  (props.showAddNewNoteModal &&
+                    props.setShowAddNewNoteModal(false),
+                  props.setCompanyNote(''))
+                }
                 style={({pressed}) => [
                   styles.closePressabel,
                   {backgroundColor: pressed ? '#b3b3b3' : '#fff'},
@@ -55,13 +69,24 @@ const AddNewNoteForEmployeeModal = props => {
                 </Text>
               </View>
               <View>
-                <TextInput style={styles.commentTextInput} multiline />
+                <TextInput
+                  style={styles.commentTextInput}
+                  multiline
+                  value={props.companyNote}
+                  onChangeText={text => props.setCompanyNote(text)}
+                />
               </View>
             </View>
 
             <View style={styles.cancelAndSendReqContainer}>
               <Pressable
-                onPress={() => props.setShowAddNewNoteModal(false)}
+                onPress={() =>
+                  (props.showEditNoteModal && props.setShowEditNoteModal(false),
+                  props.setCompanyNote('')) ||
+                  (props.showAddNewNoteModal &&
+                    props.setShowAddNewNoteModal(false),
+                  props.setCompanyNote(''))
+                }
                 disabled={props.isLoading}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
@@ -72,7 +97,10 @@ const AddNewNoteForEmployeeModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => props.submit()}
+                onPress={() =>
+                  (props.showEditNoteModal && props.editNoteForEmployee()) ||
+                  (props.showAddNewNoteModal && props.addNewNoteForEmployee())
+                }
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.sendReqPressable,

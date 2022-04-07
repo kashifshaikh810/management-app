@@ -1,6 +1,7 @@
 import {
   CREATE_TASK_LISTS,
   FETCH_COMPANY_EMPLOYEES,
+  FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
   FETCH_COMPANY_USER,
   FETCH_COMPANY_USER_BIO,
   FETCH_COMPANY_USER_EDUCATION,
@@ -36,6 +37,7 @@ const initialState = {
   companyUserBio: {},
   companyUserProfileDetails: {},
   companyUserEducation: {},
+  companyNoteForEmployee: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -124,6 +126,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         companyUserEducation: action.payload,
+      };
+    case FETCH_COMPANY_NOTE_FOR_EMPLOYEE:
+      return {
+        ...state,
+        companyNoteForEmployee: action.payload,
       };
     default:
       return state;

@@ -85,9 +85,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
   },
-  icon: {
-    marginHorizontal: 5,
-  },
   userDOB: {
     fontSize: 14,
     color: '#e9e9f0',
@@ -107,7 +104,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   line: {
-    width: '100%',
+    minWidth: '100%',
     height: 0.3,
     backgroundColor: '#b3b3b3',
   },
@@ -155,14 +152,16 @@ const styles = StyleSheet.create({
   },
   managerNotesCard: {
     elevation: 10,
-    width: '90%',
-    height: Dimensions.get('window').height / 2.8,
+    flex: 1,
+    minWidth: '90%',
+    maxWidth: '90%',
     backgroundColor: '#fff',
     alignSelf: 'center',
     marginVertical: 10,
   },
   managerNotesTextContainer: {
     flex: 1,
+    minHeight: 150,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -215,6 +214,43 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  editIconPressable: {
+    width: 25,
+    height: 25,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  managerNotesCardContentContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginVertical: 20,
+  },
+  companyNameAndDateContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  companyNameText: {
+    marginRight: 6,
+    color: 'black',
+    fontSize: 15,
+  },
+  postedDateText: {
+    marginLeft: 6,
+    color: '#b3b3b3',
+    fontSize: 13,
+  },
+  companyNoteAndIconContainer: {
+    flexDirection: 'row',
+    marginVertical: 5,
+  },
+  companyNote: {
+    minWidth: 240,
+    maxWidth: 240,
+    lineHeight: 21,
+    fontSize: 16,
   },
 });
 

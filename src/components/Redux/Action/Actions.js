@@ -17,6 +17,7 @@ import {
   FETCH_COMPANY_USER_BIO,
   FETCH_COMPANY_USER_PROFILE_DETAILS,
   FETCH_COMPANY_USER_EDUCATION,
+  FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -213,6 +214,18 @@ export const fetchCompanyEmployeeEducation = employeeId => dispatch => {
       dispatch({
         type: FETCH_COMPANY_USER_EDUCATION,
         payload: companyEmployeeEducation,
+      });
+    });
+};
+
+export const fetchCompanyNoteForEmployee = employeeId => dispatch => {
+  Database()
+    .ref(`/companyNoteForEmployee/${employeeId}`)
+    .on('value', snapshot => {
+      let companyNote = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
+        payload: companyNote,
       });
     });
 };

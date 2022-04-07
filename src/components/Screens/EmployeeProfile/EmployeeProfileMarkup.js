@@ -12,6 +12,8 @@ import {
 import HomeIcon from 'react-native-vector-icons/FontAwesome';
 import DOBIcon from 'react-native-vector-icons/FontAwesome';
 import PlusIcon from 'react-native-vector-icons/Feather';
+import EditIcon from 'react-native-vector-icons/MaterialIcons';
+import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './styles';
 import Header from '../Header/Header';
@@ -25,6 +27,8 @@ const EmployeeProfileMarkup = props => {
     props?.companyUserBioData;
   const {collageOrUniversity, degree, major, yearGraduated} =
     props?.companyUserEducationData;
+  const {userType} = props?.currUserData;
+  const {companyNote, postedDate} = props?.companyNoteForEmployeeData;
 
   return (
     <View style={styles.container}>
@@ -37,7 +41,7 @@ const EmployeeProfileMarkup = props => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.empHeadingContainer}>
             <Text style={styles.empHeading}>
-              {firstName} {middleName ? null : middleName} {lastName}
+              {firstName} {middleName ? middleName : null} {lastName}
             </Text>
           </View>
 
@@ -154,7 +158,7 @@ const EmployeeProfileMarkup = props => {
                 </View>
                 <View>
                   <Text>
-                    Music Preference:
+                    Music Preference:{' '}
                     {musicPreference && <Text>{musicPreference}</Text>}
                   </Text>
                 </View>
@@ -178,26 +182,84 @@ const EmployeeProfileMarkup = props => {
           <View style={styles.managerNotesCard}>
             <View style={styles.cardHeadingContainer}>
               <Text style={[styles.itMyOwn]}>manager's note</Text>
-              <View style={styles.editContainer}>
-                <Pressable
-                  onPress={() => props.setShowAddNewNoteModal(true)}
-                  style={({pressed}) => [
-                    styles.plusIconPressable,
-                    {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
-                  ]}>
-                  <PlusIcon name="plus" size={16} color="#fff" />
-                </Pressable>
-              </View>
+              {props.companyNoteForEmployeeData.length === 0 ? (
+                userType === 'employee' ? null : (
+                  <View style={styles.editContainer}>
+                    <Pressable
+                      onPress={() => props.setShowAddNewNoteModal(true)}
+                      style={({pressed}) => [
+                        styles.plusIconPressable,
+                        {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
+                      ]}>
+                      <PlusIcon name="plus" size={16} color="#fff" />
+                    </Pressable>
+                  </View>
+                )
+              ) : null}
             </View>
             <View style={styles.line} />
 
-            <View style={styles.managerNotesTextContainer}>
-              <View style={styles.managerNotesBackground}>
-                <Text style={styles.managerNotesText}>
-                  We couldn't find any records.
-                </Text>
+            {props.companyNoteForEmployeeData.length === 0 ? null : (
+              <View style={styles.managerNotesCardContentContainer}>
+                <View style={styles.companyNameAndDateContainer}>
+                  <Text style={styles.companyNameText}>
+                    {props?.currUserData?.firstName}{' '}
+                    {props?.currUserData?.middleName}{' '}
+                    {props?.currUserData?.lastName}
+                  </Text>
+                  <Text>−</Text>
+                  <Text style={styles.postedDateText}>
+                    {props?.postedDate} •{' '}
+                    {props?.formatAMPM(new Date(postedDate))}
+                  </Text>
+                </View>
+
+                <View style={styles.companyNoteAndIconContainer}>
+                  <Text style={styles.companyNote}>{companyNote}</Text>
+
+                  {userType === 'employee' ? null : (
+                    <View style={styles.editContainer}>
+                      <Pressable
+                        onPress={() => props?.editModalVisible()}
+                        style={({pressed}) => [
+                          styles.editIconPressable,
+                          {
+                            backgroundColor: pressed
+                              ? 'rgba(0,0,0,0.5)'
+                              : '#ffa700',
+                          },
+                        ]}>
+                        <EditIcon name="edit" size={15} color="#fff" />
+                      </Pressable>
+
+                      <Pressable
+                        onPress={() => props.deleteNoteForEmployee()}
+                        style={({pressed}) => [
+                          styles.editIconPressable,
+                          {
+                            backgroundColor: pressed
+                              ? 'rgba(0,0,0,0.5)'
+                              : 'red',
+                            marginVertical: 10,
+                          },
+                        ]}>
+                        <DeleteIcon name="delete" size={16} color="#fff" />
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
               </View>
-            </View>
+            )}
+
+            {props.companyNoteForEmployeeData.length === 0 && (
+              <View style={styles.managerNotesTextContainer}>
+                <View style={styles.managerNotesBackground}>
+                  <Text style={styles.managerNotesText}>
+                    We couldn't find any records.
+                  </Text>
+                </View>
+              </View>
+            )}
           </View>
 
           <View style={styles.educationCard}>

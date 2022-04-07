@@ -162,7 +162,7 @@ const EmployeesMarkup = props => {
         <View style={{flexDirection: 'row'}}>
           <View style={[styles.empHeadingContainer]}>
             <Text style={styles.empHeading}>EMPLOYEES</Text>
-            {props.acitveUserData.activityType === 'undefined' && (
+            {props.acitveUserData.userType === 'employee' ? null : (
               <Pressable
                 onPress={() => props.setShowAddNewEmployeeModal(true)}
                 style={({pressed}) => [
