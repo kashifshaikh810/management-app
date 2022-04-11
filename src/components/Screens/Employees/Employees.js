@@ -16,6 +16,7 @@ import {
 
 const Employees = props => {
   const [changeArrow, setChangeArrow] = useState(false);
+  const [isRemoved, setIsRemoved] = useState(false);
   const [showDepartmentModal, setshowDepartmentModal] = useState({
     show: false,
     type: '',
@@ -153,6 +154,7 @@ const Employees = props => {
     let uid = Auth()?.currentUser?.uid;
     let companyEmail = currUserData ? currUserData.email : '';
     let companyPassword = currUserData ? currUserData.password : '';
+    let type = 'inActive';
     if (
       firstName &&
       lastName &&
@@ -188,7 +190,7 @@ const Employees = props => {
                   profileImage: '',
                   timeZone: '',
                   middleName: '',
-                  activityType: 'inactive',
+                  activityType: type,
                   userType: 'employee',
                 })
                 .then(() => {
@@ -290,6 +292,28 @@ const Employees = props => {
     props.navigation.navigate('EmployeeProfile');
   };
 
+  const deleteEmployee = (item, index) => {
+    setIsRemoved(true);
+    Database()
+      .ref('/userSignUp/')
+      .child(item.userId)
+      .update({remove: true})
+      .then(() => {
+        ToastAndroid.showWithGravityAndOffset(
+          'Successfully Removed',
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM,
+          25,
+          50,
+        );
+        setIsRemoved(false);
+      })
+      .catch(err => {
+        setIsRemoved(false);
+        console.log(err, 'err');
+      });
+  };
+
   // for show data
   useEffect(() => {
     let data = companyEmployees ? Object.values(companyEmployees) : [];
@@ -373,6 +397,8 @@ const Employees = props => {
       onRefresh={onRefresh}
       acitveUserData={acitveUserData}
       isDataLoading={isDataLoading}
+      deleteEmployee={deleteEmployee}
+      isRemoved={isRemoved}
     />
   );
 };

@@ -412,27 +412,31 @@ const EmployeesMarkup = props => {
                         </Pressable>
 
                         <Pressable
-                          onPress={() => {}}
+                          onPress={() => props.deleteEmployee(item, index)}
                           style={({pressed}) => [
                             styles.itemsPressable,
                             {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
                           ]}>
-                          {({pressed}) => (
-                            <>
-                              <DeleteIcon
-                                name="delete"
-                                size={16}
-                                color={pressed ? '#fff' : '#b3b3b3'}
-                                style={styles.icon}
-                              />
-                              <Text
-                                style={[
-                                  styles.view,
-                                  {color: pressed ? '#fff' : '#263238'},
-                                ]}>
-                                Remove
-                              </Text>
-                            </>
+                          {props.isRemoved ? (
+                            <ActivityIndicator color="green" />
+                          ) : (
+                            ({pressed}) => (
+                              <>
+                                <DeleteIcon
+                                  name="delete"
+                                  size={16}
+                                  color={pressed ? '#fff' : '#b3b3b3'}
+                                  style={styles.icon}
+                                />
+                                <Text
+                                  style={[
+                                    styles.view,
+                                    {color: pressed ? '#fff' : '#263238'},
+                                  ]}>
+                                  Remove
+                                </Text>
+                              </>
+                            )
                           )}
                         </Pressable>
                       </View>

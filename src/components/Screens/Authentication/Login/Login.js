@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -25,10 +25,9 @@ const Login = props => {
   const [focus, setFocus] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [test, setTest] = useState('');
 
-  const {currUserData} = useSelector(state => state.reduc);
-
-  const logIn = () => {
+  const logIn = async () => {
     if (email && password) {
       setIsLoading(true);
       Auth()
@@ -37,40 +36,53 @@ const Login = props => {
           await Database()
             .ref(`/userSignUp/${user.uid}`)
             .on('value', async snapshot => {
-              let userType = snapshot.val()?.userType;
-              let companyId = snapshot.val()?.companyId;
-              console.log(snapshot.val());
-              if (userType === 'employee') {
+              let remove = snapshot.val()?.remove;
+              setTest(remove ? remove : '');
+              if (remove !== true || !remove) {
                 await Database()
-                  .ref(`/newEmployess/${companyId}`)
-                  .child(user.uid)
-                  .update({activityType: 'active'})
-                  .then(() => {
-                    console.log('active');
+                  .ref(`/userSignUp/${user.uid}`)
+                  .on('value', async snapshot => {
+                    let userType = snapshot.val()?.userType;
+                    let companyId = snapshot.val()?.companyId;
+                    if (userType === 'employee') {
+                      await Database()
+                        .ref(`/newEmployess/${companyId}`)
+                        .child(user.uid)
+                        .update({activityType: 'active'})
+                        .then(() => {
+                          console.log('active');
+                        })
+                        .catch(err => {
+                          console.log(err, 'err');
+                        });
+                    }
+                  })
+                  .then(async () => {
+                    await Database()
+                      .ref(`/userLogin/${user.uid}`)
+                      .set({userID: user.uid, email: email, password: password})
+                      .then(() => {
+                        setIsLoading(false);
+                        setEmail('');
+                        setPassword('');
+                        Alert.alert(
+                          'Login Success.',
+                          'You are successfully login',
+                          [{text: 'OK'}],
+                        );
+                        props?.navigation?.navigate('DrawerNavigation');
+                      })
+                      .catch(err => {
+                        console.log(err, 'err');
+                      });
                   })
                   .catch(err => {
                     console.log(err, 'err');
                   });
+              } else {
+                setShowErr('Company removed you...');
+                setIsLoading(false);
               }
-            })
-            .then(async () => {
-              await Database()
-                .ref(`/userLogin/${user.uid}`)
-                .set({userID: user.uid, email: email, password: password})
-                .then(() => {
-                  setIsLoading(false);
-                  setEmail('');
-                  setPassword('');
-                  Alert.alert('Login Success.', 'You are successfully login', [
-                    {text: 'OK'},
-                  ]);
-                })
-                .catch(err => {
-                  console.log(err, 'err');
-                });
-            })
-            .catch(err => {
-              console.log(err, 'err');
             });
         })
         .catch(err => {
@@ -96,9 +108,10 @@ const Login = props => {
     setShowErr('');
   };
 
-  if (Auth()?.currentUser?.uid) {
-    props?.navigation?.replace('DrawerNavigation');
-  }
+  if (test !== true)
+    if (Auth()?.currentUser?.uid) {
+      props?.navigation?.replace('DrawerNavigation');
+    }
   return (
     <ScrollView style={styles.scrollView}>
       <StatusBar translucent backgroundColor="transparent" barStyle="default" />
