@@ -25,7 +25,7 @@ const Login = props => {
   const [focus, setFocus] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [test, setTest] = useState('');
+  const [test, setTest] = useState(Boolean);
 
   const logIn = async () => {
     if (email && password) {
@@ -34,55 +34,60 @@ const Login = props => {
         .signInWithEmailAndPassword(email, password)
         .then(async ({user}) => {
           await Database()
-            .ref(`/userSignUp/${user.uid}`)
+            .ref(`/userSignUp/${user?.uid}`)
             .on('value', async snapshot => {
-              let remove = snapshot.val()?.remove;
-              setTest(remove ? remove : '');
-              if (remove !== true || !remove) {
-                await Database()
-                  .ref(`/userSignUp/${user.uid}`)
-                  .on('value', async snapshot => {
-                    let userType = snapshot.val()?.userType;
-                    let companyId = snapshot.val()?.companyId;
-                    if (userType === 'employee') {
-                      await Database()
-                        .ref(`/newEmployess/${companyId}`)
-                        .child(user.uid)
-                        .update({activityType: 'active'})
-                        .then(() => {
-                          console.log('active');
-                        })
-                        .catch(err => {
-                          console.log(err, 'err');
-                        });
-                    }
-                  })
-                  .then(async () => {
+              setTest(snapshot.val()?.remove);
+              if (snapshot.val()?.remove === true) {
+                console.log('if');
+                setShowErr('Company removed you...');
+                setIsLoading(false);
+              }
+              await Database()
+                .ref(`/userSignUp/${user.uid}`)
+                .on('value', async snapshot => {
+                  let userType = snapshot.val()?.userType;
+                  let companyId = snapshot.val()?.companyId;
+                  if (userType === 'employee') {
                     await Database()
-                      .ref(`/userLogin/${user.uid}`)
-                      .set({userID: user.uid, email: email, password: password})
+                      .ref(`/newEmployess/${companyId}`)
+                      .child(user.uid)
+                      .update({activityType: 'active'})
                       .then(() => {
-                        setIsLoading(false);
-                        setEmail('');
-                        setPassword('');
-                        Alert.alert(
-                          'Login Success.',
-                          'You are successfully login',
-                          [{text: 'OK'}],
-                        );
-                        props?.navigation?.navigate('DrawerNavigation');
+                        console.log('active');
                       })
                       .catch(err => {
                         console.log(err, 'err');
                       });
-                  })
-                  .catch(err => {
-                    console.log(err, 'err');
-                  });
-              } else {
-                setShowErr('Company removed you...');
-                setIsLoading(false);
-              }
+                  }
+                })
+                .then(async () => {
+                  await Database()
+                    .ref(`/userLogin/${user.uid}`)
+                    .set({userID: user.uid, email: email, password: password})
+                    .then(() => {
+                      setIsLoading(false);
+                      setEmail('');
+                      setPassword('');
+                      Alert.alert(
+                        'Login Success.',
+                        'You are successfully login',
+                        [{text: 'OK'}],
+                      );
+                      props?.navigation?.navigate('DrawerNavigation');
+                    })
+                    .catch(err => {
+                      console.log(err, 'err');
+                    });
+                })
+                .catch(err => {
+                  console.log(err, 'err');
+                });
+            })
+            .then(() => {
+              console.log('res');
+            })
+            .catch(err => {
+              console.log(err);
             });
         })
         .catch(err => {
@@ -108,10 +113,11 @@ const Login = props => {
     setShowErr('');
   };
 
-  if (test !== true)
-    if (Auth()?.currentUser?.uid) {
-      props?.navigation?.replace('DrawerNavigation');
-    }
+  console.log(test, '///');
+
+  if (Auth()?.currentUser?.uid) {
+    props?.navigation?.replace('DrawerNavigation');
+  }
   return (
     <ScrollView style={styles.scrollView}>
       <StatusBar translucent backgroundColor="transparent" barStyle="default" />

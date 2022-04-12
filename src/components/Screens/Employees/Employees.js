@@ -55,6 +55,7 @@ const Employees = props => {
   const [dateOfHire, setDateOfHire] = useState(new Date());
   const [modeOfHire, setModeOfHire] = useState('date');
   const [showOfHire, setShowOfHire] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState('');
 
   // redux tools
   const {currUserData, companyEmployees, companyUserEducation} = useSelector(
@@ -293,20 +294,42 @@ const Employees = props => {
   };
 
   const deleteEmployee = (item, index) => {
+    setClickedIndex(item.userId);
+    let uid = Auth()?.currentUser?.uid;
     setIsRemoved(true);
+    setRefreshing(true);
     Database()
       .ref('/userSignUp/')
       .child(item.userId)
       .update({remove: true})
       .then(() => {
-        ToastAndroid.showWithGravityAndOffset(
-          'Successfully Removed',
-          ToastAndroid.LONG,
-          ToastAndroid.BOTTOM,
-          25,
-          50,
-        );
-        setIsRemoved(false);
+        Database()
+          .ref(`/newEmployess/${uid}/${item.userId}`)
+          .remove()
+          .then(() => {
+            Database()
+              .ref(`/profileDetails/${item.userId}`)
+              .remove()
+              .then(() => {
+                ToastAndroid.showWithGravityAndOffset(
+                  'Successfully Removed',
+                  ToastAndroid.LONG,
+                  ToastAndroid.BOTTOM,
+                  25,
+                  50,
+                );
+                setIsRemoved(false);
+                setRefreshing(false);
+              })
+              .catch(err => {
+                console.log(err, 'err');
+                setIsRemoved(false);
+              });
+          })
+          .catch(err => {
+            console.log(err, 'err');
+            setIsRemoved(false);
+          });
       })
       .catch(err => {
         setIsRemoved(false);
@@ -399,6 +422,7 @@ const Employees = props => {
       isDataLoading={isDataLoading}
       deleteEmployee={deleteEmployee}
       isRemoved={isRemoved}
+      clickedIndex={clickedIndex}
     />
   );
 };

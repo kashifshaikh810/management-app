@@ -54,7 +54,9 @@ const EmployeeProfile = props => {
   };
 
   const addNewNoteForEmployee = () => {
-    let employeeId = companyUser ? companyUser.userID : '';
+    let employeeId = companyUser
+      ? companyUser.userID || companyUser.userId
+      : '';
     let uid = Auth()?.currentUser?.uid;
     let date = new Date();
     let postedDate = date ? date?.toISOString()?.split('t')[0] : [];
@@ -88,7 +90,9 @@ const EmployeeProfile = props => {
 
   const editNoteForEmployee = () => {
     setIsLoading(true);
-    let employeeId = companyUser ? companyUser.userID : '';
+    let employeeId = companyUser
+      ? companyUser.userID || companyUser.userId
+      : '';
     let uid = Auth()?.currentUser?.uid;
     let date = new Date();
     let postedDate = date ? date?.toISOString()?.split('t')[0] : [];
@@ -111,7 +115,9 @@ const EmployeeProfile = props => {
   };
 
   const deleteNoteForEmployee = () => {
-    let employeeId = companyUser ? companyUser.userID : '';
+    let employeeId = companyUser
+      ? companyUser.userID || companyUser.userId
+      : '';
     Database()
       .ref(`/companyNoteForEmployee/${employeeId}`)
       .remove()

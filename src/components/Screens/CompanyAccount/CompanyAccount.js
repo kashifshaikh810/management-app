@@ -10,6 +10,7 @@ const CompanyAccount = props => {
   );
 
   const [showPaymentMethodTab, setShowPaymentMethodTab] = useState('monthly');
+  const [companyProfileImage, setCompanyProfileImage] = useState('empty');
 
   // company information modal
   const [showCompanyDetailsModal, setShowCompanyDetailsModal] = useState(false);
@@ -43,7 +44,7 @@ const CompanyAccount = props => {
       const file = await DocumentPicker.pickSingle({
         type: [DocumentPicker.types.images],
       });
-      console.log(file);
+      setCompanyProfileImage(file);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.log(err, 'errr');
@@ -77,6 +78,7 @@ const CompanyAccount = props => {
       setShowCompanySelecPlanModal={setShowCompanySelecPlanModal}
       showCompanySelecPlanYearlyModal={showCompanySelecPlanYearlyModal}
       setShowCompanySelecPlanYearlyModal={setShowCompanySelecPlanYearlyModal}
+      companyProfileImage={companyProfileImage}
     />
   );
 };

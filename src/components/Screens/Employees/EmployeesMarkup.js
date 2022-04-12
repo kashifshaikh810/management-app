@@ -418,7 +418,21 @@ const EmployeesMarkup = props => {
                             {backgroundColor: pressed ? '#ffa700' : '#e9e9f0'},
                           ]}>
                           {props.isRemoved ? (
-                            <ActivityIndicator color="green" />
+                            props.clickedIndex === item.userId ? (
+                              <ActivityIndicator color="green" />
+                            ) : (
+                              <>
+                                <DeleteIcon
+                                  name="delete"
+                                  size={16}
+                                  color="#b3b3b3"
+                                  style={styles.icon}
+                                />
+                                <Text style={[styles.view, {color: '#263238'}]}>
+                                  Remove
+                                </Text>
+                              </>
+                            )
                           ) : (
                             ({pressed}) => (
                               <>

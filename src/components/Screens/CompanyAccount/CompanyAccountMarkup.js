@@ -408,6 +408,7 @@ const yearlySection = props => {
 };
 
 const CompanyAccountMarkup = props => {
+  console.log(props.companyProfileImage);
   return (
     <View style={styles.container}>
       <Header {...props} />
@@ -437,10 +438,17 @@ const CompanyAccountMarkup = props => {
           <Pressable
             style={styles.logoImageContainer}
             onPress={() => props.uploadCompanyImage()}>
-            <Image
-              source={{uri: 'https://source.unsplash.com/user/c_v_r/1900x800'}}
-              style={styles.logoImage}
-            />
+            {props.companyProfileImage === 'empty' ? (
+              <Image
+                source={require('../../Assists/images/image.png')}
+                style={styles.default}
+              />
+            ) : (
+              <Image
+                source={{uri: props.companyProfileImage.uri}}
+                style={styles.logoImage}
+              />
+            )}
           </Pressable>
         </View>
 

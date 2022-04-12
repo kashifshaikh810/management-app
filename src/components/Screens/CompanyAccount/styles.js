@@ -63,6 +63,7 @@ const styles = StyleSheet.create({
   buttonPressable: tw`flex-1 justify-center`,
   buttonType: tw`p-3 items-center rounded-xl`,
   buttonTypeText: tw`text-white capitalize text-sm`,
+  default: tw`w-11/12 h-24`,
 });
 
 export default styles;
