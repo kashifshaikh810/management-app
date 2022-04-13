@@ -1,6 +1,7 @@
 import {
   CREATE_TASK_LISTS,
   FETCH_COMPANY_EMPLOYEES,
+  FETCH_COMPANY_IMAGE,
   FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
   FETCH_COMPANY_USER,
   FETCH_COMPANY_USER_BIO,
@@ -38,6 +39,7 @@ const initialState = {
   companyUserProfileDetails: {},
   companyUserEducation: {},
   companyNoteForEmployee: {},
+  companyImage: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -131,6 +133,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         companyNoteForEmployee: action.payload,
+      };
+    case FETCH_COMPANY_IMAGE:
+      return {
+        ...state,
+        companyImage: action.payload,
       };
     default:
       return state;

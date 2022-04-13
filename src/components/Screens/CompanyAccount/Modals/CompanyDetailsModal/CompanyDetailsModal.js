@@ -62,9 +62,8 @@ const CompanyDetailsModal = props => {
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyName}
+                  onChangeText={text => props.setCompanyName(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -77,9 +76,8 @@ const CompanyDetailsModal = props => {
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyNameSpace}
+                  onChangeText={text => props.setCompanyNameSpace(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -127,9 +125,8 @@ const CompanyDetailsModal = props => {
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyStreetAddressOne}
+                  onChangeText={text => props.setCompanyStreetAddressOne(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -144,9 +141,8 @@ const CompanyDetailsModal = props => {
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyCity}
+                  onChangeText={text => props.setCompanyCity(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -161,9 +157,8 @@ const CompanyDetailsModal = props => {
               <View>
                 <TextInput
                   selectionColor="#b3b3b3"
-                  keyboardType="email-address"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyState}
+                  onChangeText={text => props.setCompanyState(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -179,9 +174,10 @@ const CompanyDetailsModal = props => {
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyZipCode}
+                  onChangeText={text => props.setCompanyZipCode(text)}
                   style={styles.emailTextInput}
+                  maxLength={6}
                 />
               </View>
             </View>
@@ -196,9 +192,10 @@ const CompanyDetailsModal = props => {
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.companyPhoneNumber}
+                  onChangeText={text => props.setCompanyPhoneNumber(text)}
                   style={styles.emailTextInput}
+                  maxLength={15}
                 />
               </View>
             </View>
@@ -218,7 +215,7 @@ const CompanyDetailsModal = props => {
               </Pressable>
 
               <Pressable
-                onPress={() => {}}
+                onPress={() => props.companyDetailsSubmit()}
                 android_ripple={{color: '#fff'}}
                 style={({pressed}) => [
                   styles.submitPressable,

@@ -3,9 +3,15 @@ import {LogBox} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Auth} from '../../firebaseTools';
 import {
+  fetchCompanyImage,
+  fetchContactInformationData,
   fetchCurrentCompanyEmployees,
   fetchEditBioData,
+  fetchEducationData,
+  fetchEmergencyContactData,
+  fetchLicensesAndCertificationsData,
   fetchProfileDetails,
+  fetchTaskListData,
   fetchUser,
 } from '../../Redux/Action/Actions';
 import DashboardMarkup from './DashboardMarkup';
@@ -35,6 +41,12 @@ const Dashboard = props => {
     dispatch(fetchUser());
     dispatch(fetchProfileDetails());
     dispatch(fetchEditBioData());
+    dispatch(fetchCompanyImage());
+    dispatch(fetchEmergencyContactData());
+    dispatch(fetchContactInformationData());
+    dispatch(fetchEducationData());
+    dispatch(fetchLicensesAndCertificationsData());
+    dispatch(fetchTaskListData());
     setTimeout(() => {
       setIsDataLoading(false);
     }, 500);

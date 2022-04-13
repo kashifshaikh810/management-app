@@ -408,7 +408,9 @@ const yearlySection = props => {
 };
 
 const CompanyAccountMarkup = props => {
-  console.log(props.companyProfileImage);
+  const {firstName, middleName, lastName, email} = props?.companyProfileData;
+
+  console.log(props.companyProfileData);
   return (
     <View style={styles.container}>
       <Header {...props} />
@@ -443,9 +445,14 @@ const CompanyAccountMarkup = props => {
                 source={require('../../Assists/images/image.png')}
                 style={styles.default}
               />
+            ) : props?.companyProfileImage?.uri ? (
+              <Image
+                source={{uri: props?.companyProfileImage?.uri}}
+                style={styles.logoImage}
+              />
             ) : (
               <Image
-                source={{uri: props.companyProfileImage.uri}}
+                source={{uri: props?.companyProfileImage}}
                 style={styles.logoImage}
               />
             )}
@@ -473,31 +480,39 @@ const CompanyAccountMarkup = props => {
           <View style={styles.companyCardItemsContainer}>
             <View>
               <Text style={styles.companyCardItemsHeading}>company name:</Text>
-              <Text style={styles.companyCardItemsSubTitle}>abcdd</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {firstName} {middleName} {lastName}
+              </Text>
             </View>
 
             <View>
               <Text style={styles.companyCardItemsHeading}>register date:</Text>
-              <Text style={styles.companyCardItemsSubTitle}>1/21/2002</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {props?.companyRegistrationDate}
+              </Text>
             </View>
           </View>
 
           <View style={styles.companyCardItemsContainer}>
             <View>
               <Text style={styles.companyCardItemsHeading}>namespace:</Text>
-              <Text style={styles.companyCardItemsSubTitle}>name here...</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {firstName} {middleName} {lastName}
+              </Text>
             </View>
 
             <View>
               <Text style={styles.companyCardItemsHeading}>owner:</Text>
-              <Text style={styles.companyCardItemsSubTitle}>Shahzaib Shah</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {firstName} {middleName} {lastName}
+              </Text>
             </View>
           </View>
 
           <View style={styles.companyCardItemsContainer}>
             <View>
               <Text style={styles.companyCardItemsHeading}>email address:</Text>
-              <Text style={styles.companyCardItemEmail}>mark123@mail.com</Text>
+              <Text style={styles.companyCardItemEmail}>{email}</Text>
             </View>
 
             <View>
