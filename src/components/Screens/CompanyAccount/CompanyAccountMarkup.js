@@ -99,22 +99,41 @@ const billingAndPaymentMethodSection = props => {
           <View style={styles.scrollView}>
             <Text style={styles.headingMain}>BILLING ADDRESS</Text>
             <Text style={styles.title}>Company name:</Text>
-            <Text style={styles.subTitle}>name of company</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData?.companyName ||
+                `${
+                  props?.companyProfileData?.firstName +
+                  ' ' +
+                  props?.companyProfileData?.middleName +
+                  ' ' +
+                  props?.companyProfileData?.lastName
+                }`}
+            </Text>
 
             <Text style={styles.title}>country:</Text>
-            <Text style={styles.subTitle}>name of country</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData?.companyCountry}
+            </Text>
 
             <Text style={styles.title}>street address:</Text>
-            <Text style={styles.subTitle}>name of street address</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData?.companyStreetAddressOne}
+            </Text>
 
             <Text style={styles.title}>city:</Text>
-            <Text style={styles.subTitle}>name of city</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData.companyCity}
+            </Text>
 
             <Text style={styles.title}>state:</Text>
-            <Text style={styles.subTitle}>name of state</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData.companyState}
+            </Text>
 
             <Text style={styles.title}>zip code:</Text>
-            <Text style={styles.subTitle}>num of code</Text>
+            <Text style={styles.subTitle}>
+              {props?.companyProfileDetailsData.companyZipCode}
+            </Text>
           </View>
 
           <View style={styles.scrollView}>
@@ -409,8 +428,17 @@ const yearlySection = props => {
 
 const CompanyAccountMarkup = props => {
   const {firstName, middleName, lastName, email} = props?.companyProfileData;
+  const {
+    companyCity,
+    companyCountry,
+    companyName,
+    companyNameSpace,
+    companyPhoneNumber,
+    companyState,
+    companyStreetAddressOne,
+    companyZipCode,
+  } = props?.companyProfileDetailsData;
 
-  console.log(props.companyProfileData);
   return (
     <View style={styles.container}>
       <Header {...props} />
@@ -440,7 +468,7 @@ const CompanyAccountMarkup = props => {
           <Pressable
             style={styles.logoImageContainer}
             onPress={() => props.uploadCompanyImage()}>
-            {props.companyProfileImage === 'empty' ? (
+            {props.companyProfileImage === undefined ? (
               <Image
                 source={require('../../Assists/images/image.png')}
                 style={styles.default}
@@ -465,7 +493,7 @@ const CompanyAccountMarkup = props => {
 
             <View style={styles.editIconPressableContainer}>
               <Pressable
-                onPress={() => props.setShowCompanyDetailsModal(true)}
+                onPress={() => props.showModal()}
                 style={({pressed}) => [
                   styles.editIconPressable,
                   {backgroundColor: pressed ? '#b3b3b3' : '#ffa700'},
@@ -517,7 +545,9 @@ const CompanyAccountMarkup = props => {
 
             <View>
               <Text style={styles.companyCardItemsHeading}>phone number:</Text>
-              <Text style={styles.companyCardItemsSubTitle}>021441152</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {companyPhoneNumber}
+              </Text>
             </View>
           </View>
 
@@ -527,17 +557,27 @@ const CompanyAccountMarkup = props => {
                 billing address:
               </Text>
               <View style={[styles.headingContainer, tw`items-center`]}>
-                <LocationIcon
-                  name="md-location-sharp"
-                  size={15}
-                  color="#006f44"
-                />
-                <Text style={styles.companyCardItemsSubTitle}>affd</Text>
+                {companyStreetAddressOne && (
+                  <LocationIcon
+                    name="md-location-sharp"
+                    size={15}
+                    color="#006f44"
+                  />
+                )}
+                <Text style={styles.companyCardItemsSubTitle}>
+                  {companyStreetAddressOne}
+                </Text>
               </View>
-              <Text style={styles.companyCardItemsSubTitle}>aadff</Text>
-              <Text style={styles.companyCardItemsSubTitle}>aawww</Text>
-              <Text style={styles.companyCardItemsSubTitle}>pfffff</Text>
-              <Text style={styles.companyCardItemsSubTitle}>adaddaddad</Text>
+              <Text style={styles.companyCardItemsSubTitle}>{companyCity}</Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {companyState}
+              </Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {companyZipCode}
+              </Text>
+              <Text style={styles.companyCardItemsSubTitle}>
+                {companyCountry}
+              </Text>
             </View>
           </View>
         </View>

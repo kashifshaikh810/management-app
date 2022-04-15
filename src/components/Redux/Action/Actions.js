@@ -19,6 +19,7 @@ import {
   FETCH_COMPANY_USER_EDUCATION,
   FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
   FETCH_COMPANY_IMAGE,
+  FETCH_COMPANY_PROFILE_DETAILS,
 } from './ActionTypes';
 
 export const fetchUser = () => dispatch => {
@@ -240,6 +241,19 @@ export const fetchCompanyImage = () => dispatch => {
       dispatch({
         type: FETCH_COMPANY_IMAGE,
         payload: image,
+      });
+    });
+};
+
+export const fetchCompanyProfileDetails = () => dispatch => {
+  let uid = Auth()?.currentUser?.uid;
+  Database()
+    .ref(`/companyDetails/${uid}`)
+    .on('value', snapshot => {
+      let companyData = snapshot.val();
+      dispatch({
+        type: FETCH_COMPANY_PROFILE_DETAILS,
+        payload: companyData,
       });
     });
 };

@@ -4,7 +4,10 @@ import DocumentPicker from 'react-native-document-picker';
 import {useDispatch, useSelector} from 'react-redux';
 import RNFetchBlob from 'rn-fetch-blob';
 import {Auth, Database, Storage} from '../../firebaseTools';
-import {fetchCompanyImage} from '../../Redux/Action/Actions';
+import {
+  fetchCompanyImage,
+  fetchCompanyProfileDetails,
+} from '../../Redux/Action/Actions';
 
 import CompanyAccountMarkup from './CompanyAccountMarkup';
 
@@ -15,12 +18,16 @@ const CompanyAccount = props => {
 
   // redux tools
   const dispatch = useDispatch();
-  const {companyImage, profileData} = useSelector(state => state.reduc);
+  const {companyImage, profileData, companyProfileDetails, currUserData} =
+    useSelector(state => state.reduc);
 
   const [showPaymentMethodTab, setShowPaymentMethodTab] = useState('monthly');
   const [companyProfileImage, setCompanyProfileImage] = useState('empty');
   const [companyProfileData, setCompanyProfileData] = useState({});
   const [companyRegistrationDate, setCompanyRegistrationDate] = useState('');
+  const [companyProfileDetailsData, setCompanyProfileDetailsData] = useState(
+    {},
+  );
 
   // company information modal
   const [showCompanyDetailsModal, setShowCompanyDetailsModal] = useState(false);
@@ -45,6 +52,27 @@ const CompanyAccount = props => {
     showCompanyUpdatePaymentInfoModal,
     setShowCompanyUpdatePaymentInfoModal,
   ] = useState(false);
+  const [cardHolderName, setCardHolderName] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationDate, setExpirationDate] = useState('');
+
+  const handleCardNumber = text => {
+    let formattedText = text.split(' ').join('');
+    if (formattedText.length > 0) {
+      formattedText = formattedText.match(new RegExp('.{1,4}', 'g')).join(' ');
+    }
+    setCardNumber(formattedText);
+    return formattedText;
+  };
+
+  const handleExpirationDate = text => {
+    let formattedText = text.split(' ').join('');
+    if (formattedText.length > 0) {
+      formattedText = formattedText.match(new RegExp('.{1,2}', 'g')).join(' ');
+    }
+    setExpirationDate(formattedText);
+    return formattedText;
+  };
 
   // company select plan modal
   const [showCompanySelecPlanModal, setShowCompanySelecPlanModal] = useState({
@@ -143,35 +171,61 @@ const CompanyAccount = props => {
     }
   };
 
+  const showModal = () => {
+    setShowCompanyDetailsModal(true);
+    if (companyProfileDetails) {
+      setCompanyName(companyProfileDetailsData?.companyName);
+      setCompanyNameSpace(companyProfileDetailsData?.companyNameSpace);
+      setCompanyCity(companyProfileDetailsData?.companyCity);
+      setCompanyZipCode(companyProfileDetailsData?.companyZipCode);
+      setCompanyPhoneNumber(companyProfileDetailsData?.companyPhoneNumber);
+      setCompanyState(companyProfileDetailsData?.companyState);
+      setCompanyStreetAddressOne(
+        companyProfileDetailsData?.companyStreetAddressOne,
+      );
+    } else {
+      if (currUserData.middleName) {
+        setCompanyNameSpace(
+          currUserData?.firstName +
+            ' ' +
+            currUserData?.middleName +
+            ' ' +
+            currUserData?.lastName,
+        );
+        setCompanyName(
+          currUserData?.firstName +
+            ' ' +
+            currUserData?.middleName +
+            ' ' +
+            currUserData?.lastName,
+        );
+      } else {
+        setCompanyNameSpace(
+          currUserData?.firstName + ' ' + currUserData?.lastName,
+        );
+        setCompanyName(currUserData?.firstName + ' ' + currUserData?.lastName);
+      }
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchCompanyImage());
+    dispatch(fetchCompanyProfileDetails());
   }, []);
 
   useEffect(() => {
     setCompanyProfileImage(companyImage?.companyImage);
-    setCompanyProfileData(profileData ? profileData : []);
+    setCompanyProfileData(currUserData ? currUserData : []);
     let date = new Date(Auth()?.currentUser?.metadata?.creationTime);
     let dateRes = date
       ? date?.toISOString()?.slice(0, 10)?.split('-')?.reverse()?.join('/')
       : '';
     setCompanyRegistrationDate(dateRes);
 
-    //company details modal inputs
-    setCompanyName(
-      profileData?.firstName +
-        ' ' +
-        profileData?.middleName +
-        ' ' +
-        profileData?.lastName,
+    setCompanyProfileDetailsData(
+      companyProfileDetails ? companyProfileDetails : '',
     );
-    setCompanyNameSpace(
-      profileData?.firstName +
-        ' ' +
-        profileData?.middleName +
-        ' ' +
-        profileData?.lastName,
-    );
-  }, [companyImage, profileData]);
+  }, [companyImage, profileData, companyProfileDetails]);
 
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
@@ -215,6 +269,16 @@ const CompanyAccount = props => {
       companyPhoneNumber={companyPhoneNumber}
       setCompanyPhoneNumber={setCompanyPhoneNumber}
       companyDetailsSubmit={companyDetailsSubmit}
+      isLoading={isLoading}
+      companyProfileDetailsData={companyProfileDetailsData}
+      showModal={showModal}
+      cardHolderName={cardHolderName}
+      setCardHolderName={setCardHolderName}
+      cardNumber={cardNumber}
+      setCardNumber={setCardNumber}
+      handleCardNumber={handleCardNumber}
+      expirationDate={expirationDate}
+      handleExpirationDate={handleExpirationDate}
     />
   );
 };

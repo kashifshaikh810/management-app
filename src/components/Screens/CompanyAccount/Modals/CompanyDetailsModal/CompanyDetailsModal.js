@@ -104,7 +104,9 @@ const CompanyDetailsModal = props => {
                 }
                 style={styles.pressable}>
                 <Text style={styles.text}>
-                  {props?.showCompanyCountryModal?.chooseVal}
+                  {(props?.showCompanyCountryModal &&
+                    props?.showCompanyCountryModal?.chooseVal) ||
+                    props?.companyProfileDetailsData.companyCountry}
                 </Text>
                 <View style={styles.dropIconContainer}>
                   <SelectArrowIcon

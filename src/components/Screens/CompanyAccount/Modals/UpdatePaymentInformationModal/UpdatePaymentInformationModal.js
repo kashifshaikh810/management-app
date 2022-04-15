@@ -65,8 +65,8 @@ const UpdatePaymentInformationModal = props => {
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="default"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  value={props.cardHolderName}
+                  onChangeText={text => props.setCardHolderName(text)}
                   style={styles.emailTextInput}
                 />
               </View>
@@ -82,10 +82,11 @@ const UpdatePaymentInformationModal = props => {
                 <TextInput
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
-                  placeholder="1234 1234 1234 1234"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  placeholder="2222 2222 2222 2222"
+                  value={props.cardNumber}
+                  onChangeText={text => props.handleCardNumber(text)}
                   style={styles.emailTextInput}
+                  maxLength={19}
                 />
               </View>
             </View>
@@ -101,8 +102,9 @@ const UpdatePaymentInformationModal = props => {
                   selectionColor="#b3b3b3"
                   keyboardType="number-pad"
                   placeholder="MM / YY"
-                  //   value={props.email}
-                  //   onChangeText={text => props.setEmail(text)}
+                  maxLength={5}
+                  value={props.expirationDate}
+                  onChangeText={text => props.handleExpirationDate(text)}
                   style={styles.emailTextInput}
                 />
               </View>

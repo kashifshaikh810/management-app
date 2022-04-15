@@ -3,6 +3,7 @@ import {
   FETCH_COMPANY_EMPLOYEES,
   FETCH_COMPANY_IMAGE,
   FETCH_COMPANY_NOTE_FOR_EMPLOYEE,
+  FETCH_COMPANY_PROFILE_DETAILS,
   FETCH_COMPANY_USER,
   FETCH_COMPANY_USER_BIO,
   FETCH_COMPANY_USER_EDUCATION,
@@ -40,6 +41,7 @@ const initialState = {
   companyUserEducation: {},
   companyNoteForEmployee: {},
   companyImage: {},
+  companyProfileDetails: {},
 };
 
 export const reducer = (state = initialState, action) => {
@@ -138,6 +140,11 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         companyImage: action.payload,
+      };
+    case FETCH_COMPANY_PROFILE_DETAILS:
+      return {
+        ...state,
+        companyProfileDetails: action.payload,
       };
     default:
       return state;

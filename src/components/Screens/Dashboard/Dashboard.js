@@ -4,6 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {Auth} from '../../firebaseTools';
 import {
   fetchCompanyImage,
+  fetchCompanyProfileDetails,
   fetchContactInformationData,
   fetchCurrentCompanyEmployees,
   fetchEditBioData,
@@ -47,9 +48,8 @@ const Dashboard = props => {
     dispatch(fetchEducationData());
     dispatch(fetchLicensesAndCertificationsData());
     dispatch(fetchTaskListData());
-    setTimeout(() => {
-      setIsDataLoading(false);
-    }, 500);
+    dispatch(fetchCompanyProfileDetails());
+    setIsDataLoading(false);
   }, []);
 
   return (
